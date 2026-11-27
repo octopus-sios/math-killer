@@ -10,6 +10,7 @@ import Conjectures.NabergallChordalDiagrams
 import Conjectures.PattanayakTwoDegenerateLinearArboricity
 import Conjectures.PetrTemperateIntersecting
 import Conjectures.ThompsonCyclicMatrix
+import Conjectures.YiboGaoCoxeterGeodesicHull
 import Conjectures.YuanParriloPermanentSphere
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
