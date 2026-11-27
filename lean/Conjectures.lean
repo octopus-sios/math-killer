@@ -1,4 +1,5 @@
 import Conjectures.GuanTransversalAchievement
+import Conjectures.Kourovka1846SquareOvergroup
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 
