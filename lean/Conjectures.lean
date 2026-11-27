@@ -1,4 +1,5 @@
 import Conjectures.GuanTransversalAchievement
+import Conjectures.PattanayakTwoDegenerateLinearArboricity
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 

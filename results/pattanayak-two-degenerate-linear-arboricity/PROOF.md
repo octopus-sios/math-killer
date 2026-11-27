@@ -1,0 +1,78 @@
+# Two cases of the two-linear-coloring conjecture, and a sharp density threshold
+
+**Result.** Let $G$ be a finite simple 2-degenerate graph with maximum degree at most four. A *defect* is a degree-two vertex whose two edges receive the same color. We prove:
+
+1. If $G$ has no two **edge-disjoint odd cycles**, it has a coloring by two linear forests with at most one defect (none if it is bipartite).
+2. If the four neighbors of **each degree-four vertex** can be paired by two edges of $G$, then, for **any prescribed collection of disjoint pairs of degree-two vertices**, there is a coloring by two linear forests with at most one defect in each pair. In particular this applies to all claw-free 2-degenerate graphs.
+3. The edge threshold $|E|\ge 2|V|-5$ of Basavaraju, Bishnu, Francis and Pattanayak for a coloring with at most one defect is **sharp**. There is a nine-vertex graph with $12=2|V|-6$ edges in which every two-linear coloring has exactly two defects. More generally, connected graphs can force exactly $(2|V|-|E|)/3$ defects at arbitrarily large deficits.
+
+These are partial affirmative cases of [the authors' Conjecture 2, Section 4](https://arxiv.org/pdf/2007.06066v3), not a resolution of the unrestricted conjecture. The nine-vertex graph **does** have a two-linear coloring. The arguments reuse the authors' pivots, two-arm fusion, and paired-terminal invariant. The points here are the odd-cycle packing preserved by fusion, the degree-four neighborhood condition giving induced reductions, and the obstruction at the next density level.
+
+## Inductive moves
+
+Call a coloring *linear* if each color class is acyclic with maximum degree two. If some vertex has degree at least three, the subgraph induced by all such vertices is 2-degenerate. It has a vertex $v$ with at most two neighbors in that subgraph; call $v$ a pivot. Thus a degree-three pivot has a neighbor of degree at most two, and a degree-four pivot has at least two.
+
+We induct on the number of vertices. The following moves work for both statements.
+
+* **Leaf or isolate.** Delete it. Reinsert a leaf edge in a color used fewer than twice at its neighbor; when that neighbor now has degree two, choose the color different from its other edge. This creates no cycle or defect. In the paired argument drop any old pair whose terminal temporarily ceases to have degree two; here that terminal is made nondefective.
+* **Degree-three pivot.** After the preceding move is excluded, choose a degree-two neighbor $u$ with other neighbor $x$. Delete $u$. First color $ux$ in a color available at $x$, keeping $x$ nondefective if its restored degree is two. At $v$ the old degree is two. If $v$ is split (one edge of each color), give $uv$ the color opposite $ux$. If $v$ is defective, give $uv$ its missing color. In the latter case there cannot be a new cycle through $v$ in that color, and a new defect at $u$ costs the old one at $v$. For the paired claim, transfer a constraint $\{u,p\}$ to $\{v,p\}$ in the smaller graph if $p$ still has degree two. If $p=x$ ceases to have degree two it is protected on reinsertion. Any other dropped constraint at $x$ is safe for the same reason.
+* **Degree at most two throughout.** Alternate the colors on paths and even cycles. On each odd cycle use just one defect, at any desired vertex. For claim 1 there is at most one such cycle. For claim 2 put prescribed pairs in bins of size two and each unpaired degree-two vertex in its own bin. Any $t$ odd cycles meet at least $\lceil3t/2\rceil$ bins, since they contain at least $3t$ distinct vertices. Hall's theorem assigns distinct bins to the odd cycles. Choose each defect in its assigned bin.
+
+It remains to treat a degree-four pivot $v$ with two degree-two neighbors $u,w$.
+
+## Edge-disjoint odd cycles
+
+First suppose $u,w$ are adjacent. This is a triangle attached at $v$. Delete $u,w$; **the remainder is bipartite**, since any remaining odd cycle would be edge-disjoint from this triangle. Induction gives a defect-free coloring there. The residual edges at $v$ are split, so give $vu,vw$ distinct colors; either color for $uw$ creates just one defect and no cycle.
+
+If $u,w$ are nonadjacent with the same other neighbor $x$, delete them. The residual degrees at $v,x$ are two and at most two. If necessary view a residual degree less than two as split, by using temporary dummy leaves of missing colors, removed after extension. At most one of $v,x$ is defective. If both split, alternate around the new four-cycle, with the two edges at each terminal distinct. No monochromatic path crosses from one terminal to the other. If one terminal is defective, use its missing color on both its edges into the four-cycle, and distinct colors at the other terminal. Exactly one new defect occurs at $u,w$, replacing the old one. There is no new monochromatic cycle: any new monochromatic connection between the terminals uses the color absent outside at the defective terminal. These rules preserve zero defects when the smaller coloring has none.
+
+Otherwise let $x,y$ be the distinct other neighbors of $u,w$, respectively. Delete $vu,vw$ and fuse $u,w$ to a single vertex $z$ with neighbors $x,y$. The resulting $H$ is simple of maximum degree at most four and 2-degenerate: strip $z$ first, leaving an induced subgraph of $G$. **Odd-cycle packing cannot increase.** In any odd cycle of $H$ using $z$, expand the segment $xzy$ to $xuvwy$. This gives an odd closed trail in $G$, possibly repeating $v$, but repeating no edge. An odd closed trail contains a simple odd cycle (split at repeated vertices). Edge-disjoint cycles lift to edge-disjoint trails. This also proves that a bipartite input stays bipartite under the move.
+
+Take the inductive coloring of $H$ and separate the two arms at $z$ again. At most one of $v,z$ is defective.
+* If both split, give $vu,vw$ the colors opposite the corresponding outer arms.
+* If $v$ is defective, give both edges its missing color. The outer arms differ, so only one new defect appears; the new path cannot close since it stops at one of the two tips.
+* If $z$ was defective, both outer arms have one color, say red. Use one red and one blue edge at $v$. The red path starting at $v$ in the split graph can end at **at most one** of the two tips. Put the red edge at a tip which is not this endpoint. The blue edge stops at its tip, and only the tip receiving red is defective.
+
+Thus the number of defects does not increase. In all deletion cases a bipartite input remains bipartite; the triangle case does not occur on such an input. This proves claim 1.
+
+## Paired neighborhoods
+
+The hypothesis in claim 2 is inherited by **induced** subgraphs: a vertex that still has degree four retains all its neighbors and their matching. At our degree-four pivot choose a matching of the four neighbors. If a matched pair consists of two degree-two vertices, they form a pendant triangle at $v$; call them $u,w$. In the remainder pair their former partners to each other if both exist and are distinct surviving terminals (discard the old pairs involving $u,w$). If $v$ is defective, color $vu,vw$ in its missing color and $uw$ in the opposite color; both tips split. If $v$ splits, use distinct colors on $vu,vw$ and choose $uw$ to split whichever tip needs protection. At most one partner can be defective, so this suffices, including when $u,w$ themselves were paired.
+
+Otherwise $u,w$ are matched to distinct vertices $a,b$ of degree at least three. We have two triangles $vua,vwb$. Delete $v,u,w$, leaving residual degree one or two at $a,b$. In the new pairing replace $u$ by $b$, and $w$ by $a$, in pairs with surviving partners, only if the replacement has degree two. Drop $\{u,w\}$ if present. The replacement vertices were not original terminals. Count residual degree one as split by padding with a temporary leaf of the other color.
+
+Here is the complete extension rule. Each entry in the last two columns lists colors in the order $(va,vu,au)$ and $(vb,vw,bw)$. A letter at $a$ or $b$ in the first two columns means its residual edges are both that color; $S$ means split. The other cases follow by exchanging colors or exchanging the two sides.
+
+| $a$ | $b$ | triangle at $a$ | triangle at $b$ |
+|---|---|---|---|
+| $R$ | $R$ | $B,R,B$ | $B,R,B$ |
+| $R$ | $B$ | $B,R,B$ | $R,B,R$ |
+| $S$ | $S$ | $R,R,B$ | $B,B,R$ |
+| $S$ | $R$ | $R,B,B$ | $B,R,B$ |
+
+At $v$ there are two edges of each color. Each row fits the residual degrees. No triangle is monochromatic. A cycle using old and new edges could only close by a monochromatic connection from $a$ to $b$ with an old edge of the same color at each end. In the split/split row there is no such new connection, and in the other rows any such new connection arrives at a terminal missing its color. The inserted subgraph itself has only the two triangles as cycles. In the first three rows both tips split. In the last, only $u$ is defective, and $b$ was defective. Thus a new defect at $u$ requires an old defect at $b$, and one at $w$ requires one at $a$; both never occur together. This is exactly what the transferred pairs require.
+
+For the claw-free corollary, the neighborhood of any vertex in a 2-degenerate graph is a forest (a cycle together with the vertex would have minimum degree at least three). A forest on at least five vertices has three independent vertices, impossible in a claw-free neighborhood. On four vertices, a forest with no three independent vertices has a perfect matching: otherwise all its edges meet at a common vertex, or it has at most one edge. This proves claim 2 and the corollary.
+
+## Sharpness of the density hypothesis
+
+Start with a triangle on $0,1,2$. At each central vertex attach one more triangle sharing just that vertex, with new vertices $(3,4),(5,6),(7,8)$ respectively. The graph is 2-degenerate by removing the six new vertices first; the center vertices have degree four. In any linear coloring the central triangle has two edges of one color and one of the other. At the two centers which see different central colors, the two edges into their petal must likewise differ. The closing petal edge then creates exactly one degree-two defect there. At the remaining center the two petal arms have the same color, and the closing edge must be opposite to avoid a monochromatic triangle. Neither tip there is defective. This proves the asserted **exactly two**, not just a lower bound.
+
+For existence, take the red edges to be $01,12,03,34,56,27,78$ and all others blue. The displayed red and complementary blue graphs each consist of paths. With nine vertices and twelve edges this is exactly one edge below the authors' sufficient threshold. Nothing here disproves their unrestricted conjecture.
+
+### The same obstruction can force arbitrarily many defects
+
+For each integer $s\ge1$ there are connected examples with $k=2|V|-|E|=3(s+1)$ in which **every** linear two-coloring has exactly $k/3$ defects. Start with a path of $s$ marked nodes. Subdivide each path edge once and add leaves at each marked node until it has degree three. In the resulting tree $T$, every edge joins a marked node to an unmarked node; there are $3s$ edges and $3s+1$ nodes.
+
+Take one triangle per node of $T$. For each tree edge identify one vertex of the first triangle with one of the second, using distinct vertices for all edges incident to a given node. Each gluing of a new triangle along the tree adds two vertices and three edges, so $n=6s+3$ and $m=9s+3$. Strip leaf triangles to see 2-degeneracy. The degree-four vertices belong to two edge-disjoint triangles, so claim 2 gives a linear coloring.
+
+Exactly one vertex on each triangle sees two equal colors from that triangle. At a shared vertex the two local pairs are either both split, or both monochromatic in opposite colors. The latter vertices therefore determine a matching in $T$. Each marked triangle has all three vertices shared, so exactly one matching edge is incident to its node. Since each tree edge has one marked end, the matching has size $s$. Of the $3s+1$ locally monochromatic vertices counted with multiplicity, $2s$ are consumed at identifications. Precisely $s+1$ global defects remain.
+
+Even at fixed $s$ the order can grow indefinitely. At an unmarked leaf triangle, attach two fresh vertices each adjacent to both unshared tips; repeat on the newest two tips. Each step preserves $k$ and 2-degeneracy. The modified leaf piece has precisely three degree-two vertices (the shared vertex and the two newest tips), all others of degree four. Its edge count $2|V_{\rm piece}|-3$ is odd. The difference in its color-class sizes is the sum of $+1$ or $-1$ over its local defects, by summing color degrees. Hence their number is odd. It cannot be three: both color classes would have only degrees zero and two, impossible for nonempty edges in forests. Each such piece therefore still uses exactly one local defect. Existence persists by the twin four-cycle extension above, since the two terminals being enlarged cannot both be defective. This proves a lower obstruction on any proposed universal defect bound, not an upper bound of $k/3$.
+
+## Examples outside the original cases
+
+* For $r\ge4$, add the diagonal from $(0,1)$ to $(1,0)$ in an $r\times r$ square grid (coordinates start at zero). Every odd cycle uses the diagonal. Row-major insertion has at most two earlier neighbors per vertex even after the addition. The graph is nonbipartite, has maximum degree four and only $2r(r-1)+1<2r^2-5$ edges. Its $3\times3$ subgrid has a $K_4$ minor: divide the perimeter cycle into three connected arcs, each adjacent to the center. Hence it is not a partial 2-tree.
+* Subdivide each edge of $K_4$ twice, then add a new leaf at each of the twelve subdivision vertices. Take the line graph. Each degree-four neighborhood is paired by the two ends of the corresponding edge. Delete the twelve leaf-edge vertices, then the six middle-edge vertices on the original subdivided edges; what remains is four disjoint triangles. This is a 2-degeneracy order. The graph has 30 vertices, 48 edges and edge-disjoint triangles; contracting the four hub triangles and the connecting paths gives a $K_4$ minor. It lies in claim 2 but not claim 1 or the three original subclasses.
+
+**Verification scope.** The two infinite classes are proved above. The Python verifier independently checks the finite attachment table against all possible exterior boundary connections, the sharpness graph by exhaustive coloring, and the example hypotheses. Lean checks the nine-vertex sharpness result, including existence, the universal defect count, degrees, edge count and degeneracy; it does not formalize the two infinite inductions.

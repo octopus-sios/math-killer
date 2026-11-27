@@ -1,0 +1,39 @@
+% Basavaraju, Bishnu, Francis, Pattanayak, The linear arboricity conjecture
+% for graphs of low degeneracy, arXiv:2007.06066v3. Verbatim excerpts.
+% https://arxiv.org/abs/2007.06066v3
+
+\newtheorem{conj}{Conjecture}
+
+A linear forest is an acyclic graph whose each connected component is a path; or in other words, it is an acyclic graph whose maximum degree is at most 2. A \emph{linear coloring} of a graph $G$ is an edge coloring of $G$ such that the edges in each color class form a linear forest.
+% and a \emph{$k$-linear coloring} of $G$ is a linear coloring of $G$ using $k$ colors.
+The \emph{linear arboricity} of $G$, denoted as $\chi'_l(G)$, is the minimum number of colors required in any linear coloring of $G$.
+
+All graphs considered in this paper are finite, simple and undirected.
+
+A graph $G$ is said to be \emph{$t$-degenerate} if every subgraph of $G$ contains a vertex of degree at most $t$.
+
+Let $G$ be a $t$-degenerate graph. A \emph{pivot} in $G$ is a vertex that has at most $t$ neighbors of degree more than $t$. A \emph{pivot edge} in $G$ is an edge between a pivot and a vertex with degree at most $t$.
+
+The linear colorings that we construct for such graphs have the additional property that they contain no ``monochromatic vertices'' --- vertices of degree 2 that have two edges of the same color incident on them.
+
+\begin{conj}\label{con:2-deg}
+Every 2-degenerate graph $G$ with maximum degree at most $4$ has a 2-linear coloring.
+\end{conj}
+
+\begin{theorem}\label{lessequal4}
+Every 2-degenerate graph $G$ with maximum degree at most 4 having at least $2|V(G)|-5$ edges has a 2-linear coloring in which there is at most one monochromatic vertex.
+\end{theorem}
+
+\begin{theorem}\label{thm:bipartite}
+Any bipartite 2-degenerate graph of maximum degree at most 4 has a 2-linear coloring without any monochromatic vertex.
+\end{theorem}
+
+\begin{definition}
+Let $G$ be a graph and let $V'\subseteq V(G)$ be the set of vertices of degree 2 in $G$. Given a set $\mathcal{S}=\{S_1,S_2,\ldots,S_k\}$ of pairwise disjoint subsets of $V'$, each of size 2, a 2-linear coloring of $G$ is said to \emph{satisfy} $\mathcal{S}$ if at most one vertex in each $S_i$, where $1\leq i\leq k$, is monochromatic.
+\end{definition}
+
+\begin{theorem}\label{thm:p2tree}
+Let $G$ be a partial 2-tree having maximum degree at most 4.
+If $\mathcal{S}$ is a disjoint collection of pairs of degree 2 vertices of $G$,
+then $G$ has a 2-linear coloring that satisfies $\mathcal{S}$.
+\end{theorem}
