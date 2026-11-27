@@ -1,0 +1,46 @@
+% Kevin Guan, "The transversal achievement game on a square grid"
+% arXiv:2608.13501v1, 13 August 2026. https://arxiv.org/abs/2608.13501v1
+% Verbatim excerpts: theorem environment; rules, terminology and upper bound;
+% Conjecture (conj:sharp) and the scope of the computational evidence.
+
+\theoremstyle{plain}
+\newtheorem*{theoremA}{Theorem A}
+
+We write the first player as \textbf{X} and the second as \textbf{O}.
+
+\medskip
+
+\noindent\textbf{The game.} Two players alternately claim cells of an $n\times n$ grid; Player 1 (X) moves first. A player wins upon owning $n$ cells of which no two share a row or a column (a \emph{transversal}, equivalently a perfect matching of $K_{n,n}$). If neither player ever does, the game is a draw. X's $k$-th stone is placed at ply $2k-1$, and O's $k$-th stone is placed at ply $2k$.
+
+\medskip
+
+\noindent\textbf{The board as $K_{n,n}$.} We denote the rows of the board as $R$ and the columns as $C$, with $|R|=|C|=n$. Cells are pairs $(r,c)$. We identify the board with the complete bipartite graph $K_{n,n}$ whose
+vertex classes are the rows $R$ and columns $C$. Under this identification,
+a cell $(r,c)$ is the edge joining row $r$ to column
+$c$. Thus a matching of cells is
+exactly a graph matching, i.e., a collection of edges of which no two share a
+row vertex or a column vertex. In particular, a transversal is a perfect
+matching of this bipartite graph.
+
+\medskip
+
+\noindent\textbf{Matchings, threats, and completing cells.} For a set $S$ of cells, $\nu(S)$ is the maximum size of a matching inside $S$, i.e., a set with no two cells sharing a row or column. A player wins exactly when their set $S$ satisfies $\nu(S)=n$, so ``$S$ contains a transversal'' reads $\nu(S)=n$. We say a cell $f$ \textbf{completes} $S$ if $\nu(S\cup\{f\})=n$, and that a player \textbf{threatens} $f$ if $f$ is unoccupied and completes their set. Note that a player may have $\nu(S)=n-1$ and still threaten nothing, because every completing cell is already occupied. This situation occurs in case (C-iii) of the proof of Lemma~\ref{lem:nodeviation}.
+
+\begin{theoremA}
+Player 1 wins for $n=1$ and for every $n\ge 4$; $n=2,3$ are draws.
+\end{theoremA}
+
+\medskip
+Sections~\ref{sec:lemmas}--\ref{sec:proof} prove the case $n\ge4$ with the strategy of \S\ref{sec:strategy}: X wins by ply $2n+3$, i.e.\ with their $(n+2)$-nd stone. The cases $n<4$ are settled below and by previous work: $n=1$ is trivial, and $n=2$ is settled by hand. We do not reprove that $n=3$ is a draw~\cite{randjelovic}, though it is included in the Lean development of Appendix~\ref{app:lean}. We show through an exhaustive search that the $2n+3$ upper bound is attained at $n=4,5,6$ (\S\ref{sec:verification}).
+
+\begin{conjecture}
+\label{conj:sharp}
+For every $n\ge4$ and every strategy of X, O has a defense surviving to
+ply $2n+3$; that is, $2n+3$ is the exact length of the game under optimal
+play.
+\end{conjecture}
+
+Exhaustive search confirms that for $n=4,5,6$, the strategy of
+\S\ref{sec:strategy} admits a legal O defense forcing the win to ply
+$2n+3$ (Table~\ref{tab:winply}). This does not rule out a faster strategy
+for X, and establishing the lower bound for general $n$ remains open.
