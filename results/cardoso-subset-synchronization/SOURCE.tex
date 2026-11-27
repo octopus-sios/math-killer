@@ -1,0 +1,38 @@
+% Verbatim excerpts: Marek Szykuła, Synchronizing Automata: Open Problems
+% arXiv:2608.24245v2, preliminaries and Synchronization of a Given Subset.
+% Primary attribution: Ângela Cardoso, University of Porto PhD thesis (2014), Conjecture 5.1.1.
+
+\newcommand{\Cerny}{\v{C}ern{\'y}\xspace}
+\newtheorem{theorem}{Theorem}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\DeclareSymbolFont{rsfscript}{OMS}{rsfs}{m}{n}
+\DeclareSymbolFontAlphabet{\mathrsfs}{rsfscript}
+
+\subsection{Preliminaries}
+
+We consider deterministic finite complete semiautomata $\mathrsfs{A}=(Q,\Sigma,\delta)$, where $Q$ is the set of \emph{states}, $\Sigma$ is the \emph{alphabet}, and $\delta\colon Q \times \Sigma \to Q$ is the \emph{transition function}, extended naturally to a function $Q \times \Sigma^* \to Q$.
+Throughout the paper, by $n$ we always denote the number of states $|Q|$.
+
+The \emph{image} of a subset $S \subseteq Q$ by the action of a word $w \in \Sigma^*$ is $\delta(S,w) = \{\delta(q,w) \mid q \in S\}$, and its \emph{preimage} is $\delta^{-1} = \{q \in Q \mid \delta(q,w) \in S\}$.
+
+A word $w \in \Sigma^*$ is \emph{reset} (or \emph{synchronizing}) if $|\delta(Q,w)|=1$, i.e., every state is mapped by the action of $w$ to the same state.
+An automaton is \emph{synchronizing} if it admits a reset word.
+
+We say that a word $w$ \emph{compresses} a (necessarily nonempty) subset $S \subseteq Q$ if $|\delta(S,w)|<|S|$, and it \emph{extends} a subset $S \subsetneq Q$ if $|\delta^{-1}(S,w)|>|S|$.
+Also, we say that a word $w$ \emph{synchronizes} a subset $S \subseteq Q$ if $|\delta(S,w)|=1$.
+
+An automaton is \emph{strongly connected} if for every pair of states $p,q \in Q$, there is a word $w$ with $\delta(p,w) = q$.
+When considering synchronization problems, the most interesting cases are strongly connected synchronizing automata, as the \Cerny problem can be reduced to them.
+
+\subsection{Synchronization of a Given Subset}
+
+Another natural generalization concerns the length of words needed to synchronize a given subset. For $S=Q$, this is the \Cerny conjecture, and for $|S|$ we know the tight upper bound $n(n-1)/2$.
+
+In general, the following conjecture has been stated by Cardoso:
+\begin{conjecture}[{\cite[Conjecture~5.1.1]{Cardoso2014PhD}}]
+For a synchronizing $n$-state automaton, every subset $S$ of states can be synchronized with a word of length at most:
+\[ (n-1)^2 - \left\lceil\frac{n-|S|}{|S|}\right\rceil (2n - |S| \left\lceil\frac{n}{|S|}\right\rceil - 1) .\]
+\end{conjecture}
+It has been shown that the \Cerny automata have subsets meeting this bound for every $|S|$.
+
+A better upper bound than the trivial one (obtained from summing the upper bounds on compression) for any $|S| \ge 3$ would improve the known upper bound on the reset threshold.
