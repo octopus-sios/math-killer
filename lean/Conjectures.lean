@@ -1,3 +1,4 @@
+import Conjectures.FouliSylvesterMatroids
 import Conjectures.GuanTransversalAchievement
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
