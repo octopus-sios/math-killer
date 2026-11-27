@@ -1,5 +1,6 @@
 import Conjectures.CardosoSubsetSynchronization
 import Conjectures.EggertNilpotentAlgebraKourovka1752
+import Conjectures.FouliSylvesterMatroids
 import Conjectures.GuanTransversalAchievement
 import Conjectures.KashimaOzekiKtreeOddColoring
 import Conjectures.NabergallChordalDiagrams
