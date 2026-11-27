@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Check degree-4096 data and a mutation, not the CFSG argument."""
+"""Check the D8 square-coset exclusion and A_4096 witness arithmetic."""
 
 import argparse
+from itertools import product
 from math import factorial
 
 
@@ -55,11 +56,113 @@ def check_bounds(n):
     require(factorial(2 * n) // 2 > 2 * size ** 2, "alternating cutoff")
 
 
+def composition(f, g):
+    return tuple(f[j] for j in g)
+
+
+def inner_maps(t):
+    n = len(t)
+    inv = [row.index(0) for row in t]
+    return [tuple(t[t[a][x]][inv[a]] for x in range(n)) for a in range(n)]
+
+
+def automorphisms(t):
+    # Multiplication table in normal form r^i s^j u^k, i<4, j,k<2;
+    # labels encode i+4*j+8*k. For D8, omit u.
+    n = len(t)
+    generators = (1, 4) if n == 8 else (1, 4, 8)
+    for image in product(range(1, n), repeat=len(generators)):
+        r, s, *rest = image
+        rp = [0, r, t[r][r], t[t[r][r]][r]]
+        if len(set(rp)) < 4 or t[s][s] or s in rp:
+            continue
+        f = rp + [t[a][s] for a in rp]
+        if rest:
+            u, = rest
+            f += [t[a][u] for a in f]
+        if len(set(f)) == n and all(
+                f[t[x][g]] == t[f[x]][y] for g, y in zip(generators, image)
+                for x in range(n)):
+            yield tuple(f)
+
+
+def data(t, autos):
+    # x^2=a and conjugation by x is f on the table group K.
+    inn = inner_maps(t)
+    for f in autos:
+        ff = composition(f, f)
+        for a, c in enumerate(inn):
+            if f[a] == a and ff == c:
+                yield f, a
+
+
+def index_two(t, f, a):
+    n = len(t)
+    def mul(i, j):
+        e, u = divmod(i, n)
+        d, v = divmod(j, n)
+        w = t[u][f[v] if e else v]
+        return t[w][a] if e and d else (e ^ d) * n + w
+    return [tuple(mul(i, j) for j in range(2*n)) for i in range(2*n)]
+
+
+def possible_covers(t, required):
+    # Test necessary conditions for K normal with quotient V4 or S3.
+    n = len(t)
+    aut = list(automorphisms(t))
+    inn = set(inner_maps(t))
+    outer = {f:min(composition(i, f) for i in inn) for f in aut}
+    basesq = {t[u][u] for u in range(n)}
+    missing = set(required) - basesq
+    possibilities = {}
+    maybe96 = False
+    for f, a in data(t, aut):
+        squares = {t[t[k][f[k]]][a] for k in range(n)}
+        label = outer[f]
+        possibilities.setdefault(label,set()).add(frozenset(squares & missing))
+        if len(aut)%3 == 0:
+            orbit = {h[y] for h in aut for y in squares}
+            if missing <= orbit:
+                maybe96 = True
+    maybe64 = False
+    for o,p in product(possibilities,repeat=2):
+        op = outer[composition(o,p)]
+        if op not in possibilities or op != outer[composition(p,o)]:
+            continue
+        for a,b,c in product(possibilities[o],possibilities[p],possibilities[op]):
+            if missing <= a | b | c:
+                maybe64 = True
+    return maybe64,maybe96
+
+
+def check_dihedral(corrupt=False):
+    d = [[(i//4 ^ j//4)*4 + (i%4+(-1)**(i//4)*(j%4))%4
+          for j in range(8)] for i in range(8)]
+    number = 0
+    admits_rotations = False
+    for f, a in data(d, list(automorphisms(d))):
+        table = index_two(d, f, a)
+        require(all(table[table[x][y]][z] == table[x][table[y][z]]
+                    for x,y,z in product(range(16), repeat=3)), "nonassociative table")
+        possible64, possible96 = possible_covers(table, range(4 if corrupt else 8))
+        require(not possible64, "surviving V4 square-coset cover")
+        require(not possible96, "surviving S3 square-coset cover")
+        if not admits_rotations:
+            admits_rotations = possible_covers(table, range(4))[0]
+        number += 1
+    require(number == 16, "missing labelled extension")
+    require(admits_rotations, "failed to detect a cover of the rotation subgroup")
+    print("PASS: all 16 marked kernel tables; no V4 or S3 cover of D8; rotations control accepted")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corrupt", action="store_true",
                         help="supply a genuine square instead (must fail)")
+    parser.add_argument("--rotations-only", action="store_true",
+                        help="weaken the dihedral target (the exclusion must fail)")
     args = parser.parse_args()
+    check_dihedral(args.rotations_only)
     n = 4096
     g = perm(n, (0, 1, 2, 3), (4, 5))
     # Pair both even cycles with a second copy; this remains even but is a square.
