@@ -223,6 +223,62 @@ def parse_results_table(readme_text: str) -> tuple[list[dict[str, str]], list[st
     return rows, errors
 
 
+def parse_scoreboard(readme_text: str) -> tuple[dict[str, int], list[str]]:
+    errors: list[str] = []
+    lines = readme_text.splitlines()
+    section_idx = next((i for i, line in enumerate(lines) if re.match(r"^##\s+Scoreboard\s*$", line.strip())), None)
+    if section_idx is None:
+        return {}, ["README.md is missing a '## Scoreboard' section"]
+
+    table_lines: list[tuple[int, str]] = []
+    for idx in range(section_idx + 1, len(lines)):
+        raw = lines[idx].strip()
+        if raw.startswith("## "):
+            break
+        if raw.startswith("|"):
+            table_lines.append((idx + 1, raw))
+        elif table_lines:
+            break
+
+    if len(table_lines) < 3:
+        return {}, ["README.md '## Scoreboard' section is missing a Markdown table"]
+
+    header_line_no, header_raw = table_lines[0]
+    headers = split_md_row(header_raw)
+    if tuple(headers) != ("Metric", "Count"):
+        errors.append(f"README.md:{header_line_no}: expected Scoreboard columns ['Metric', 'Count'], found {headers}")
+
+    sep_line_no, sep_raw = table_lines[1]
+    sep_cells = split_md_row(sep_raw)
+    if len(sep_cells) != len(headers) or not all(re.fullmatch(r":?-{3,}:?", c) for c in sep_cells):
+        errors.append(f"README.md:{sep_line_no}: malformed Scoreboard Markdown table separator")
+
+    counts: dict[str, int] = {}
+    for line_no, raw in table_lines[2:]:
+        cells = split_md_row(raw)
+        if len(cells) != 2:
+            errors.append(f"README.md:{line_no}: Scoreboard row expected 2 cells, got {len(cells)}")
+            continue
+        metric, count_raw = cells
+        count_clean = re.sub(r"[*_`\s]", "", count_raw)
+        if not count_clean.isdigit():
+            errors.append(f"README.md:{line_no}: Scoreboard count '{count_raw}' is not a non-negative integer")
+            continue
+        count_val = int(count_clean)
+        matched_badges = [b for b in VALID_BADGES if b in metric]
+        if "total" in metric.lower() and not matched_badges:
+            key = "total"
+        elif len(matched_badges) == 1:
+            key = matched_badges[0]
+        else:
+            errors.append(f"README.md:{line_no}: unrecognized Scoreboard metric '{metric}'")
+            continue
+        if key in counts:
+            errors.append(f"README.md:{line_no}: duplicate Scoreboard row for '{key}'")
+        counts[key] = count_val
+    return counts, errors
+
+
 def check_anti_sprawl_and_privacy(repo_root: Path) -> list[str]:
     errors: list[str] = []
     wf_dir = repo_root / ".github" / "workflows"
@@ -271,19 +327,23 @@ def validate_repo(repo_root: Path) -> list[str]:
         errors.append(f"CATALOG.json: invalid JSON ({exc})")
         entries = []
 
-    rows, table_errors = parse_results_table(readme_path.read_text(encoding="utf-8"))
+    readme_text = readme_path.read_text(encoding="utf-8")
+    scoreboard_counts, scoreboard_errors = parse_scoreboard(readme_text)
+    errors.extend(scoreboard_errors)
+    rows, table_errors = parse_results_table(readme_text)
     errors.extend(table_errors)
 
-    catalog_slugs: set[str] = set()
+    conjectures_root = (repo_root / "lean" / "Conjectures").resolve()
+    catalog_by_slug: dict[str, dict] = {}
     for idx, entry in enumerate(entries, start=1):
         slug = entry.get("slug")
         status = entry.get("status")
         if not isinstance(slug, str) or not slug:
             errors.append(f"CATALOG.json entry #{idx}: missing slug")
             continue
-        if slug in catalog_slugs:
+        if slug in catalog_by_slug:
             errors.append(f"CATALOG.json: duplicate slug '{slug}'")
-        catalog_slugs.add(slug)
+        catalog_by_slug[slug] = entry
         if status not in VALID_BADGES:
             errors.append(f"CATALOG.json '{slug}': invalid status '{status}' (must be one of {sorted(VALID_BADGES)})")
         res_dir = repo_root / "results" / slug
@@ -295,15 +355,47 @@ def validate_repo(repo_root: Path) -> list[str]:
             errors.append(f"results/{slug}: status 🟢 requires results/{slug}/verify.py")
         if status == "✅":
             lean_file = entry.get("lean_file")
-            if not isinstance(lean_file, str) or not (repo_root / lean_file).is_file():
+            if not isinstance(lean_file, str) or not lean_file or Path(lean_file).is_absolute():
                 errors.append(f"results/{slug}: status ✅ requires valid existing 'lean_file' path")
+            else:
+                lean_path = (repo_root / lean_file).resolve()
+                if not lean_path.is_file():
+                    errors.append(f"results/{slug}: status ✅ requires valid existing 'lean_file' path ('{lean_file}')")
+                elif lean_path.suffix != ".lean" or not lean_path.is_relative_to(conjectures_root):
+                    errors.append(
+                        f"results/{slug}: status ✅ 'lean_file' ('{lean_file}') must be a .lean file under lean/Conjectures/"
+                    )
+
+    catalog_slugs = set(catalog_by_slug.keys())
+
+    if scoreboard_counts:
+        expected_total = len(entries)
+        if "total" not in scoreboard_counts:
+            errors.append("README.md Scoreboard: missing Total Published Results row")
+        elif scoreboard_counts["total"] != expected_total:
+            errors.append(
+                f"README.md Scoreboard: Total Published Results is {scoreboard_counts['total']}, "
+                f"but CATALOG.json has {expected_total}"
+            )
+        for badge in ("✅", "🟢", "🟡", "⬜"):
+            expected_count = sum(1 for e in entries if e.get("status") == badge)
+            if badge not in scoreboard_counts:
+                errors.append(f"README.md Scoreboard: missing row for status badge '{badge}'")
+            elif scoreboard_counts[badge] != expected_count:
+                errors.append(
+                    f"README.md Scoreboard: count for '{badge}' is {scoreboard_counts[badge]}, "
+                    f"but CATALOG.json has {expected_count}"
+                )
 
     link_re = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
     readme_slugs: set[str] = set()
     for i, row in enumerate(rows, start=1):
         status_cell = row.get("Status", "")
-        if not any(b in status_cell for b in VALID_BADGES):
+        row_badges = [b for b in VALID_BADGES if b in status_cell]
+        if not row_badges:
             errors.append(f"README row {i}: Status cell '{status_cell}' must include one of {sorted(VALID_BADGES)}")
+        elif len(row_badges) > 1:
+            errors.append(f"README row {i}: Status cell '{status_cell}' contains multiple badges {sorted(row_badges)}")
         links = link_re.findall(row.get("Problem & Result", "") + " " + row.get("Links", ""))
         found_slug = None
         for target in links:
@@ -318,7 +410,16 @@ def validate_repo(repo_root: Path) -> list[str]:
         if found_slug is None:
             errors.append(f"README row {i}: must link to results/<slug>/")
         else:
+            if found_slug in readme_slugs:
+                errors.append(f"README row {i}: duplicate entry for slug '{found_slug}'")
             readme_slugs.add(found_slug)
+            if found_slug in catalog_by_slug and len(row_badges) == 1:
+                expected_status = catalog_by_slug[found_slug].get("status")
+                if expected_status in VALID_BADGES and row_badges[0] != expected_status:
+                    errors.append(
+                        f"README row {i} ('{found_slug}'): status badge '{row_badges[0]}' "
+                        f"does not match CATALOG.json status '{expected_status}'"
+                    )
 
     results_dir = repo_root / "results"
     disk_slugs = {

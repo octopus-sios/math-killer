@@ -74,7 +74,8 @@ def check_file_gh_api(path: Path, repo_root: Path) -> list[str]:
     if shutil.which("gh") is None:
         return ["`--gh-api` requested but `gh` CLI is not installed"]
     rel = path.relative_to(repo_root)
-    payload = json.dumps({"text": path.read_text(encoding="utf-8"), "mode": "gfm"})
+    source = path.read_text(encoding="utf-8")
+    payload = json.dumps({"text": source, "mode": "gfm"})
     res = subprocess.run(
         ["gh", "api", "markdown", "--input", "-"],
         input=payload,
@@ -83,9 +84,79 @@ def check_file_gh_api(path: Path, repo_root: Path) -> list[str]:
     )
     if res.returncode != 0:
         return [f"{rel}: `gh api markdown` failed ({res.stderr.strip()})"]
-    if "math-error" in res.stdout or "katex-error" in res.stdout:
+    html = res.stdout
+    if "math-error" in html or "katex-error" in html:
         return [f"{rel}: GitHub markdown renderer reported math rendering errors"]
-    return []
+    return check_rendered_html(source, html, rel)
+
+
+def count_escaped_prose_dollars(source: str) -> int:
+    """Count intentionally escaped `\\$` occurrences outside code fences, code spans, and math."""
+    count = 0
+    in_fence = False
+    in_display_math = False
+    for line in source.splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("```", "~~~")):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        if stripped == "$$":
+            in_display_math = not in_display_math
+            continue
+        if in_display_math:
+            continue
+        no_code = re.sub(r"`[^`]*`", "", line)
+        no_display = re.sub(r"\$\$.*?\$\$", "", no_code)
+        no_inline = re.sub(r"(?<!\\)\$(?!\$)(?:\\.|[^$\\])+?(?<!\\)\$", "", no_display)
+        count += len(re.findall(r"(?<!\\)(?:\\\\)*\\\$", no_inline))
+    return count
+
+
+def check_rendered_html(source: str, html: str, rel: Path) -> list[str]:
+    """Detect Markdown emphasis corruption and unrendered `$` / `$$` in GitHub HTML."""
+    errors: list[str] = []
+
+    # 1. Catch HTML/Markdown tags leaking inside a <math-renderer> element.
+    for m in re.finditer(r"<math-renderer\b[^>]*>(.*?)</math-renderer>", html, flags=re.S | re.I):
+        if re.search(r"<(?:em|strong|del|code|a)\b", m.group(1), flags=re.I):
+            errors.append(f"{rel}: HTML/Markdown tag corrupted rendered <math-renderer> block")
+            break
+
+    # 2. Inspect HTML outside <pre>, <code>, and <math-renderer> for broken/unrendered math.
+    outside_html = re.sub(
+        r"<(pre|code|math-renderer)\b[^>]*>.*?</\1>",
+        " ",
+        html,
+        flags=re.S | re.I,
+    )
+    outside_text = re.sub(r"<[^>]+>", "", outside_html)
+
+    if "$$" in outside_text:
+        errors.append(f"{rel}: unrendered '$$' display-math delimiter left in GitHub HTML")
+
+    escaped_dollars = count_escaped_prose_dollars(source)
+    outside_dollars = outside_text.count("$")
+    if outside_dollars > escaped_dollars:
+        # Split on block boundaries so emphasis corruption checks stay local to a block.
+        blocks = re.split(r"</?(?:p|li|td|th|h[1-6]|blockquote|div|tr|br)\b[^>]*>", outside_html, flags=re.I)
+        emphasis_corrupted = any(
+            re.search(r"\$[^$]*<(?:em|strong|del)\b[^>]*>.*?</(?:em|strong|del)>[^$]*\$", blk, flags=re.S | re.I)
+            for blk in blocks
+        )
+        if emphasis_corrupted:
+            errors.append(
+                f"{rel}: Markdown emphasis (<em>/<strong>/<del>) corrupted inline math in GitHub HTML "
+                f"(found {outside_dollars} unrendered '$' vs {escaped_dollars} escaped '\\$')"
+            )
+        else:
+            errors.append(
+                f"{rel}: unrendered/stray '$' delimiter(s) left outside <math-renderer> in GitHub HTML "
+                f"(found {outside_dollars} vs {escaped_dollars} escaped '\\$')"
+            )
+
+    return errors
 
 
 def main() -> int:
