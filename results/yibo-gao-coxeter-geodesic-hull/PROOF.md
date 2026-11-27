@@ -64,7 +64,7 @@ Combined with Gaetz–Gao's verification for $I_2(\infty) = W(\widetilde{A}_1)$ 
 
 ## 2. Proof of Theorem 1 via an Isometric $\ell_1$-Embedding of $W(\widetilde{A}_3)$
 
-Our proof of Theorem 1 is completely self-contained and is formalized end-to-end in Lean 4 (`lean/Conjectures/YiboGaoCoxeterGeodesicHull.lean`). It does not require citing Tits' convexity theorem or root-system machinery externally; instead it establishes an exact isometric embedding of $\operatorname{Cay}(W(\widetilde{A}_3), S)$ into $(\mathbb{Z}^6, \lVert\cdot\rVert_1)$.
+The asymptotic disproof is formalized end-to-end in Lean 4; see Section 5.1 for the precise scope. Its core is an exact isometric embedding of $\operatorname{Cay}(W(\widetilde{A}_3), S)$ into $(\mathbb{Z}^6, \lVert\cdot\rVert_1)$, yielding the two-point box theorem without invoking Tits' convexity theorem. The exact endpoint-hull counts and the two small witnesses are treated separately in Section 2.3; the three-anchor witness uses the Björner–Wachs characterization.
 
 ### 2.1. The affine permutation model $\mathrm{AffPerm}_4 \cong W(\widetilde{A}_3)$
 
@@ -254,7 +254,48 @@ $$
 
 Thus $\operatorname{Cay}(W(\widetilde{A}_3), S)$ fails the hull property and consequently fails the strong hull property.
 
-**Step 5 (Exact small-scale witnesses).** Exact connected BFS enumeration of the $\Phi$-boxes (independently verified against brute-force geodesic closure in `verify.py`) yields the exact linear counts $|\operatorname{Conv}(e, t_1^L)| = 12L$ and $|\operatorname{Conv}(e, t_2^L)| = 12L + 1$ for $L \ge 1$, giving the concrete witnesses $(t_1^5, t_2^{10})$ with $60 \cdot 121 = 7260 < 7921 = |\operatorname{Conv}(t_1^5, t_2^{10})|$ (ordinary hull failure) and $(t_1^8, t_2^8)$ with $96 \cdot 97 = 9312 < 9825 = |\operatorname{Conv}(e, t_1^8, t_2^8)|$ (symmetric strong hull failure). $\square$
+**Exact endpoint-hull counts for every integer $L \ge 1$.** Write $x=a_0$ and $\epsilon_{ij}=\mathbf{1}_{\sigma^{-1}(i)<\sigma^{-1}(j)}$. By Corollary 2.3 the hull consists exactly of affine permutations satisfying all six coordinate bounds.
+
+For $t_1^L$, the box joins $(-1,-1,-1,-1,-1,-1)$ to $(-1,-2L-1,-2L-1,-2L-1,-2L-1,-1)$ in the order $01,02,03,12,13,23$. The two frozen coordinates $\Phi_{01}=\Phi_{23}=-1$ and the zero-sum condition give $\delta=a_0-a_1=a_2-a_3\in\{0,1\}$, by the parity argument of Step 1, and $a=(x,x-\delta,-x+\delta,-x)$. Both frozen equations hold exactly when $\epsilon_{01}=\epsilon_{23}=1-\delta$. Thus $\delta=0$ requires $0$ before $1$ and $2$ before $3$ in the order word $\sigma(0)\sigma(1)\sigma(2)\sigma(3)$; $\delta=1$ reverses both comparisons. There are six shuffles of the two ordered pairs for each $\delta$. For each of the remaining coordinates $ij\in\{02,03,12,13\}$, write $\Phi_{ij}=-2x+b_{ij}-1$. Substitution gives the four $b_{ij}$, in that order,
+
+$$
+(1+\delta-\epsilon_{02},\ 1-\epsilon_{03},\ 1+2\delta-\epsilon_{12},\ 1+\delta-\epsilon_{13}).
+$$
+
+The constraint $-2L-1\le -2x+b_{ij}-1\le -1$ is precisely $\lceil b_{ij}/2\rceil\le x\le L+\lfloor b_{ij}/2\rfloor$.
+
+For $t_2^L$, the other corner is $(-2L-1,-1,-2L-1,2L-1,-1,-2L-1)$. The frozen coordinates $\Phi_{02}=\Phi_{13}=-1$ give $a_0-a_2,\ a_1-a_3\in\{0,1\}$, and their sum is even by the zero-sum condition. Thus $\delta=a_0-a_2=a_1-a_3$ and $a=(x,-x+\delta,x-\delta,-x)$. Now $\epsilon_{02}=\epsilon_{13}=1-\delta$, again giving six order words for each $\delta$ by shuffling the two ordered pairs. The coordinates $01,03,23$ again give $-2L-1\le\Phi_{ij}\le-1$, while the $12$ coordinate gives $-1\le 2x-2\delta-\epsilon_{12}\le 2L-1$. All four reduce to $\lceil b_{ij}/2\rceil\le x\le L+\lfloor b_{ij}/2\rfloor$, with $b_{ij}$ in the order $01,03,12,23$ given by
+
+$$
+(1+\delta-\epsilon_{01},\ 1-\epsilon_{03},\ 2\delta+\epsilon_{12}-1,\ 1+\delta-\epsilon_{23}).
+$$
+
+Taking the maximum of the four lower bounds and the minimum of the four upper bounds gives the complete classification:
+
+| Endpoint | $\delta$ | Order word(s) | Integer interval for $x$ |
+| --- | --- | --- | --- |
+| $t_1^L$ | $0$ | `0123` | $[0,L]$ |
+| $t_1^L$ | $0$ | `0213`, `0231`, `2013`, `2031`, `2301` | $[1,L]$ |
+| $t_1^L$ | $1$ | `1032`, `1302`, `1320`, `3102`, `3120` | $[1,L]$ |
+| $t_1^L$ | $1$ | `3210` | $[2,L]$ |
+| $t_2^L$ | $0$ | `0123` | $[0,L]$ |
+| $t_2^L$ | $0$ | `0213` | $[0,L-1]$ |
+| $t_2^L$ | $0$ | `0132`, `1023`, `1032`, `1302` | $[1,L]$ |
+| $t_2^L$ | $1$ | `2031`, `2301`, `2310`, `3120`, `3201`, `3210` | $[1,L]$ |
+
+Each integer $x$ in an indicated interval gives one distinct element, since $\rho$ is an isomorphism and the parameters recover $(a,\sigma)$ uniquely. With $[2,1]$ understood as empty, the totals are $10L+(L+1)+(L-1)=12L$ for $t_1^L$ and $10L+(L+1)+L=12L+1$ for $t_2^L$.
+
+**Step 5 (Exact small-scale witnesses).** For the three-anchor witness we need more than the two-point Corollary 2.3. By Björner–Wachs ([Gaetz–Gao, Proposition 2.5](https://arxiv.org/pdf/2012.06841v2#page=4)), a group element $w$ is in the hull of anchors $x_1,\ldots,x_d$ exactly when its left inversions contain every common left inversion of the anchors and no inversion absent from all anchors. In the affine action $(a,\sigma)y=a+\sigma\cdot y$ on the real zero-sum space, take the fundamental alcove $A_0$ given by $y_0>y_1>y_2>y_3$ and $y_0-y_3<1$. The $g_i$ reflect in its walls. Left inversions of $w$ correspond to the walls separating $A_0$ from $\rho(w)A_0$: a minimal gallery crosses exactly the separating walls (a generic segment crosses each once), and the wall reflections along a reduced word are the simple reflections conjugated by the preceding prefixes. Thus the inversion criterion is exactly that $w$ lies on the same side of every wall on which all anchors lie on one side.
+
+For $y\in A_0$, the floor of $(a+\sigma\cdot y)_j-(a+\sigma\cdot y)_i$ is $a_j-a_i-\epsilon_{ij}=\Phi_{ij}(a,\sigma)$. So the alcove indexed by $w$ lies below the wall $H_{ij,k}=\{y:y_j-y_i=k\}$ precisely when $\Phi_{ij}(\rho w)<k$, and above it otherwise. For each $i<j$, the common lower and upper half-space constraints over all integers $k$ therefore give exactly
+
+$$
+\operatorname{Conv}(x_1,\ldots,x_d) =
+\Bigl\{w\in W(\widetilde{A}_3): \forall i<j,\quad
+\min_{1\le r\le d}\Phi_{ij}(\rho x_r)\le\Phi_{ij}(\rho w)\le\max_{1\le r\le d}\Phi_{ij}(\rho x_r)\Bigr\}.
+$$
+
+The boxes are finite by the isometric embedding and connected because they are convex hulls. To count them, `exact_phi_box_bfs` starts at the first anchor and repeatedly adds all Cayley neighbors inside the box. Together with the endpoint counts, this gives $(t_1^5,t_2^{10})$ with $60\cdot121=7260<7921=|\operatorname{Conv}(t_1^5,t_2^{10})|$ and $(t_1^8,t_2^8)$ with $96\cdot97=9312<9825=|\operatorname{Conv}(e,t_1^8,t_2^8)|$. At $L=1$, `pure_geodesic_closure_small` checks the BFS enumeration by iterating geodesic closure using `l1_dist`, without using box membership. This is a check of the enumeration, not an independent check of the distance representation (see Section 5.2). $\square$
 
 ---
 
@@ -304,9 +345,13 @@ $$
 P_L := \bigl\{ x \in F : \forall \alpha \in \Phi^+ \setminus (\Phi_{d_1}^\perp \cap \Phi_{d_2}^\perp),\ \min(\langle \alpha, L d_1 \rangle, \langle \alpha, K L d_2 \rangle) \le \langle \alpha, x \rangle \le \max(\langle \alpha, L d_1 \rangle, \langle \alpha, K L d_2 \rangle) \bigr\}.
 $$
 
-For every $\alpha \in \Phi^+ \setminus (\Phi_{d_1}^\perp \cap \Phi_{d_2}^\perp)$, the midpoint $x_L$ lies at signed distance $\frac{1}{2} L |\langle \alpha, K d_2 - d_1 \rangle| \ge \frac{1}{2} L$ from both boundary hyperplanes. Hence $P_L$ contains an $F$-ball of radius $r_0 L$ around $x_L$ for a constant $r_0 > 0$ depending only on $\Phi$, and therefore contains $\Omega(L^{\dim F})$ lattice points $q \in Q^\vee \cap F$. For every such $q$, we have $I_\alpha(t_q) = \langle \alpha, q \rangle = 0 = I_\alpha(u_L) = I_\alpha(v_L)$ for $\alpha \in \Phi_{d_1}^\perp \cap \Phi_{d_2}^\perp$ and $\langle \alpha, q \rangle$ lies between $\langle \alpha, L d_1 \rangle$ and $\langle \alpha, K L d_2 \rangle$ for all other $\alpha \in \Phi^+$; thus $t_q \in \operatorname{Conv}(u_L, v_L)$.
+For every $\alpha \in \Phi^+ \setminus (\Phi_{d_1}^\perp \cap \Phi_{d_2}^\perp)$, the midpoint $x_L$ has margin $\frac{1}{2} L |\langle \alpha, K d_2 - d_1 \rangle| \ge \frac{1}{2} L$ in root-value units from each bound. Hence $P_L$ contains an $F$-ball of radius $r_0 L$ around $x_L$ with $r_0=1/(2\max_{\alpha\in\Phi^+}\|\alpha\|)>0$, and therefore contains $\Omega(L^{\dim F})$ lattice points $q \in Q^\vee \cap F$. For every such $q$, we have $I_\alpha(t_q) = \langle \alpha, q \rangle = 0 = I_\alpha(u_L) = I_\alpha(v_L)$ for $\alpha \in \Phi_{d_1}^\perp \cap \Phi_{d_2}^\perp$ and $\langle \alpha, q \rangle$ lies between $\langle \alpha, L d_1 \rangle$ and $\langle \alpha, K L d_2 \rangle$ for all other $\alpha \in \Phi^+$; thus $t_q \in \operatorname{Conv}(u_L, v_L)$.
 
-Therefore $|\operatorname{Conv}(e, u_L)| \cdot |\operatorname{Conv}(e, v_L)| = O(L^2)$ while $|\operatorname{Conv}(u_L, v_L)| = \Omega(L^{\dim F}) \ge \Omega(L^3)$, violating the ordinary hull property (and hence the strong hull property) for all sufficiently large $L$. (Notice that Theorem 1 for $\widetilde{A}_3$ is precisely this universal construction at the middle node $b = 2$ of $A_3$, where $d_1 = 2 \omega_2^\vee = (1, 1, -1, -1)$ and $d_2 = s_2(d_1) = (1, -1, 1, -1)$.) $\square$
+Therefore $|\operatorname{Conv}(e, u_L)| \cdot |\operatorname{Conv}(e, v_L)| = O(L^2)$ while $|\operatorname{Conv}(u_L, v_L)| = \Omega(L^{\dim F}) \ge \Omega(L^3)$, violating the ordinary hull property (and hence the strong hull property) for all sufficiently large $L$. $\square$
+
+**The concrete constants in type $\widetilde{A}_3$.** Theorem 1 uses the same interior-node rays $\omega_2^\vee$ and $s_2(\omega_2^\vee)$ at the middle node $b=2$ of $A_3$, but with the smaller valid pair $(c_0,K)=(2,2)$. Indeed $d_1=2\omega_2^\vee=(1,1,-1,-1)$ is already in $Q(A_3)$, and with $d_2=s_2(d_1)=(1,-1,1,-1)$, the vector $2d_2-d_1=(1,-3,3,-1)$ has distinct coordinates. It is thus non-orthogonal to every root $e_i-e_j$, in particular to every root outside $\Phi_{d_1}^\perp\cap\Phi_{d_2}^\perp$. The uniform prescription instead gives $(|\det C|,1+\max_{\alpha\in\Phi^+}|\langle\alpha,d_1\rangle|)=(4,5)$ with $d_1=4\omega_2^\vee$.
+
+For the concrete constants, the argument above gives the $\Omega(L^3)$ bound for $|\operatorname{Conv}(t_1^L,t_2^{2L})|$. For the matching upper bound, the two-point box confines each of $a_1-a_0$, $a_2-a_0$, and $a_3-a_0$ to an integer interval of width $O(L)$, since each differs from the corresponding $\Phi_{0j}$ by at most $1$. These three differences and the zero-sum condition determine $a$; there are at most $24$ choices for $\sigma$. This gives $O(L^3)$.
 
 ---
 
@@ -324,25 +369,25 @@ No counterexample to either the strong hull property or the hull property in any
 
 ## 5. Verification Summary
 
-### 5.1. End-to-End Lean 4 Verification (`lean/Conjectures/YiboGaoCoxeterGeodesicHull.lean`)
+### 5.1. Lean 4 Verification of the Asymptotic Refutation
 
-The entire proof of Theorem 1 (disproving both `HasStrongHullProperty` and `HasHullProperty` for the undirected right Cayley graph `cayleyGraph cs3` of `W(A₃~) := A3TildeMatrix.Group`) is formalized from Mathlib's `SimpleGraph.dist`, `Set.encard`, and `CoxeterMatrix.toCoxeterSystem` with zero `sorry`, zero `native_decide`, and only standard axioms (`propext`, `Classical.choice`, `Quot.sound`):
+In `lean/Conjectures/YiboGaoCoxeterGeodesicHull.lean`, Lean formalizes the $\ell_1$-isometry, the two-point $\Phi$-box theorem, the symbolic bounds and the unconditional refutations end-to-end for the undirected right Cayley graph `cayleyGraph cs3` of `W(A₃~) := A3TildeMatrix.Group`. The development uses Mathlib's `SimpleGraph.dist`, `Set.encard`, and `CoxeterMatrix.toCoxeterSystem` with zero `sorry`, zero `native_decide`, and only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`):
 
 - `YiboGaoCoxeterGeodesicHull.cayleyGraph_dist_eq_l1Dist`: exact isometric embedding of `Cay(W(A₃~), S)` into `(ℤ⁶, ℓ₁)`.
 - `YiboGaoCoxeterGeodesicHull.convexHull_pair_eq_phiBox`: exact $\Phi$-box characterization of two-point geodesic convex hulls.
-- `YiboGaoCoxeterGeodesicHull.AffPerm4.encard_convexHull_one_uFamily_le`, `encard_convexHull_one_vFamily_le`, `le_encard_convexHull_uFamily_vFamily`: symbolic $O(m)$ upper bounds and $(m+1)^3$ lower bound for all $m \in \mathbb{N}$.
+- `YiboGaoCoxeterGeodesicHull.AffPerm4.encard_convexHull_one_uFamily_le`, `encard_convexHull_one_vFamily_le`, `le_encard_convexHull_uFamily_vFamily`: symbolic upper bounds $48(6m+2)$, $48(12m+2)$ and lower bound $(m+1)^3$.
 - `YiboGaoCoxeterGeodesicHull.not_hasHullProperty_A3Tilde : ¬ HasHullProperty (cayleyGraph cs3)`.
 - `YiboGaoCoxeterGeodesicHull.not_hasStrongHullProperty_A3Tilde : ¬ HasStrongHullProperty (cayleyGraph cs3)`.
 - `YiboGaoCoxeterGeodesicHull.counterexample_exists`: existential refutation of Conjecture 1.2 and the hull property.
 
-**Scope note:** Theorem 1 (full refutation of Conjecture 1.2 and the hull property in type $\widetilde{A}_3$) is completely verified in Lean 4; Theorem 2 (the general affine dichotomy in rank at least $4$) and the exact small-scale counts at $L = 8$ and $(L_1, L_2) = (5, 10)$ are proved in Sections 2–3 above and cross-checked with exact zero-float arithmetic in `verify.py`.
+**Scope note:** The all-$L$ equalities $12L$ and $12L+1$ and the small witnesses $(t_1^5,t_2^{10})$ and $(t_1^8,t_2^8)$ are established in Section 2.3 and cross-checked with exact arithmetic in `verify.py`. Theorem 2 (all irreducible affine Coxeter groups of rank at least $4$) is proved in Section 3, with exact checks of its interior-node criterion on the representative types below. These are not part of the Lean formalization.
 
 ### 5.2. Exact Zero-Float Script (`results/yibo-gao-coxeter-geodesic-hull/verify.py`)
 
 `verify.py` uses only exact integer and `fractions.Fraction` arithmetic to check:
 
-1. Equivalence of `AffPerm4` and the exact integer $4 \times 4$ Tits reflection representation of $W(\widetilde{A}_3)$ on the full radius $6$ Cayley ball ($195$ elements) plus $1000$ pairwise $\ell_1$ distance checks.
-2. Exact agreement between independent iterative geodesic closure and $\Phi$-box enumeration at $L = 1$ ($|\operatorname{Conv}(e, t_1, t_2)| = 53$).
-3. Exact concrete counterexamples in $W(\widetilde{A}_3)$: $(t_1^5, t_2^{10})$ ($60 \cdot 121 = 7260 < 7921$) and $(t_1^8, t_2^8)$ ($96 \cdot 97 = 9312 < 9825$).
-4. The universal interior-node criterion ($\dim F = \deg(b) + 1 \ge 3$) across $12$ irreducible affine root systems ($\widetilde{A}_3, \widetilde{A}_4, \widetilde{B}_3, \widetilde{B}_4, \widetilde{C}_3, \widetilde{C}_4, \widetilde{D}_4, \widetilde{D}_5, \widetilde{F}_4, \widetilde{E}_6, \widetilde{E}_7, \widetilde{E}_8$).
-5. Negative and mutation-rejection controls: exhaustive verification of the strong hull property on all $576$ pairs $(e, u, v)$ in finite $W(A_3) = S_4$, non-violation at $L = 1$ in $W(\widetilde{A}_3)$, and rejection of a corrupted $s_0$ generator by the Coxeter-relation checker.
+1. A representation-independent check of `AffPerm4` against the exact integer $4\times 4$ Tits reflection matrices on the full radius-$6$ Cayley ball ($195$ elements). The script also runs $1000$ pairwise $\ell_1$ consistency checks.
+2. Agreement between `pure_geodesic_closure_small` (iterative geodesic closure using `l1_dist`) and `exact_phi_box_bfs` at $L=1$ (including $|\operatorname{Conv}(e,t_1,t_2)|=53$).
+3. The exact symbolic $x$-intervals for all $24$ permutations on each ray, with the resulting endpoint hull sets checked against BFS at $L=1,2,3,4,5$. The concrete counterexamples are checked by exact enumeration: $(t_1^5,t_2^{10})$ ($60\cdot121=7260<7921$) and $(t_1^8,t_2^8)$ ($96\cdot97=9312<9825$).
+4. The interior-node ranks giving $\dim F\ge 3$ on $12$ representative irreducible affine root systems ($\widetilde{A}_3,\widetilde{A}_4,\widetilde{B}_3,\widetilde{B}_4,\widetilde{C}_3,\widetilde{C}_4,\widetilde{D}_4,\widetilde{D}_5,\widetilde{F}_4,\widetilde{E}_6,\widetilde{E}_7,\widetilde{E}_8$).
+5. Negative and mutation-rejection controls: exhaustive verification of the strong hull property on all $576$ pairs $(e,u,v)$ in finite $W(A_3)=S_4$, non-violation at $L=1$ in $W(\widetilde{A}_3)$, and rejection of a corrupted $s_0$ generator by the Coxeter-relation checker.

@@ -10,6 +10,7 @@ Uses only exact integer and rational (fractions.Fraction) arithmetic.
 
 from collections import deque
 from fractions import Fraction
+from itertools import permutations
 import random
 import sys
 
@@ -216,12 +217,7 @@ def exact_phi_box_bfs(anchors):
 
 def verify_geodesic_closure_directly(anchors, hull_set):
     """
-    Independent graph-theoretic sanity check:
-    1. Every anchor lies in hull_set.
-    2. For a pair {u, v}, EVERY w in hull_set satisfies dist(u, w) + dist(w, v) == dist(u, v)
-       and EVERY neighbor of w outside hull_set fails dist(u, z) + dist(z, v) == dist(u, v).
-    3. For a general finite set X, hull_set is closed under taking all shortest-path neighbors
-       between any x, y in hull_set (checked by convexity of the Phi-box).
+    Check anchors and use l1_dist to check the interval and its boundary for a pair.
     """
     for a in anchors:
         assert a in hull_set
@@ -238,9 +234,8 @@ def verify_geodesic_closure_directly(anchors, hull_set):
 
 def pure_geodesic_closure_small(anchors):
     """
-    Completely independent brute-force iterative geodesic closure in Cay(W(A3~), S),
-    using ONLY graph shortest-path distances (no Phi-box assumption).
-    Suitable for small hulls (e.g. L = 1, 2).
+    Iteratively add vertices on geodesics using l1_dist, without a box predicate.
+    This cross-checks the box enumeration, not the underlying Phi-based distance.
     """
     C = set(anchors)
     while True:
@@ -273,6 +268,71 @@ def pure_geodesic_closure_small(anchors):
         C |= added
 
 
+def verify_symbolic_endpoint_hulls(t1, t2):
+    """Check the Section 2.3 intervals as (lo, L + hi_offset), without sampling L."""
+    cases = (
+        (t1, ((0, 1), (2, 3)), (0, -1, 1, 0), 0, (
+            (0, 0, 0, "0123"),
+            (0, 1, 0, "0213 0231 2013 2031 2301"),
+            (1, 1, 0, "1032 1302 1320 3102 3120"),
+            (1, 2, 0, "3210"),
+        )),
+        (t2, ((0, 2), (1, 3)), (0, 1, -1, 0), 1, (
+            (0, 0, 0, "0123"),
+            (0, 0, -1, "0213"),
+            (0, 1, 0, "0132 1023 1032 1302"),
+            (1, 1, 0, "2031 2301 2310 3120 3201 3210"),
+        )),
+    )
+    pairs = [(i, j) for i in range(4) for j in range(i + 1, 4)]
+    for translation, frozen, delta_direction, count_offset, table in cases:
+        direction, identity = translation
+        assert identity == AFF_ID[1]
+        expected = {
+            (tuple(map(int, word)), delta): (lo, hi_offset)
+            for delta, lo, hi_offset, words in table
+            for word in words.split()
+        }
+        intervals = {}
+        for sigma in permutations(range(4)):
+            inverse = perm_inv(sigma)
+            eps = {(i, j): int(inverse[i] < inverse[j]) for i, j in pairs}
+            delta = 1 - eps[frozen[0]]
+            if delta != 1 - eps[frozen[1]]:
+                continue
+            # In this fiber, a = x * direction + delta * delta_direction.
+            lows, hi_offsets = [], []
+            for i, j in pairs:
+                slope = direction[j] - direction[i]
+                offset = delta * (delta_direction[j] - delta_direction[i]) - eps[i, j]
+                # The anchor coordinates are -1 and slope*L - 1.
+                if (i, j) in frozen:
+                    assert slope == 0 and offset == -1
+                    continue
+                assert slope in (-2, 2)
+                # Solve for 2*x: b <= 2*x <= 2*L+b for either slope.
+                b = offset + 1 if slope == -2 else -offset - 1
+                lows.append((b + 1) // 2)
+                hi_offsets.append(b // 2)
+            intervals[sigma, delta] = max(lows), min(hi_offsets)
+        assert len(intervals) == 12 and intervals == expected, (translation, intervals)
+        # L+hi_offset-lo+1 is nonnegative already at L=1, so summing
+        # the 12 linear cardinalities gives 12*L+count_offset for all L >= 1.
+        assert all(2 + hi - lo >= 0 for lo, hi in intervals.values())
+        assert sum(hi - lo + 1 for lo, hi in intervals.values()) == count_offset
+
+        for L in range(1, 6):
+            endpoint = (tuple(L * step for step in direction), identity)
+            predicted = {
+                (tuple(x * di + delta * dd for di, dd in zip(direction, delta_direction)), sigma)
+                for (sigma, delta), (lo, hi) in intervals.items()
+                for x in range(lo, L + hi + 1)
+            }
+            assert len(predicted) == 12 * L + count_offset
+            assert predicted == exact_phi_box_bfs([AFF_ID, endpoint]), (translation, L)
+    print("[PASS] Symbolic endpoint hulls: 12 S4 fibers per ray, counts 12L and 12L+1; exact BFS set agreement for L=1..5.")
+
+
 def verify_a3tilde_counterexamples():
     w_a = [0, 3, 1, 2]
     w_b = [2, 0, 3, 1]
@@ -290,13 +350,15 @@ def verify_a3tilde_counterexamples():
         a, s = t
         return (tuple(L * x for x in a), s)
 
-    # Cross-check independent pure geodesic closure against Phi-box on L = 1
+    verify_symbolic_endpoint_hulls(t1, t2)
+
+    # Cross-check Phi-box enumeration by iterative closure under l1_dist at L = 1.
     H1_box = exact_phi_box_bfs([AFF_ID, t1, t2])
     H1_geo = pure_geodesic_closure_small([AFF_ID, t1, t2])
     assert H1_box == H1_geo and len(H1_box) == 53
     assert exact_phi_box_bfs([AFF_ID, t1]) == pure_geodesic_closure_small([AFF_ID, t1])
     assert exact_phi_box_bfs([AFF_ID, t2]) == pure_geodesic_closure_small([AFF_ID, t2])
-    print("[PASS] Independent iterative geodesic closure matches Phi-box exactly at L=1 (|Conv(e,t1,t2)| = 53).")
+    print("[PASS] Iterative geodesic closure under l1_dist matches Phi-box at L=1 (|Conv(e,t1,t2)| = 53).")
 
     # Negative control: L = 1 satisfies both inequalities
     c1_u = len(exact_phi_box_bfs([AFF_ID, t1]))
