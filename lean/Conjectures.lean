@@ -1,3 +1,4 @@
+import Conjectures.CardosoSubsetSynchronization
 import Conjectures.GuanTransversalAchievement
 import Conjectures.NabergallChordalDiagrams
 import Conjectures.PetrTemperateIntersecting
