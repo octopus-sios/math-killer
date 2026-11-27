@@ -126,6 +126,8 @@ def check_twins():
             assert bool(lifts) == (i != j or i == 1)
             if len(before) <= 1:
                 assert any(len(defects(g,'uw')) <= len(before) for g in lifts)
+                for protect in 'uw':
+                    assert any(protect not in defects(g,'uw') for g in lifts)
             count += 1
     return count
 
@@ -146,6 +148,24 @@ def check_fusion():
             assert any(len(defects(g,'uw')) <= len(before) for g in lifts)
             count += 1
     return count
+
+
+
+
+def long_ears():
+    cases = 0
+    for length in range(3, 13):
+        for first, last, protect in product((R,B), (R,B), (1,2)):
+            # Repeat opposite the protected internal vertex, if needed.
+            repeat = 3-protect if (first ^ ((length-1) % 2)) != last else -1
+            word = [first]
+            for i in range(1,length):
+                word.append(word[-1] ^ int(i != repeat))
+            assert word[-1] == last and len(set(word)) == 2
+            assert word[protect-1] != word[protect]
+            assert sum(a == b for a,b in zip(word,word[1:])) <= 1
+            cases += 1
+    return cases
 
 
 def peel2(vertices, edges):
@@ -218,6 +238,7 @@ if __name__ == '__main__':
     print('Paired-neighborhood fan: PASS (%d boundary/symmetry cases)' % check_fan())
     print('Twin four-cycle: PASS (%d boundary cases)' % check_twins())
     print('Distinct-arm fusion: PASS (%d liftable input cases)' % check_fusion())
+    print('Ear extension: PASS (%d endpoint/protection checks)' % long_ears())
     print('Sharpness graph: %d valid colorings of 4096; every one has two defects.'
           % sharpness())
     examples()
