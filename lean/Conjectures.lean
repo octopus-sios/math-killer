@@ -1,5 +1,6 @@
 import Conjectures.GuanTransversalAchievement
 import Conjectures.NabergallChordalDiagrams
+import Conjectures.PetrTemperateIntersecting
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 
