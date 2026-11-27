@@ -7,6 +7,7 @@ import Conjectures.KashimaOzekiKtreeOddColoring
 import Conjectures.Kourovka1846SquareOvergroup
 import Conjectures.NabergallChordalDiagrams
 import Conjectures.PetrTemperateIntersecting
+import Conjectures.ThompsonCyclicMatrix
 import Conjectures.YuanParriloPermanentSphere
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
