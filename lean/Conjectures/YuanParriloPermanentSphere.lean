@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.LinearAlgebra.Matrix.Permanent
+import Mathlib.GroupTheory.Perm.Fin
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 /-! Cycle estimate used in the order-four proof of Yuan--Parrilo's sphere inequality.
 The statement here concerns actual permanents, not the remaining analytic estimates. -/
