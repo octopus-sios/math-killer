@@ -1,0 +1,33 @@
+% Y. Ma, D. Mattiolo, E. Steffen, I. H. Wolf, SIAM J. Discrete Math. 37 (2023), 1548--1565.
+% arXiv:2206.10975v2, doi:10.1137/22M1500654. Excerpts from Sections 1 and 2.
+
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prob}[defi]{Problem}
+
+We consider finite graphs that may have parallel edges but no loops. A graph without parallel edges is called \emph{simple}.
+Let $r \geq 0$ be an integer. A graph $G$ is $r$-\emph{regular} if every vertex has degree $r$, where the \emph{degree} $d_G(v)$ of a vertex $v$ is the number of edges that are incident with $v$. An $r$-\emph{graph} is an $r$-regular graph $G$, where
+every odd set $X \subseteq V(G)$ is connected by at least $r$ edges to its complement
+$V(G) \setminus X$.
+For $k \in \{1, \dots, r\}$, a $k$-\emph{factor} of $G$ is a spanning $k$-regular subgraph of $G$. The edge set of a $1$-factor is called a \emph{perfect matching} of $G$. Moreover, for $k\ge 2$, a $k$-\emph{PDPM} of an $r$-regular graph $G$ is a set of $k$ pairwise disjoint perfect matchings of $G$.
+
+An $r$-regular graph is \emph{class 1} if it has an $r$-PDPM.
+Otherwise, it is \emph{class 2}.
+
+\begin{prob}\label{prob:5_reg_class_2}
+	Is there any $5$-edge-connected $5$-regular class $2$ graph?
+\end{prob}
+
+If $u,v$ are two vertices of a graph $G$, we denote by $\mu_G(u,v)$ the number of parallel edges connecting $u$ and $v$.
+In case $\mu_G(u,v)=1$ we also say that $e=uv$ is a simple edge.
+The
+\emph{underlying graph} of $G$ is the simple graph
+$H$ with $V(H)=V(G)$ and $\mu_H(u,v)=1$ if and only if $\mu_G(u,v)  \geq 1$.
+For any two disjoint sets $U,  W\subseteq V(G)$, denote by
+$[U, W]_G$  the set of  edges with exactly one endpoint in each of  $U$ and $W$. For convenience, we simply write $[u,W]_G$ for $[U, W]_G$ if $U= \{u\}$, and just write $\partial_G(U)$ if $W = V(G)\setminus U$.
+Moreover, $\partial_G(U)$ is called an {\em edge-cut} of $G$.
+The index $G$ is sometimes omitted if there is no ambiguity.
+The graph induced by $U$ is denoted by $G[U]$.  Similarly, we use $G-U$ instead of  $G[V(G)\setminus U]$, and use $G-u$ instead of $G-\{u\}$ if $U= \{u\}$. A {\em $k$-circuit} is a circuit of length $k$ and
+{\em a cycle} is a union of pairwise edge-disjoint circuits.
+A set of $k$ vertices, whose removal increases the number of components of a graph, is called a {\em $k$-vertex-cut}.
+A graph $G$ on at least $k+1$ vertices is called {\em $k$-connected} if $G-X$ is connected for every $X\subseteq V(G)$ with $|X|\leq k-1$.
+Similarly, a graph $G$ is called {\em $k$-edge-connected} if for every non-empty $X \subset V(G), |\partial_G(X)| \ge k$. Moreover, a graph $G$ is called {\em cyclically $k$-edge-connected} if $G-S$ has at most one component containing a circuit for any edge-cut $S \subseteq E(G)$ with $|S|\leq k-1$.
