@@ -8,7 +8,7 @@ signature stores the parity vector contributed by the interior. An exterior
 tuple obstructs extension precisely if every signature agrees with it at
 some coordinate. This module proves the cover recursion for any signature
 family, and proves the parity gluing criterion directly for finite graphs.
-It does not certify the finite table for four-trees.
+It does not certify the finite tables for four- and five-trees.
 -/
 
 namespace KashimaOzekiKtreeOddColoring
