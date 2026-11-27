@@ -6,6 +6,8 @@ Every entry below links directly to its verbatim primary source (`SOURCE.tex`), 
 
 ## Scoreboard
 
+<p><img src="https://raw.githubusercontent.com/octopus-sios/math-killer/charts/progress.svg" alt="Solved open conjectures over time" width="100%"></p>
+
 | Metric | Count |
 |---|---:|
 | **Total Published Results** | **11** |
