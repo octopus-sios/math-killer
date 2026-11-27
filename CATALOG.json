@@ -263,6 +263,78 @@
         "ConwayThrackle.ThreadA.bound_of_E2",
         "ConwayThrackle.ThreadA.bound_of_NSB16"
       ]
+    },
+    {
+      "slug": "thompson-cyclic-matrix-permutation-kourovka-16-95",
+      "title": "Thompson's cyclic matrix permutation conjecture (Kourovka 16.95): rank-one finite fields and unrestricted GL(5,2)–GL(7,2)",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "J. G. Thompson (eds. E. I. Khukhro and V. D. Mazurov)",
+        "paper": "The Kourovka Notebook: Unsolved Problems in Group Theory (21st Edition)",
+        "arxiv_id": "1401.0300",
+        "url": "https://arxiv.org/abs/1401.0300",
+        "target": "Problem 16.95"
+      },
+      "summary": "Proves Thompson's cyclic column-ordering conjecture for every invertible rank-one perturbation of a scalar permutation matrix over F_2, F_3, and F_4 in every dimension (with no support restrictions), and over every fixed finite field F_q in all dimensions n >= N(q) via an explicit zero-sum block partition and two-cycle criterion. Independently verifies all unrestricted matrices in GL(5,2) (exact minimum 24 = 4! cyclic orders), GL(6,2) (139,629 orbit-cover representatives), and GL(7,2) (28,892,664 orbit-cover representatives, available via --seven). General rank in arbitrary dimension remains open.",
+      "proof_file": "results/thompson-cyclic-matrix-permutation-kourovka-16-95/PROOF.md",
+      "source_file": "results/thompson-cyclic-matrix-permutation-kourovka-16-95/SOURCE.tex",
+      "verify_script": "results/thompson-cyclic-matrix-permutation-kourovka-16-95/verify.py",
+      "lean_partial_file": "lean/Conjectures/ThompsonCyclicMatrix.lean",
+      "lean_partial_theorems": [
+        "ThompsonCyclicMatrix.ker_update_of_notMem_range",
+        "ThompsonCyclicMatrix.finrank_ker_update_of_two",
+        "ThompsonCyclicMatrix.finrank_ker_update_of_injective"
+      ]
+    },
+    {
+      "slug": "herzog-schonheim-nonsolvable-kourovka-21-93",
+      "title": "Herzog–Schönheim conjecture for all finite almost simple groups (Kourovka 21.93 / Erdős #274)",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "M. Herzog and J. Schönheim (annotated by L. Margolis; eds. E. I. Khukhro and V. D. Mazurov)",
+        "paper": "The Kourovka Notebook: Unsolved Problems in Group Theory (21st Edition); Erdős Problem #274",
+        "arxiv_id": "1401.0300",
+        "url": "https://arxiv.org/abs/1401.0300",
+        "erdos_url": "https://www.erdosproblems.com/274",
+        "target": "Problem 21.93"
+      },
+      "summary": "Proves the Herzog–Schönheim conjecture (Kourovka 21.93 / Erdős #274) for every finite almost simple group S <= G <= Aut(S), overcoming Garonzi–Margolis Remark 5.1 (unbounded reciprocal index sums) via a filled-fibre capacity criterion K(m) D(N) < 1 (counting step formalized in Lean 4) combined with CFSG and exact rational verification across all classical, exceptional, alternating, sporadic, and Tits families (complementing Menon's Nov 2026 solvable proof). General non-almost-simple nonsolvable groups remain open.",
+      "proof_file": "results/herzog-schonheim-nonsolvable-kourovka-21-93/PROOF.md",
+      "source_file": "results/herzog-schonheim-nonsolvable-kourovka-21-93/SOURCE.tex",
+      "verify_script": "results/herzog-schonheim-nonsolvable-kourovka-21-93/verify.py",
+      "lean_partial_file": "lean/Conjectures/HerzogSchonheimNonSolvable.lean",
+      "lean_partial_theorems": [
+        "HerzogSchonheimNonSolvable.filled_fiber_capacity"
+      ]
+    },
+    {
+      "slug": "pattanayak-two-degenerate-linear-arboricity",
+      "title": "2-degenerate linear arboricity conjecture (Basavaraju et al., Conjecture 2): odd-cycle packing, paired neighborhoods, mad(G) <= 3, and 9-vertex sharpness",
+      "verdict": "partially_proved",
+      "status": "⬜",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Manu Basavaraju, Arijit Bishnu, Mathew Francis, and Drimit Pattanayak",
+        "paper": "The linear arboricity conjecture for graphs of low degeneracy",
+        "arxiv_id": "2007.06066v3",
+        "url": "https://arxiv.org/abs/2007.06066v3",
+        "target": "Conjecture 2 (con:2-deg)"
+      },
+      "summary": "Partially resolves Basavaraju–Bishnu–Francis–Pattanayak Conjecture 2 (2-linear colorability of 2-degenerate graphs with Delta <= 4): proves 2-linear colorability (at most 1 defect) when G has no two edge-disjoint odd cycles, proves prescribed-pair defect flexibility whenever every degree-4 neighborhood has a perfect matching (covering all claw-free 2-degenerate graphs and iterated twin-cap, pendant-triangle, long-ear, and double-subdivision closures), settles the density equality endpoint mad(G) <= 3 for all subquartic graphs (extending J.-L. Wu's 1999 strict mad(G) < 3 bound), and proves sharpness of the |E| >= 2|V|-5 one-defect threshold via a 9-vertex, 12-edge graph forcing exactly 2 defects (formalized in Lean 4) plus infinite families forcing (2|V|-|E|)/3 defects. The unrestricted 2-degenerate Delta <= 4 conjecture remains open.",
+      "proof_file": "results/pattanayak-two-degenerate-linear-arboricity/PROOF.md",
+      "source_file": "results/pattanayak-two-degenerate-linear-arboricity/SOURCE.tex",
+      "verify_script": "results/pattanayak-two-degenerate-linear-arboricity/verify.py",
+      "lean_partial_file": "lean/Conjectures/PattanayakTwoDegenerateLinearArboricity.lean",
+      "lean_partial_theorems": [
+        "PattanayakTwoDegenerateLinearArboricity.every_linear_coloring_has_two_defects",
+        "PattanayakTwoDegenerateLinearArboricity.flower_two_degenerate",
+        "PattanayakTwoDegenerateLinearArboricity.flower_size_degree",
+        "PattanayakTwoDegenerateLinearArboricity.sample_linear"
+      ]
     }
   ]
 }

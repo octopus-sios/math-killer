@@ -60,7 +60,7 @@ For the claw-free corollary, the neighborhood of any vertex in a 2-degenerate gr
 
 ## A density obstruction: maximum average degree at most three
 
-Every finite simple graph of maximum degree at most four and maximum average degree at most three has a two-linear coloring. Here *maximum* average degree is the maximum of $2|E(H)|/|V(H)|$ over nonempty subgraphs $H$, not just the average in the input graph. This assertion does not require a defect bound or even 2-degeneracy.
+Every finite simple graph of maximum degree at most four and maximum average degree at most three has a two-linear coloring. Here *maximum* average degree is the maximum of $2|E(H)|/|V(H)|$ over nonempty subgraphs $H$, not just the average in the input graph. This assertion does not require a defect bound or even 2-degeneracy; whereas J.-L. Wu (1999) established the strict bound $\mathrm{mad}(G)<3$ (covering subquartic planar graphs of girth at least six), the local obstruction below settles the equality endpoint $\mathrm{mad}(G)\le 3$.
 
 To prove it, let $F$ be subgraph-minimal without a two-linear coloring. We first give a more local necessary condition on $F$. By the leaf move its minimum degree is at least two. No two degree-two vertices can be adjacent: delete their common edge and reinsert it opposite to the remaining color at one end, so it cannot close a cycle. The degree-three pivot move above works whenever a degree-three vertex has a degree-two neighbor. Thus **both neighbors of every degree-two vertex have degree four**.
 
