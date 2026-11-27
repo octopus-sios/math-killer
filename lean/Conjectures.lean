@@ -3,6 +3,7 @@ import Conjectures.ConwayThrackleBound
 import Conjectures.EggertNilpotentAlgebraKourovka1752
 import Conjectures.FouliSylvesterMatroids
 import Conjectures.GuanTransversalAchievement
+import Conjectures.HerzogSchonheimNonSolvable
 import Conjectures.KashimaOzekiKtreeOddColoring
 import Conjectures.Kourovka1846SquareOvergroup
 import Conjectures.NabergallChordalDiagrams
