@@ -40,6 +40,13 @@ jobs:
       - name: Static Lean hygiene & anti-cheat check
         run: python3 scripts/check_catalog.py --lean-only
 
+      - name: Pre-fetch tagged aesop v4.35.0
+        run: |
+          mkdir -p lean/.lake/packages
+          if [ ! -d lean/.lake/packages/aesop/.git ]; then
+            git clone --depth 1 --branch v4.35.0 https://github.com/leanprover-community/aesop lean/.lake/packages/aesop
+          fi
+
       - uses: leanprover/lean-action@v1
         with:
           lake-package-directory: lean
