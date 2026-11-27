@@ -191,6 +191,29 @@
         "FouliSylvesterMatroids.unit_pairing",
         "FouliSylvesterMatroids.separator_kills_column"
       ]
+    },
+    {
+      "slug": "kourovka-18-46-baranov-klyachko-square-overgroup",
+      "title": "Sharpness of the 2|G|^2 square-root overgroup bound (Kourovka Notebook 18.46)",
+      "verdict": "proved",
+      "status": "⬜",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Ant. A. Klyachko (citing D. V. Baranov and Ant. A. Klyachko; eds. E. I. Khukhro and V. D. Mazurov)",
+        "paper": "The Kourovka Notebook: Unsolved Problems in Group Theory (21st Edition); D. V. Baranov and Ant. A. Klyachko, Siber. Math. J. 53, no. 2 (2012), 201-206",
+        "arxiv_id": "1401.0300v50",
+        "url": "https://arxiv.org/abs/1401.0300v50",
+        "target": "Problem 18.46"
+      },
+      "summary": "Affirmatively resolves Kourovka Notebook 18.46: for every alternating group A_n with n >= 4096, any finite overgroup in which (1 2 3 4)(5 6) has a square root has order at least 2|A_n|^2 (matching the wreath-product upper bound 2|G|^2, proved via CFSG), and independently without CFSG the dihedral group D_8 requires minimum simultaneous square-root host order 128 = 2|D_8|^2 (exhausting all 16 marked index-two kernels of order 16 in verify.py).",
+      "proof_file": "results/kourovka-18-46-baranov-klyachko-square-overgroup/PROOF.md",
+      "source_file": "results/kourovka-18-46-baranov-klyachko-square-overgroup/SOURCE.tex",
+      "verify_script": "results/kourovka-18-46-baranov-klyachko-square-overgroup/verify.py",
+      "lean_partial_file": "lean/Conjectures/Kourovka1846SquareOvergroup.lean",
+      "lean_partial_theorems": [
+        "Kourovka1846.not_square_of_unique_pair",
+        "Kourovka1846.witness_not_square"
+      ]
     }
   ]
 }
