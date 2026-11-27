@@ -1,0 +1,30 @@
+% Extract from Richard P. Stanley and Fabrizio Zanello, J. Combin. 11 (2020), 111--126.
+% arXiv:1711.10033v2, Conjecture 1.1 and its definitions.
+\documentclass{amsart}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{conjecture}[theorem]{Conjecture}
+\begin{document}
+\section{Introduction and statement of the conjecture}
+For integers $m\ge k\ge 0$, define the \emph{$q$-binomial coefficient}
+$$\binom {m}{k}_q=\frac{(1-q)(1-q^2)\cdots (1-q^{m})}{(1-q)(1-q^2)\cdots (1-q^k)\cdot (1-q)(1-q^2)\cdots (1-q^{{m-k}})}.$$
+It is a well-known fact in combinatorics that $\binom {m}{k}_q$ is a unimodal, symmetric polynomial in $q$ of degree $k(m-k)$ with nonnegative integer coefficients (see e.g. \cite{OH,Pr1,St5,Sy}).
+
+Now let
+$$f(k,m,b)(q)=\binom{m}{k}_q-q^{\frac{k(m-b)}{2}+b-2k+2}\cdot\binom{b}{k-2}_q,$$
+for integers $k\ge 2$, $m\ge k$, and $k-2\le b\le \frac{km-4k+4}{k-2}$ for $k\ge 3$, where $k(m-b)$ is even.
+
+Note that $f(k,m,b)$ is also a symmetric polynomial, since both terms in the difference are symmetric about the same degree, $k(m-k)/2$.
+
+\begin{conjecture}\label{conj}
+Let $k$, $m$, and $b$ be as above. We have:
+\begin{itemize}
+\item[ (i)] If $k=2$, then $f(k,m,b)$ is nonnegative and unimodal if and only if $m$ is even.
+
+\item[ (ii)] If $k=3$, then $f(k,m,b)$ is nonnegative and unimodal if and only if $b\ne 3m-10$ and: $b\neq 2$ if $m$ is even; $b\neq 1,5$ if $m\equiv 1$ (mod 4); and $b\neq 3$ if $m\equiv 3$ (mod 4).
+
+\item[ (iii)] If $k=4$, then $f(k,m,b)$ is nonnegative and unimodal if and only if $b$ is even and $m\neq 5$.
+
+\item[ (iv)] If $k\ge 5$, then $f(k,m,b)$ is nonnegative and unimodal for all $m\gg_k 0$ and all $b$, with the only exception of $b=\frac{km-4k+2}{k-2}$ when this is an integer (i.e., when $k-2$ divides $2m-6$).
+\end{itemize}
+\end{conjecture}
+\end{document}
