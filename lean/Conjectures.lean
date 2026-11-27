@@ -2,6 +2,7 @@ import Conjectures.CardosoSubsetSynchronization
 import Conjectures.GuanTransversalAchievement
 import Conjectures.NabergallChordalDiagrams
 import Conjectures.PetrTemperateIntersecting
+import Conjectures.YuanParriloPermanentSphere
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 
