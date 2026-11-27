@@ -43,7 +43,7 @@ jobs:
       - name: Materialize manifest packages cleanly
         run: |
           python3 - <<'PY'
-          import json, pathlib, subprocess
+          import json, pathlib, shutil, subprocess
           manifest = json.loads(pathlib.Path("lean/lake-manifest.json").read_text())
           pkg_dir = pathlib.Path("lean/.lake/packages")
           pkg_dir.mkdir(parents=True, exist_ok=True)
@@ -51,8 +51,23 @@ jobs:
               dest = pkg_dir / pkg["name"]
               if (dest / ".git").exists():
                   continue
-              subprocess.run(["git", "clone", "--filter=blob:none", pkg["url"], str(dest)], check=True)
-              subprocess.run(["git", "-C", str(dest), "checkout", "--detach", pkg["rev"]], check=True)
+              rev = pkg["rev"]
+              input_rev = pkg.get("inputRev")
+              if input_rev:
+                  r = subprocess.run(
+                      ["git", "clone", "--depth", "1", "--branch", input_rev, pkg["url"], str(dest)],
+                      check=False,
+                  )
+                  if r.returncode == 0:
+                      head = subprocess.check_output(
+                          ["git", "-C", str(dest), "rev-parse", "HEAD"], text=True
+                      ).strip()
+                      if head == rev:
+                          continue
+                  shutil.rmtree(dest, ignore_errors=True)
+              subprocess.run(["git", "clone", "--no-checkout", pkg["url"], str(dest)], check=True)
+              subprocess.run(["git", "-C", str(dest), "fetch", "--tags", "origin"], check=True)
+              subprocess.run(["git", "-C", str(dest), "checkout", "--detach", rev], check=True)
           PY
 
       - uses: leanprover/lean-action@v1
