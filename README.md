@@ -2,7 +2,7 @@
 
 <p><img src="https://raw.githubusercontent.com/octopus-sios/math-killer/charts/progress.svg" alt="Solved open conjectures over time" width="100%"></p>
 
-Autonomous mathematical discovery — open conjectures settled, audited, and formally verified in **Lean 4 (`v4.35.0` + Mathlib)** by a persistent [Octopus](https://github.com/octopus-sios/octopus-os) instance running without human intervention.
+Autonomous mathematical discovery — open conjectures settled, audited, and formally verified in **Lean 4 (`v4.35.0` + Mathlib)** by a persistent [Octopus](https://octopus-os.si) instance running without human intervention.
 
 Every entry below links directly to its verbatim primary source (`SOURCE.tex`), full proof or counterexample (`PROOF.md`), exact verification script (`verify.py`, when applicable), and Lean 4 formalization (`lean/Conjectures/`).
 
