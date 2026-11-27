@@ -1,0 +1,46 @@
+% Verbatim excerpts from Lukas Nabergall, arXiv:2104.02296v1 (2021-04-06):
+% https://arxiv.org/abs/2104.02296v1
+% Published as "The combinatorics of a tree-like functional equation for connected
+% chord diagrams", Combinatorial Theory 3(3), #8 (2023), Conjecture 8.5:
+% https://escholarship.org/uc/item/1qg5647z
+% Index correction in the published edition: C_{n-1}^2 for n chords.
+% First, a transcription of the published statement (printed p. 37),
+% followed by verbatim TeX excerpts from v1, whose final index is unchanged.
+
+% Published Conjecture 8.5 (A001246), mathematical typography transcribed:
+% The cardinality of $\mathcal{C}_{n}(T_{\geqslant 4}, B_{\geqslant 4})$ is $C_{n-1}^{2}$.
+
+\newtheorem{definition}{Definition}[section]
+
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{conjecture}[definition]{Conjecture}
+
+\newcommand{\Int}{\textnormal{Int}}
+
+\begin{definition}[Chord diagram, intersection graph, crossing, nesting]
+A {\em rooted chord diagram $C$} of size $n$ is a perfect matching of $\{1, 2, \ldots, 2n\}$; the chord containing $1$ is the {\em root} of $C$ and we view the empty set $\emptyset$ as a diagram of size 0. By convention, the elements of $C$ are ordered pairs $(x, y)$ with $x < y$; $x$ and $y$ are called the {\em source} and {\em sink}, respectively, of chord $(x, y)$. A subset $D \subseteq C$ is a {\em subdiagram} of $C$. The {\em directed intersection graph $G(C)$ of $C$} has the chords as vertices and two chords $c_{1} = (x_{1}, y_{1})$ and $c_{2} = (x_{2}, y_{2})$ with $x_{1} < x_{2}$ joined by a directed edge $c_{1}c_{2}$ if $x_{2} < y_{1} < y_{2}$. In this case, we say that $c_{2}$ is a {\em right neighbor of $c_{1}$} and $c_{1}$ is a {\em left neighbor of $c_{2}$}. Forgetting direction, the edge $c_{1}c_{2}$ is also referred to as a {\em crossing} and $c_{1}$ and $c_{2}$ are said to {\em cross}. On the other hand, if $x_{1} < x_{2} < y_{2} < y_{1}$ then $c_{2}$ is {\em nested under $c_{1}$} and together these two chords form a {\em nesting}.  
+\end{definition}
+
+Note that we treat a subdiagram $D$ of $C$ as a proper chord diagram on $\{1, 2, \ldots, 2|D|\}$ by applying an order-preserving bijection. In the sequel, any graph-theoretic notions used in the context of a chord diagram or its elements should be understood as referring to the appropriate feature of its directed intersection graph (e.g. $c_{1}$ is in the neighborhood of $c_{2}$). Furthermore, for brevity, we will use the generic term `diagram' to refer to a chord diagram. We will also extend the notion of nesting to subdiagrams in the obvious way: $D' \subseteq C$ is nested under $D \subseteq C$ if each chord of $D'$ is nested under every chord of $D$. Unsurprisingly, a diagram is called {\em nonnesting} (resp. {\em noncrossing}) if it contains no nestings (resp. crossings).  
+
+There are two representations of a chord diagram used in the literature. The circular representation involves arranging points labeled by $1, 2, \ldots, 2n$ on a circle and, for each chord, joining the source and sink points with a straight line. We can obtain the linear representation from the circular one by cutting the circle just before the root point labeled 1 and straightening the resulting curve, letting the lines corresponding to each chord bend into smooth curves lying above the straightened curve, and then deleting the curve (see Figure~\ref{chord_diagram_fig}). While the circulation representation becomes unrooted after dropping the labels, the linear representation is naturally rooted at the leftmost point and the element labels are determined by the linear order of the points. We will use the linear representation throughout this paper. 
+
+\begin{definition}[Connectivity, connected diagram] The {\em vertex connectivity} $\kappa(C)$, or simply {\em connectivity}, of a diagram $C$ is the vertex connectivity $\kappa(G(C))$ of its intersection graph, that is, the minimum number of vertices whose removal disconnects $G(C)$. The {\em edge connectivity} $\lambda(C)$ of $C$ is defined similarly by removing edges instead of vertices. A diagram $C$ is {\em $k$-connected} if $\kappa(C) \geqslant k$; in particular, it is {\em connected} if it is 1-connected.   
+\end{definition}
+
+Note that this definition is really in terms of the undirected intersection graph; the directions on the edges do not play a role. A disconnected diagram can be equivalently defined as one which can be partitioned into two nonempty subdiagrams with no crossings between them. The strictly stronger notion of decomposability of a diagram arises by excluding both crossings and nestings between the two subdiagrams.
+
+Note that there are exactly two diagrams whose undirected intersection graph is isomorphic to an induced cycle of size $n$; we call these the {\em top cycle} diagram and the {\em bottom cycle} diagram. This diagram representation (near-)uniqueness property was first observed by Bouchet \cite{Bouchet1994}. While no such property holds for induced paths, we gain representation uniqueness if we require that the path is also nonnesting (see Figure~\ref{unique_represent_fig}); this leads to the following observation. 
+
+For a fixed set $\mathcal{X}$ of diagrams, let $\mathcal{D}_{n}(\mathcal{X})$ be the set of chord diagrams of size $n$ with no subdiagram lying in $\mathcal{X}$ and set $\mathcal{C}_{n}(\mathcal{X}) = \mathcal{D}_{n}(\mathcal{X}) \cap \mathcal{C}$, the connected {\em $\mathcal{X}$-free} diagrams. Writing $T_{i}$ for the top cycle diagram of size $i$, note that $\mathcal{C}_{n}(\{\})$ is of course $\mathcal{C}_{n}$, the set of size $n$ connected diagrams, and $\mathcal{C}_{n}(T_{\geqslant 3})$ is exactly $\mathcal{C}_{top}$, the set of size $n$ connected top-cycle-free diagrams. 
+
+The combinatorial significance of top cycle diagrams motivates considering other diagrams with graph-theoretic relevance and, in particular, studying sets of diagrams which forbid such graphical subdagrams. In graph theory, graphs forbidding certain cycles as induced subgraphs are of great interest. Most notably this includes triangle-free graphs (forbidding a cycle of size 3), forests (forbidding all cycles), chordal graphs (forbidding cycles of size $4$ or greater), and bipartite graphs (forbidding odd size cycles). By forbidding the corresponding top and bottom cycles, we get the chord diagram versions of each of these graph classes, namely $\mathcal{D}_{n}(T_{3})$, $\mathcal{D}_{n}(T_{\geqslant 3},B_{\geqslant 3})$, $\mathcal{D}_{n}(T_{\geqslant 4},B_{\geqslant 4})$, and $\mathcal{D}_{n}(\{T_{2k+1},B_{2k+1}\}_{k \geqslant 1})$, where $B_{i}$ is the bottom cycle diagram of size $i$.\footnote{Note that $B_{3} = T_{3}$.} In addition to the top-cycle-free diagrams $\mathcal{D}_{n}(T_{\geqslant 3})$, we naturally also consider bottom-cycle-free diagrams $\mathcal{D}_{n}(B_{\geqslant 3})$. As discussed previously, we already know that triangle-free diagrams $\mathcal{D}_{n}(T_{3})$ are in bijection with, among other things, intervals $\Int(\mathcal{L}^{S}_{n})$ of the Stanley lattice (Corollary~\ref{triangle_free_stanley_cor}). By Theorem~\ref{diagram_triangle_thm} and previously mentioned results of Bernardi and Bonichon \cite{Bernardi2009}, we also know that connected top-cycle-free diagrams $\mathcal{C}_{n}(T_{\geqslant 3})$ are equinumerous with another Catalan lattice. 
+
+Manual calculations similarly indicate that connected chordal diagrams $\mathcal{C}_{n}(T_{\geqslant 4}, B_{\geqslant 4})$, bipartite diagrams $\mathcal{C}_{n}(\{T_{2k+1}, B_{2k+1}\}_{k \geqslant 1})$, and bottom-cycle-free diagrams $\mathcal{C}_{n}(B_{\geqslant 3})$ are enumerated by simple, combinatorially significant sequences. 
+
+\begin{conjecture}[\href{https://oeis.org/A001246}{A001246}]
+The cardinality of $\mathcal{C}_{n}(T_{\geqslant 4}, B_{\geqslant 4})$ is $C_{n}^{2}$. 
+\end{conjecture}
