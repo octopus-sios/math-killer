@@ -67,6 +67,31 @@
         "PetrTemperateIntersecting.lightning_lower_bound",
         "PetrTemperateIntersecting.upper_four"
       ]
+    },
+    {
+      "slug": "cardoso-subset-synchronization",
+      "title": "Cardoso's subset synchronization conjecture (all weakly oriented circular automata)",
+      "verdict": "partially_proved",
+      "status": "⬜",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Ângela Cardoso (thesis); Marek Szykuła (survey)",
+        "paper": "Synchronizing Automata: Open Problems (citing Cardoso, University of Porto PhD Thesis, 2014)",
+        "arxiv_id": "2608.24245v2",
+        "url": "https://arxiv.org/abs/2608.24245v2",
+        "thesis_url": "https://repositorio-aberto.up.pt/bitstream/10216/73496/2/32442.pdf",
+        "target": "Conjecture 5.1.1"
+      },
+      "summary": "Proves Cardoso's exact ceiling bound B(n,m) = (n-1)^2 - (ceil(n/m)-1)(2n - m*ceil(n/m) - 1) sharply for every synchronizing weakly oriented circular automaton and every nonempty m-subset, removing both the unit-jump and rank-(n-1) restrictions of Cardoso's Theorem 5.7.8 via aggregate interval-growth counting across stage lengths. The general DFA conjecture remains open.",
+      "proof_file": "results/cardoso-subset-synchronization/PROOF.md",
+      "source_file": "results/cardoso-subset-synchronization/SOURCE.tex",
+      "verify_script": "results/cardoso-subset-synchronization/verify.py",
+      "lean_partial_file": "lean/Conjectures/CardosoSubsetSynchronization.lean",
+      "lean_partial_theorems": [
+        "CardosoSubsetSynchronization.aggregate_rises_of_descents",
+        "CardosoSubsetSynchronization.steer",
+        "CardosoSubsetSynchronization.closing_budget"
+      ]
     }
   ]
 }
