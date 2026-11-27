@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Assembly
-import Conjectures.NabergallChordalDiagrams.Triangulation
+module
+
+public import Conjectures.NabergallChordalDiagrams.Assembly
+public import Conjectures.NabergallChordalDiagrams.Triangulation
+
+@[expose] public section
 
 /-!
 # Earliest cuts

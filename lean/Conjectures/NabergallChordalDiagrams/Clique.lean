@@ -1,4 +1,8 @@
-import Conjectures.NabergallChordalDiagrams.Cuts
+module
+
+public import Conjectures.NabergallChordalDiagrams.Cuts
+
+@[expose] public section
 
 /-! # Cycles at a clique separator
 

@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Clique
-import Mathlib.Combinatorics.SimpleGraph.Metric
+module
+
+public import Conjectures.NabergallChordalDiagrams.Clique
+public import Mathlib.Combinatorics.SimpleGraph.Metric
+
+@[expose] public section
 
 /-!
 # The clique separator

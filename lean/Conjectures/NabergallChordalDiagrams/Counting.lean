@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Factors
-import Mathlib.Data.Finset.NatAntidiagonal
+module
+
+public import Conjectures.NabergallChordalDiagrams.Factors
+public import Mathlib.Data.Finset.NatAntidiagonal
+
+@[expose] public section
 
 /-! # Counting the unique decompositions
 
@@ -208,7 +212,7 @@ private def weightEquiv (m : Rule) (l r k : ℕ) : Terms m l r k ≃ Data m l r 
 
 /-- The nontrivial parents are counted by length split, positive weights
 of the two children, the children themselves, and a legal link count. -/
-def decomposition (m : Rule) (n k : ℕ) :
+@[no_expose] def decomposition (m : Rule) (n k : ℕ) :
     Target m n k ≃ (Σ ab : ↥(Finset.antidiagonal n), Terms m ab.val.1 ab.val.2 k) :=
   (forgetMarks m n k).symm.trans (Equiv.sigmaCongrRight (by
     rintro ⟨⟨l,r⟩,hab⟩

@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Polygon
-import Conjectures.NabergallChordalDiagrams.Split
+module
+
+public import Conjectures.NabergallChordalDiagrams.Polygon
+public import Conjectures.NabergallChordalDiagrams.Split
+
+@[expose] public section
 
 /-!
 # Existence of an admissible split

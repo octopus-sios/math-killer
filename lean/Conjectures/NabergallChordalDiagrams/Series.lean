@@ -1,10 +1,14 @@
-import Conjectures.NabergallChordalDiagrams
-import Mathlib.Algebra.Polynomial.Laurent
-import Mathlib.Algebra.MonoidAlgebra.NoZeroDivisors
-import Mathlib.RingTheory.PowerSeries.Order
-import Mathlib.LinearAlgebra.Finsupp.LinearCombination
-import Mathlib.RingTheory.PowerSeries.Derivative
-import Mathlib.Tactic.LinearCombination
+module
+
+public import Conjectures.NabergallChordalDiagrams
+public import Mathlib.Algebra.Polynomial.Laurent
+public import Mathlib.Algebra.MonoidAlgebra.NoZeroDivisors
+public import Mathlib.RingTheory.PowerSeries.Order
+public import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+public import Mathlib.RingTheory.PowerSeries.Derivative
+public import Mathlib.Tactic.LinearCombination
+
+@[expose] public section
 
 /-!
 # Algebra of the earliest-cut recurrence
@@ -148,8 +152,8 @@ private def sweep : ℕ → Table × Table
 
 /-- Canonical iterated recurrence at a fixed length. Only `n+1` sweeps
 are used, since each nonempty split has strictly shorter children. -/
-def Irec (n : ℕ) := (sweep (n+1)).1 n
-def Hrec (n : ℕ) := (sweep (n+1)).2 n
+@[no_expose] def Irec (n : ℕ) := (sweep (n+1)).1 n
+@[no_expose] def Hrec (n : ℕ) := (sweep (n+1)).2 n
 
 private theorem sweep_stable (n : ℕ) : ∀ p q, n < p → n < q →
     (sweep p).1 n = (sweep q).1 n ∧ (sweep p).2 n = (sweep q).2 n := by
@@ -189,6 +193,7 @@ private theorem split_support (I H : Table) (n k : ℕ) (bad : k = 0 ∨ n < k)
   have hb := Finset.mem_range.mp hj
   rw [hg _ _ (by omega) (by omega) (by omega), mul_zero]
 
+set_option maxHeartbeats 800000 in
 /-- The recurrences are consistent: the canonical tables themselves
 satisfy every base/support condition and both decomposition identities. -/
 theorem recurrences_canonical : Recurrences Irec Hrec := by

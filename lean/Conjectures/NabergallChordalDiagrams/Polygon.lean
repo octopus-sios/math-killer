@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Separator
-import Mathlib.Data.Finset.Max
+module
+
+public import Conjectures.NabergallChordalDiagrams.Separator
+public import Mathlib.Data.Finset.Max
+
+@[expose] public section
 
 /-!
 # A good polygon diagonal

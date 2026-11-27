@@ -1,7 +1,11 @@
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
-import Mathlib.Data.Fintype.Pi
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Fin.SuccPred
+module
+
+public import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+public import Mathlib.Data.Fintype.Pi
+public import Mathlib.Data.Fintype.Card
+public import Mathlib.Data.Fin.SuccPred
+
+@[expose] public section
 
 /-!
 # Matchings, open fragments, and deletion of the root
@@ -262,7 +266,7 @@ private theorem end_le_iff (F : One N) (x : Fin N) :
   by_cases h : x = singletonOf F <;> simp [h]
 
 noncomputable def endMap (F : One N) (c : F.val.Chord) : (replaceRoot F).val.Chord :=
-  ⟨c.val.succ, (end_le_iff F c.val).mpr c.property⟩
+  ⟨c.val.succ, by exact (end_le_iff F c.val).mpr c.property⟩
 
 theorem endMap_bijective (F : One N) : Function.Bijective (endMap F) := by
   refine ⟨fun a b h => Subtype.ext (Fin.succ_injective _ (congrArg Subtype.val h)), ?_⟩
@@ -288,7 +292,7 @@ private theorem endMap_adj (F : One N) (c d : F.val.Chord) :
 
 noncomputable def graphIso (F : One N) : F.val.graph ≃g crossingGraph (replaceRoot F) where
   toEquiv := Equiv.ofBijective _ (endMap_bijective F)
-  map_rel_iff' := endMap_adj F _ _
+  map_rel_iff' := by exact endMap_adj F _ _
 
 theorem delete_valid_iff (D : Perfect (N+1)) :
     (deleteRoot D).val.Valid ↔ (crossingGraph D).Connected ∧ Chordal (crossingGraph D) := by

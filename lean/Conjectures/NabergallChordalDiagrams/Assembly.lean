@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Glue
-import Mathlib.Algebra.BigOperators.Fin
+module
+
+public import Conjectures.NabergallChordalDiagrams.Glue
+public import Mathlib.Algebra.BigOperators.Fin
+
+@[expose] public section
 
 /-! # The admissible split bijection, including its weight statistic -/
 

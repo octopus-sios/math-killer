@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Clique
-import Mathlib.Data.Finset.Sort
+module
+
+public import Conjectures.NabergallChordalDiagrams.Clique
+public import Mathlib.Data.Finset.Sort
+
+@[expose] public section
 
 /-! # The three sectors at a split -/
 

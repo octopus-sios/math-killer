@@ -1,5 +1,9 @@
-import Conjectures.NabergallChordalDiagrams.Counting
-import Conjectures.NabergallChordalDiagrams.Series
+module
+
+public import Conjectures.NabergallChordalDiagrams.Counting
+public import Conjectures.NabergallChordalDiagrams.Series
+
+@[expose] public section
 
 /-! # Enumeration of the actual connected chordal matchings -/
 

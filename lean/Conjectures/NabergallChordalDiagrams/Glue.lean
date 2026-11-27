@@ -1,4 +1,8 @@
-import Conjectures.NabergallChordalDiagrams.Split
+module
+
+public import Conjectures.NabergallChordalDiagrams.Split
+
+@[expose] public section
 
 /-!
 # Gluing two intervals at their marked strands
@@ -71,7 +75,7 @@ private theorem exists_tip (A : Fragment L) {x} (h : A.mate x=x) : ∃ i, tip A 
   exact ⟨e.symm ⟨x,hx⟩, congrArg Subtype.val (e.apply_symm_apply ⟨x,hx⟩)⟩
 
 /-- Pair the first `t` left singletons with the last `t` right singletons in order. -/
-def LinkPlan.canonical (A : Fragment L) (B : Fragment R) (t : ℕ)
+@[no_expose] def LinkPlan.canonical (A : Fragment L) (B : Fragment R) (t : ℕ)
     (hl : t ≤ A.weight) (hr : t ≤ B.weight) : LinkPlan A B t where
   left i := tip A ⟨i.val, lt_of_lt_of_le i.isLt hl⟩
   right i := tip B ⟨B.weight-t+i.val, by have := i.isLt; omega⟩

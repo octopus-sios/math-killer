@@ -1,4 +1,8 @@
-import Conjectures.NabergallChordalDiagrams.Diagrams
+module
+
+public import Conjectures.NabergallChordalDiagrams.Diagrams
+
+@[expose] public section
 
 /-!
 # Restriction to an interval with clique boundary
