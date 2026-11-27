@@ -40,12 +40,20 @@ jobs:
       - name: Static Lean hygiene & anti-cheat check
         run: python3 scripts/check_catalog.py --lean-only
 
-      - name: Pre-fetch tagged aesop v4.35.0
+      - name: Materialize manifest packages cleanly
         run: |
-          mkdir -p lean/.lake/packages
-          if [ ! -d lean/.lake/packages/aesop/.git ]; then
-            git clone --depth 1 --branch v4.35.0 https://github.com/leanprover-community/aesop lean/.lake/packages/aesop
-          fi
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          manifest = json.loads(pathlib.Path("lean/lake-manifest.json").read_text())
+          pkg_dir = pathlib.Path("lean/.lake/packages")
+          pkg_dir.mkdir(parents=True, exist_ok=True)
+          for pkg in manifest.get("packages", []):
+              dest = pkg_dir / pkg["name"]
+              if (dest / ".git").exists():
+                  continue
+              subprocess.run(["git", "clone", "--filter=blob:none", pkg["url"], str(dest)], check=True)
+              subprocess.run(["git", "-C", str(dest), "checkout", "--detach", pkg["rev"]], check=True)
+          PY
 
       - uses: leanprover/lean-action@v1
         with:
@@ -55,9 +63,8 @@ jobs:
           build: false
           test: false
           lint: false
-          check-lean-environment: false
 
-      - name: Fetch Mathlib cache, build, and audit Lean targets
+      - name: Build and audit Lean targets
         working-directory: lean
         run: |
           lake exe cache get
