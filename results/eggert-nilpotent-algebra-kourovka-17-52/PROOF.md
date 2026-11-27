@@ -55,4 +55,8 @@ The primary statement is [Kourovka Notebook, problem 17.52](https://arxiv.org/ab
 
 By [Amberg and Kazarin, Lemma 7.1](https://doi.org/10.1017/CBO9780511721212.005), the fixed-prime reduction mentioned in 17.52 gives a linear sectional-rank bound in Kourovka 11.44 for a finite 2-group that is the product of two abelian subgroups. This is not the general group-theoretic statement with arbitrary factors or arbitrary primes.
 
-The exact checker `verify.py` tests the generic-field argument and finite algebra examples. The universal proof is the dimension argument, not an extrapolation from those tests.
+[Amberg and Kazarin, §7, p. 143](https://doi.org/10.1017/CBO9780511721212.005) also mention a factor-two estimate. The proof above is independent of that remark; we make no priority claim for the estimate.
+
+The [Lean formalization](../../lean/Conjectures/EggertNilpotentAlgebraKourovka1752.lean) proves `EggertNilpotentAlgebra.kourovka_17_52_char_two` for the finite field and non-unital ring in the statement. It constructs the generic field and functional rather than assuming the square test. The theorem `square_span_carrier` identifies the linear span with the set of squares. The group-theoretic corollary is by citation, not part of the Lean theorem.
+
+The exact checker `verify.py` tests the generic-field argument and finite algebra examples. The universal inequality does not depend on those tests.

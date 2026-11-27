@@ -1,3 +1,4 @@
+import Conjectures.EggertNilpotentAlgebraKourovka1752
 import Conjectures.GuanTransversalAchievement
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
