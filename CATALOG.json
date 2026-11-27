@@ -72,7 +72,7 @@
       "slug": "cardoso-subset-synchronization",
       "title": "Cardoso's subset synchronization conjecture (all weakly oriented circular automata)",
       "verdict": "partially_proved",
-      "status": "⬜",
+      "status": "✅",
       "date": "2026-11-27",
       "source": {
         "authors": "Ângela Cardoso (thesis); Marek Szykuła (survey)",
@@ -86,11 +86,11 @@
       "proof_file": "results/cardoso-subset-synchronization/PROOF.md",
       "source_file": "results/cardoso-subset-synchronization/SOURCE.tex",
       "verify_script": "results/cardoso-subset-synchronization/verify.py",
-      "lean_partial_file": "lean/Conjectures/CardosoSubsetSynchronization.lean",
-      "lean_partial_theorems": [
-        "CardosoSubsetSynchronization.aggregate_rises_of_descents",
-        "CardosoSubsetSynchronization.steer",
-        "CardosoSubsetSynchronization.closing_budget"
+      "lean_file": "lean/Conjectures/CardosoSubsetSynchronization.lean",
+      "lean_theorem": "CardosoSubsetSynchronization.sharp_weakly_oriented_circular",
+      "lean_supporting_theorems": [
+        "CardosoSubsetSynchronization.Automaton.weaklyOrientedCircular_bound",
+        "CardosoSubsetSynchronization.cerny_attains"
       ]
     },
     {
