@@ -1,0 +1,19 @@
+# Private research kitchen (must NEVER enter public math-killer)
+problems/
+briefs/
+references/
+*journal.md
+GLOBAL_BRIEF.md
+BRIEF.md
+.env
+*.secret
+*.key
+
+# Build & runtime caches
+lean/.lake/
+*.olean
+*.ilean
+*.trace
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,60 @@
+name: Lean 4 Proof Verification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "lean/**"
+      - "scripts/check_catalog.py"
+      - "scripts/replay_lean.py"
+      - ".github/workflows/lean-verify.yml"
+  push:
+    branches: [main]
+    paths:
+      - "lean/**"
+      - "scripts/check_catalog.py"
+      - "scripts/replay_lean.py"
+      - ".github/workflows/lean-verify.yml"
+
+concurrency:
+  group: lean-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  lean-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Static Lean hygiene & anti-cheat check
+        run: python3 scripts/check_catalog.py --lean-only
+
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean
+          auto-config: false
+          use-mathlib-cache: true
+          build: false
+          test: false
+          lint: false
+          check-lean-environment: false
+
+      - name: Fetch Mathlib cache, build, and audit Lean targets
+        working-directory: lean
+        run: |
+          lake exe cache get
+          lake build Warmup Conjectures ProofAudit
+
+      - name: Kernel replay via leanchecker
+        run: python3 scripts/replay_lean.py

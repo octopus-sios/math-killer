@@ -1,0 +1,50 @@
+name: Catalog, Math Rendering & Python Verifiers
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: catalog-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  catalog-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact symbolic/scientific Python core
+        run: pip install --quiet sympy numpy scipy networkx
+
+      - name: Validate CATALOG.json, README.md, anti-sprawl & Lean hygiene
+        run: python3 scripts/check_catalog.py
+
+      - name: Validate GitHub Markdown/LaTeX math formatting
+        run: python3 scripts/check_github_math.py
+
+      - name: Run exact Python verifiers under results/*/verify.py
+        run: |
+          shopt -s nullglob
+          scripts=(results/*/verify.py)
+          if [ ${#scripts[@]} -eq 0 ]; then
+            echo "No results/*/verify.py scripts yet; skipping."
+            exit 0
+          fi
+          for s in "${scripts[@]}"; do
+            echo "=== Running $s ==="
+            timeout 300 python3 "$s"
+          done
