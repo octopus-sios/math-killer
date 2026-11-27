@@ -335,6 +335,32 @@
         "PattanayakTwoDegenerateLinearArboricity.flower_size_degree",
         "PattanayakTwoDegenerateLinearArboricity.sample_linear"
       ]
+    },
+    {
+      "slug": "yibo-gao-coxeter-geodesic-hull",
+      "title": "Disproof of Gaetz–Gao's strong hull property conjecture for Coxeter groups (Conjecture 1.2)",
+      "verdict": "disproved",
+      "status": "✅",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Christian Gaetz and Yibo Gao",
+        "paper": "The hull metric on Coxeter groups",
+        "arxiv_id": "2012.06841v2",
+        "url": "https://arxiv.org/abs/2012.06841v2",
+        "target": "Conjecture 1.2 (conj:main-conjecture)"
+      },
+      "summary": "Unconditionally disproves Gaetz–Gao Conjecture 1.2 (both the strong hull property and the weaker ordinary hull property, showing log |Conv(-,-)| is not a metric on Coxeter groups in general) in the affine Coxeter group W(A3~), formalized end-to-end in Lean 4 on Mathlib's presented Coxeter group via an exact l1-isometry into Z^6 and two-point Phi-box theorem (422 theorems, zero sorry, standard axioms only). Exact zero-float computation also verifies minimal counterexamples (60*121 = 7260 < 7921 ordinary; 96*97 = 9312 < 9825 strong), and the written proof extends the disproof to every irreducible affine Coxeter group of rank >= 4 (completing the affine dichotomy with Liu's 2025 rank-3 proof).",
+      "proof_file": "results/yibo-gao-coxeter-geodesic-hull/PROOF.md",
+      "source_file": "results/yibo-gao-coxeter-geodesic-hull/SOURCE.tex",
+      "verify_script": "results/yibo-gao-coxeter-geodesic-hull/verify.py",
+      "lean_file": "lean/Conjectures/YiboGaoCoxeterGeodesicHull.lean",
+      "lean_theorem": "YiboGaoCoxeterGeodesicHull.not_hasStrongHullProperty_A3Tilde",
+      "lean_supporting_theorems": [
+        "YiboGaoCoxeterGeodesicHull.not_hasHullProperty_A3Tilde",
+        "YiboGaoCoxeterGeodesicHull.counterexample_exists",
+        "YiboGaoCoxeterGeodesicHull.AffPerm4.cayleyGraph_dist_eq_l1Dist",
+        "YiboGaoCoxeterGeodesicHull.AffPerm4.convexHull_pair_eq_phiBox"
+      ]
     }
   ]
 }

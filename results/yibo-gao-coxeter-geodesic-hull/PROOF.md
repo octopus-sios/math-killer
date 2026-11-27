@@ -287,7 +287,7 @@ Each integer $x$ in an indicated interval gives one distinct element, since $\rh
 
 **Step 5 (Exact small-scale witnesses).** For the three-anchor witness we need more than the two-point Corollary 2.3. By Björner–Wachs ([Gaetz–Gao, Proposition 2.5](https://arxiv.org/pdf/2012.06841v2#page=4)), a group element $w$ is in the hull of anchors $x_1,\ldots,x_d$ exactly when its left inversions contain every common left inversion of the anchors and no inversion absent from all anchors. In the affine action $(a,\sigma)y=a+\sigma\cdot y$ on the real zero-sum space, take the fundamental alcove $A_0$ given by $y_0>y_1>y_2>y_3$ and $y_0-y_3<1$. The $g_i$ reflect in its walls. Left inversions of $w$ correspond to the walls separating $A_0$ from $\rho(w)A_0$: a minimal gallery crosses exactly the separating walls (a generic segment crosses each once), and the wall reflections along a reduced word are the simple reflections conjugated by the preceding prefixes. Thus the inversion criterion is exactly that $w$ lies on the same side of every wall on which all anchors lie on one side.
 
-For $y\in A_0$, the floor of $(a+\sigma\cdot y)_j-(a+\sigma\cdot y)_i$ is $a_j-a_i-\epsilon_{ij}=\Phi_{ij}(a,\sigma)$. So the alcove indexed by $w$ lies below the wall $H_{ij,k}=\{y:y_j-y_i=k\}$ precisely when $\Phi_{ij}(\rho w)<k$, and above it otherwise. For each $i<j$, the common lower and upper half-space constraints over all integers $k$ therefore give exactly
+For $y\in A_0$, writing $z = a + \sigma\cdot y$, the floor of $z_j - z_i$ is $a_j - a_i - \epsilon_{ij} = \Phi_{ij}(a,\sigma)$. So the alcove indexed by $w$ lies below the wall $H_{ij,k}=\{y:y_j-y_i=k\}$ precisely when $\Phi_{ij}(\rho w)<k$, and above it otherwise. For each $i<j$, the common lower and upper half-space constraints over all integers $k$ therefore give exactly
 
 $$
 \operatorname{Conv}(x_1,\ldots,x_d) =
@@ -373,20 +373,20 @@ No counterexample to either the strong hull property or the hull property in any
 
 In `lean/Conjectures/YiboGaoCoxeterGeodesicHull.lean`, Lean formalizes the $\ell_1$-isometry, the two-point $\Phi$-box theorem, the symbolic bounds and the unconditional refutations end-to-end for the undirected right Cayley graph `cayleyGraph cs3` of `W(A₃~) := A3TildeMatrix.Group`. The development uses Mathlib's `SimpleGraph.dist`, `Set.encard`, and `CoxeterMatrix.toCoxeterSystem` with zero `sorry`, zero `native_decide`, and only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`):
 
-- `YiboGaoCoxeterGeodesicHull.cayleyGraph_dist_eq_l1Dist`: exact isometric embedding of `Cay(W(A₃~), S)` into `(ℤ⁶, ℓ₁)`.
-- `YiboGaoCoxeterGeodesicHull.convexHull_pair_eq_phiBox`: exact $\Phi$-box characterization of two-point geodesic convex hulls.
+- `YiboGaoCoxeterGeodesicHull.AffPerm4.cayleyGraph_dist_eq_l1Dist`: exact isometric embedding of `Cay(W(A₃~), S)` into `(ℤ⁶, ℓ₁)`.
+- `YiboGaoCoxeterGeodesicHull.AffPerm4.convexHull_pair_eq_phiBox`: exact $\Phi$-box characterization of two-point geodesic convex hulls.
 - `YiboGaoCoxeterGeodesicHull.AffPerm4.encard_convexHull_one_uFamily_le`, `encard_convexHull_one_vFamily_le`, `le_encard_convexHull_uFamily_vFamily`: symbolic upper bounds $48(6m+2)$, $48(12m+2)$ and lower bound $(m+1)^3$.
 - `YiboGaoCoxeterGeodesicHull.not_hasHullProperty_A3Tilde : ¬ HasHullProperty (cayleyGraph cs3)`.
 - `YiboGaoCoxeterGeodesicHull.not_hasStrongHullProperty_A3Tilde : ¬ HasStrongHullProperty (cayleyGraph cs3)`.
 - `YiboGaoCoxeterGeodesicHull.counterexample_exists`: existential refutation of Conjecture 1.2 and the hull property.
 
-**Scope note:** The all-$L$ equalities $12L$ and $12L+1$ and the small witnesses $(t_1^5,t_2^{10})$ and $(t_1^8,t_2^8)$ are established in Section 2.3 and cross-checked with exact arithmetic in `verify.py`. Theorem 2 (all irreducible affine Coxeter groups of rank at least $4$) is proved in Section 3, with exact checks of its interior-node criterion on the representative types below. These are not part of the Lean formalization.
+**Scope note:** The exact formulas $12L$ and $12L+1$ (for all $L \ge 1$) and the small witnesses $(t_1^5,t_2^{10})$ and $(t_1^8,t_2^8)$ are established in Section 2.3 and cross-checked with exact arithmetic in `verify.py`. Theorem 2 (all irreducible affine Coxeter groups of rank at least $4$) is proved in Section 3, with exact checks of its interior-node criterion on the representative types below. These are not part of the Lean formalization.
 
 ### 5.2. Exact Zero-Float Script (`results/yibo-gao-coxeter-geodesic-hull/verify.py`)
 
 `verify.py` uses only exact integer and `fractions.Fraction` arithmetic to check:
 
-1. A representation-independent check of `AffPerm4` against the exact integer $4\times 4$ Tits reflection matrices on the full radius-$6$ Cayley ball ($195$ elements). The script also runs $1000$ pairwise $\ell_1$ consistency checks.
+1. A representation-independent check of `AffPerm4` against the exact integer $4\times 4$ Tits reflection matrices on the full Cayley ball of radius $6$ ($195$ elements). The script also runs $1000$ pairwise $\ell_1$ consistency checks.
 2. Agreement between `pure_geodesic_closure_small` (iterative geodesic closure using `l1_dist`) and `exact_phi_box_bfs` at $L=1$ (including $|\operatorname{Conv}(e,t_1,t_2)|=53$).
 3. The exact symbolic $x$-intervals for all $24$ permutations on each ray, with the resulting endpoint hull sets checked against BFS at $L=1,2,3,4,5$. The concrete counterexamples are checked by exact enumeration: $(t_1^5,t_2^{10})$ ($60\cdot121=7260<7921$) and $(t_1^8,t_2^8)$ ($96\cdot97=9312<9825$).
 4. The interior-node ranks giving $\dim F\ge 3$ on $12$ representative irreducible affine root systems ($\widetilde{A}_3,\widetilde{A}_4,\widetilde{B}_3,\widetilde{B}_4,\widetilde{C}_3,\widetilde{C}_4,\widetilde{D}_4,\widetilde{D}_5,\widetilde{F}_4,\widetilde{E}_6,\widetilde{E}_7,\widetilde{E}_8$).
