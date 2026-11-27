@@ -1,4 +1,5 @@
 import Conjectures.CardosoSubsetSynchronization
+import Conjectures.ConwayThrackleBound
 import Conjectures.EggertNilpotentAlgebraKourovka1752
 import Conjectures.FouliSylvesterMatroids
 import Conjectures.GuanTransversalAchievement
