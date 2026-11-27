@@ -1,14 +1,15 @@
-import Mathlib.Tactic.Ring
-import Mathlib.Tactic.Zify
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.Zify
 
 /-! Words are read from left to right. The cyclic order on the states is the
 standard order modulo `n`; the distinguished circular letter is not required
@@ -642,11 +643,12 @@ private theorem ordered_drops (F : G → ℤ) (x y a b : G)
       one_lt_card.mpr ⟨i, ?_, y, ?_, hi⟩⟩ <;>
       simp_all [lower, upper, lt_of_lt_of_le hx h]
 
-/-- Two distinct descents of the same shift force aggregate growth.
-No cut, symmetry of the height function, or per-shift lower bound is assumed. -/
-theorem aggregate_rises_of_descents (F : G → ℤ) (s : G) (J : Finset G)
+/-- Two comparisons suffice: their higher endpoints must be distinct, and
+their lower endpoints must be distinct. They need not use a common shift. -/
+theorem aggregate_rises_of_comparisons (F : G → ℤ) (J : Finset G)
     (h0 : 0 ∉ J) (hd : Fintype.card G / 2 + 1 ≤ J.card)
-    (hdesc : 2 ≤ (univ.filter fun x => F (x+s) < F x).card) :
+    (x y a b : G) (hxy : x ≠ y) (he : a ≠ b)
+    (hx' : F a < F x) (hy' : F b < F y) :
     2 * J.card ≤ (∑ l ∈ J, rises F l) + 2 := by
   classical
   by_cases hb : ∃ t, 2 ≤ (lower F t).card ∧ 2 ≤ (upper F t).card
@@ -665,17 +667,24 @@ theorem aggregate_rises_of_descents (F : G → ℤ) (s : G) (J : Finset G)
       intro x hx y hy
       simp [upper] at hx hy
       omega
-  · obtain ⟨x, hx, y, hy, hxy⟩ := one_lt_card.mp hdesc
-    have hx' := (mem_filter.mp hx).2
-    have hy' := (mem_filter.mp hy).2
-    have he : x+s ≠ y+s := fun e => hxy (add_right_cancel e)
-    have hm : ∃ u v, (∀ i, i ≠ u → F u < F i) ∧ (∀ i, i ≠ v → F i < F v) := by
+  · have hm : ∃ u v, (∀ i, i ≠ u → F u < F i) ∧ (∀ i, i ≠ v → F i < F v) := by
       rcases le_total (F x) (F y) with h | h
       · exact ordered_drops _ _ _ _ _ hxy he hx' hy' h hb
       · exact ordered_drops _ _ _ _ _ hxy.symm he.symm hy' hx' h hb
     obtain ⟨u,v,hu,hv⟩ := hm
     have H := extrema_rises F J h0 u v hu hv
     omega
+
+/-- Two distinct descents of the same shift force aggregate growth.
+No cut, symmetry of the height function, or per-shift lower bound is assumed. -/
+theorem aggregate_rises_of_descents (F : G → ℤ) (s : G) (J : Finset G)
+    (h0 : 0 ∉ J) (hd : Fintype.card G / 2 + 1 ≤ J.card)
+    (hdesc : 2 ≤ (univ.filter fun x => F (x+s) < F x).card) :
+    2 * J.card ≤ (∑ l ∈ J, rises F l) + 2 := by
+  classical
+  obtain ⟨x,hx,y,hy,hxy⟩ := one_lt_card.mp hdesc
+  exact aggregate_rises_of_comparisons F J h0 hd x y (x+s) (y+s) hxy
+    (fun eq => hxy (add_right_cancel eq)) (mem_filter.mp hx).2 (mem_filter.mp hy).2
 
 /-- Integral form of the conjectured bound for nonempty subsets. -/
 def bound (n m : ℕ) : ℤ :=
@@ -1014,7 +1023,8 @@ private theorem credited_growth (A : Automaton n α) (ho : A.WeaklyOriented)
       omega
 
 private theorem rises_sum_lengths (F : ZMod n → ℤ) {v : ℕ} (hv : v < n)
-    (hd : n/2+1 ≤ v) (hdesc : 2 ≤ (univ.filter (fun x => F (x+1) < F x)).card) :
+    (hd : n/2+1 ≤ v) (hagg : ∀ J : Finset (ZMod n), 0 ∉ J → n/2+1 ≤ J.card →
+      2*J.card ≤ (∑ l ∈ J, rises F l)+2) :
     2*v ≤ (∑ k ∈ range v, rises F ((k+1 : ℕ) : ZMod n)) + 2 := by
   let f (k : ℕ) : ZMod n := (k+1 : ℕ)
   have hin : Set.InjOn f (range v) := by
@@ -1030,15 +1040,13 @@ private theorem rises_sum_lengths (F : ZMod n → ℤ) {v : ℕ} (hv : v < n)
     have := natCast_inj_lt (by omega : k+1 < n) (by omega : 0 < n) (by simpa [f] using h)
     omega
   have card : ((range v).image f).card = v := by rw [card_image_of_injOn hin,card_range]
-  have H := aggregate_rises_of_descents F 1 ((range v).image f) h0
-    (by rw [ZMod.card,card]; exact hd) hdesc
+  have H := hagg ((range v).image f) h0 (by rwa [card])
   rwa [card,Finset.sum_image hin] at H
 
-/-- The aggregate argument for a singular letter with at least two missing
-outputs. No individual length is assumed to grow under that same letter. -/
-theorem corank_two_bound (A : Automaton n α) (hs : A.Synchronizing)
+private theorem bound_of_aggregate (A : Automaton n α) (hs : A.Synchronizing)
     (hc : A.Circular) (ho : A.WeaklyOriented) (b : α)
-    (hb : (univ.image (A.δ b)).card + 2 ≤ n)
+    (hagg : ∀ J : Finset (ZMod n), 0 ∉ J → n/2+1 ≤ J.card →
+      2*J.card ≤ (∑ l ∈ J, rises (height (A.δ b)) l)+2)
     (S : Finset (ZMod n)) (hm : 3 ≤ S.card) (hn : 5 ≤ n) :
     ∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S := by
   let m := S.card
@@ -1054,7 +1062,7 @@ theorem corank_two_bound (A : Automaton n α) (hs : A.Synchronizing)
   obtain ⟨a,j,hr,ht⟩ := A.circular_rotation hc ho (by omega)
   obtain ⟨t,hR,hbound⟩ := A.credited_growth ho hs b hr ht k hk
   have two := rises_sum_lengths (height (A.δ b)) (by omega : 2+k < n) hd
-    (by rw [height_descents]; omega)
+    hagg
   have tn : t ≤ 2+(n-1)*(k+1) := by
     rcases hbound with H|H
     · have eq : n-1+1 = n := by omega
@@ -1081,6 +1089,33 @@ theorem corank_two_bound (A : Automaton n α) (hs : A.Synchronizing)
     show 1 ≤ 2*n-m*(g+1) by omega] at hw' ⊢
   have hm' : (3 : ℤ) ≤ m := by exact_mod_cast h3m
   linarith only [hw',hz,hm']
+
+/-- The aggregate argument for a singular letter with at least two missing
+outputs. No individual length is assumed to grow under that same letter. -/
+theorem corank_two_bound (A : Automaton n α) (hs : A.Synchronizing)
+    (hc : A.Circular) (ho : A.WeaklyOriented) (b : α)
+    (hb : (univ.image (A.δ b)).card + 2 ≤ n)
+    (S : Finset (ZMod n)) (hm : 3 ≤ S.card) (hn : 5 ≤ n) :
+    ∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S := by
+  apply A.bound_of_aggregate hs hc ho b _ S hm hn
+  intro J h0 hd
+  exact aggregate_rises_of_descents _ 1 J h0 (by simpa [ZMod.card] using hd)
+    (by rw [height_descents]; omega)
+
+/-- A missing output and a repeated output with neither adjacent to the
+other give two comparisons in the periodic height function. -/
+theorem separated_defect_bound (A : Automaton n α) (hs : A.Synchronizing)
+    (hc : A.Circular) (ho : A.WeaklyOriented) (b : α) (u v : ZMod n)
+    (hu : fibre (A.δ b) u = 0) (hv : 2 ≤ fibre (A.δ b) v)
+    (hl : u+1 ≠ v) (hr : u ≠ v+1)
+    (S : Finset (ZMod n)) (hm : 3 ≤ S.card) (hn : 5 ≤ n) :
+    ∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S := by
+  apply A.bound_of_aggregate hs hc ho b _ S hm hn
+  intro J h0 hd
+  apply aggregate_rises_of_comparisons _ J h0 (by simpa [ZMod.card] using hd)
+    u (v+1) (u+1) v hr hl
+  · rw [height_step,hu]; simp
+  · rw [height_step]; omega
 
 end Automaton
 
@@ -1162,4 +1197,837 @@ theorem cast_B {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) : (B n m : ℤ) = bound 
     Nat.cast_sub (by omega : 1 ≤ m)]
   ring
 
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+
+variable {n : ℕ} [NeZero n] {α : Type*}
+
+theorem back_steps (x j : ZMod n) (k : ℕ) :
+    (fun p : ZMod n => p-j)^[k] x = x - (k : ZMod n)*j := by
+  induction k with
+  | zero => simp
+  | succ k ih => rw [Function.iterate_succ_apply',ih,Nat.cast_succ,add_mul,one_mul]; abel
+
+namespace Automaton
+
+private theorem target_count (S : Finset (ZMod n)) {l : ℕ} (hl : l ≤ n) :
+    n - (univ.filter (fun i : ZMod n => S ⊆ interval i l)).card ≤ S.card*(n-l) := by
+  classical
+  let good := univ.filter fun i : ZMod n => S ⊆ interval i l
+  let bad (p : ZMod n) := univ.filter fun i : ZMod n => p ∉ interval i l
+  have cBad (p : ZMod n) : (bad p).card = n-l := by
+    have h' := card_filter_add_card_filter_not (s := (univ : Finset (ZMod n))) (fun i => p ∈ interval i l)
+    rw [starts_card p hl, card_univ, ZMod.card] at h'
+    dsimp [bad]
+    omega
+  have diff : univ \ good = S.biUnion bad := by ext i; simp [good,bad,Finset.not_subset]
+  have cb := card_biUnion_le (s := S) (t := bad)
+  rw [← diff,card_sdiff_of_subset (subset_univ _)] at cb
+  simpa [cBad,ZMod.card,good] using cb
+
+private theorem all_starts (A : Automaton n α) {a : α} {j : ZMod n}
+    (hr : ∀ x, A.δ a x = x+j) (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    {l u : ℕ} (hR : (A.ready l u).Nonempty) (s : ZMod n) :
+    s ∈ A.ready l (u+(n-1)) := by
+  obtain ⟨i,hi,k,hk,hs⟩ := steer _ ht _ {s} hR (singleton_nonempty _)
+  rw [ZMod.card,card_singleton] at hk
+  have e := mem_singleton.mp hs
+  have h := A.ready_rotate hr hi k
+  rw [e] at h
+  have := card_pos.mpr hR
+  exact A.ready_mono (by omega) h
+
+/-- Under a successor or predecessor circular letter one can use the ordinary
+growth bound. Either the target fits a shorter arc, or the admissible starts
+are spaced by at least one more than the size of the omitted arc. -/
+theorem unit_jump_bound (A : Automaton n α) (hs : A.Synchronizing)
+    (ho : A.WeaklyOriented) {a : α} {j : ZMod n}
+    (hr : ∀ x, A.δ a x = x+j) (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    (hj : j = 1 ∨ j = -1) (S : Finset (ZMod n)) (hm : 3 ≤ S.card) (hn : 5 ≤ n) :
+    ∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S := by
+  classical
+  let m := S.card
+  let g := (n-1)/m
+  let e := (n-1)%m + 1
+  let d := n-g-2
+  have hm' : 3 ≤ m := hm
+  have hmn : m ≤ n := by simpa [m,ZMod.card] using card_le_univ S
+  have he0 : 1 ≤ e := by dsimp [e]; omega
+  have hem : e ≤ m := by
+    have h := Nat.mod_lt (n-1) (by omega : 0 < m)
+    dsimp [e]; omega
+  have dec : n = m*g+e := by
+    have h := Nat.mod_add_div (n-1) m
+    dsimp [g,e]; omega
+  have h3g : 3*g ≤ m*g := Nat.mul_le_mul_right g hm'
+  have hd : d+g+2 = n := by dsimp [d]; omega
+  have hd1 : 1 ≤ d := by omega
+  have en : (e-1)*(g+1) ≤ n-1 := by
+    have h := Nat.mul_le_mul_right g (by omega : e-1 ≤ m)
+    rw [Nat.mul_add,Nat.mul_one]
+    omega
+  have price : B n m + (e-1)*(g+1) = (1+n*d)+(n-1) := by
+    have hc := cast_B (by omega : 0 < m) hmn
+    change (B n m : ℤ) = ((n:ℤ)-1)^2 - (g:ℤ)*(2*n-m*(g+1)-1) at hc
+    have de : (n:ℤ) = m*(g:ℤ)+e := by exact_mod_cast dec
+    have dd : (d:ℤ)+(g:ℤ)+2 = n := by exact_mod_cast hd
+    zify [he0,show 1 ≤ n by omega]
+    rw [hc]
+    nlinarith [congrArg (· * (g:ℤ)) de, congrArg (· * (n:ℤ)) dd]
+  let T := univ.filter fun i : ZMod n => S ⊆ interval i (2+d)
+  have mt (i : ZMod n) : i ∈ T ↔ S ⊆ interval i (2+d) := by simp [T]
+  have cT : e ≤ T.card := by
+    have h := target_count S (l := 2+d) (by omega)
+    change n - T.card ≤ m*(n-(2+d)) at h
+    rw [show n-(2+d) = g by omega] at h
+    omega
+  by_cases short : ∃ i ∈ T, i ∉ S
+  · obtain ⟨i,hi,hnS⟩ := short
+    have sub : S ⊆ interval (i+1) (2+(d-1)) := by
+      intro p hp
+      obtain ⟨k,hk,e'⟩ := mem_interval.mp ((mt i).mp hi hp)
+      cases k with
+      | zero => exact False.elim (hnS (by simpa [← e'] using hp))
+      | succ k => exact mem_interval.mpr ⟨k,by omega,by rw [← e',Nat.cast_succ]; abel⟩
+    have hR := A.ordinary_growth ho hs hr ht (d-1) (by omega)
+    obtain ⟨w,hw,hS⟩ := A.mem_ready.mp (A.all_starts hr ht hR (i+1))
+    have eqd : d-1+1 = d := by omega
+    have eqm := congrArg (n * ·) eqd
+    rw [Nat.mul_add,Nat.mul_one] at eqm
+    exact ⟨w,by change w.length ≤ B n m; omega,hS.mono sub⟩
+  · have inS (i : ZMod n) (hi : i ∈ T) : i ∈ S := by
+      by_contra h; exact short ⟨i,hi,h⟩
+    have sep (i u : ZMod n) (hi : i ∈ T) (hu : u ∈ T) (k : ℕ)
+        (hk : 0 < k) (hkg : k ≤ g) : i + (k : ZMod n) ≠ u := by
+      intro E
+      obtain ⟨v,hv,H⟩ := mem_interval.mp ((mt u).mp hu (inS i hi))
+      have HH : i+((k : ZMod n)+v) = i+0 := by simpa only [← add_assoc,E,add_zero] using H
+      have neq := natCast_inj_lt (by omega : k+v < n) (by omega : 0 < n)
+        (by simpa only [Nat.cast_add,Nat.cast_zero] using add_left_cancel HH)
+      omega
+    let Φ (z : ZMod n × ℕ) := z.1 + (z.2 : ZMod n)*j
+    let blocks := T ×ˢ range (g+1)
+    let hit := blocks.image Φ
+    have distinct (x y : ZMod n) (hx : x ∈ T) (hy : y ∈ T) (p q : ℕ)
+        (h : p < q) (hq : q ≤ g) : x+(p : ZMod n)*j ≠ y+(q : ZMod n)*j := by
+      intro E
+      let k := q-p
+      have hk : 0 < k := by dsimp [k]; omega
+      have hkg : k ≤ g := by dsimp [k]; omega
+      have eq : p+k = q := by dsimp [k]; omega
+      have castEq : (p : ZMod n) + k = q := by rw [← Nat.cast_add,eq]
+      have Y : y+(k : ZMod n)*j = x := by
+        calc
+          _ = y+((p : ZMod n)+k)*j - p*j := by ring
+          _ = x := by rw [castEq,← E]; abel
+      rcases hj with E'|E'
+      · exact sep _ _ hy hx _ hk hkg (by simpa [E'] using Y)
+      · exact sep _ _ hx hy _ hk hkg (by rw [← Y]; simp [E'])
+    have hin : Set.InjOn Φ blocks := by
+      rintro ⟨x,p⟩ hp ⟨y,q⟩ hq hE
+      obtain ⟨hx,hp'⟩ := mem_product.mp hp
+      obtain ⟨hy,hq'⟩ := mem_product.mp hq
+      have hp'' := mem_range.mp hp'
+      have hq'' := mem_range.mp hq'
+      change x+(p : ZMod n)*j = y+(q : ZMod n)*j at hE
+      rcases lt_trichotomy p q with H|H|H
+      · exact False.elim (distinct x y hx hy p q H (by omega) hE)
+      · subst q
+        exact Prod.ext (add_right_cancel hE) rfl
+      · exact False.elim (distinct y x hy hx q p H (by omega) hE.symm)
+    have sz : hit.card = T.card*(g+1) := by
+      change (blocks.image Φ).card = _
+      rw [card_image_of_injOn hin]
+      simp [blocks]
+    have nz : hit.Nonempty := card_pos.mp (sz ▸ Nat.mul_pos (by omega) (by omega))
+    have hR := A.ordinary_growth ho hs hr ht d (by omega)
+    obtain ⟨i,hi,k,hk,hhit⟩ := steer _ ht _ _ hR nz
+    rw [ZMod.card] at hk
+    have hpR := card_pos.mpr hR
+    obtain ⟨z,hz,hitEq⟩ := mem_image.mp hhit
+    obtain ⟨hzT,hzt⟩ := mem_product.mp hz
+    have hzt' := mem_range.mp hzt
+    have hrot := A.ready_rotate hr (A.ready_rotate hr hi k) z.2
+    rw [back_steps,← hitEq] at hrot
+    change z.1 + (z.2 : ZMod n)*j - (z.2 : ZMod n)*j ∈ _ at hrot
+    rw [add_sub_cancel_right] at hrot
+    obtain ⟨w,hw,hsw⟩ := A.mem_ready.mp hrot
+    have ub := card_le_univ hit
+    rw [ZMod.card] at ub
+    have lc : e*(g+1) ≤ hit.card := sz ▸ Nat.mul_le_mul_right _ cT
+    have he : e-1+1=e := by omega
+    have he' := congrArg (· * (g+1)) he
+    rw [Nat.add_mul,Nat.one_mul] at he'
+    exact ⟨w,by change w.length ≤ B n m; omega,hsw.mono ((mt _).mp hzT)⟩
+
+end Automaton
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+
+variable {n : ℕ} [NeZero n] {α : Type*}
+
+theorem fibre_zero_iff (f : ZMod n → ZMod n) (q : ZMod n) :
+    fibre f q = 0 ↔ q ∉ univ.image f := by
+  simp [fibre,pre,Finset.filter_eq_empty_iff,mem_image]
+
+/-- A transformation missing exactly one output has exactly one double
+fibre and all remaining nonempty fibres are singletons. -/
+theorem defect_profile (f : ZMod n → ZMod n) (hr : (univ.image f).card+1 = n) :
+    ∃ u v : ZMod n, u ≠ v ∧ ∀ q, fibre f q = if q = u then 0 else if q = v then 2 else 1 := by
+  classical
+  let R := univ.image f
+  change R.card+1 = n at hr
+  have hc : (univ \ R).card = 1 := by
+    rw [card_sdiff_of_subset (subset_univ _),card_univ,ZMod.card]; omega
+  obtain ⟨u,hu⟩ := card_eq_one.mp hc
+  have miss (q : ZMod n) : q ∉ R ↔ q = u := by
+    have h := Finset.ext_iff.mp hu q
+    simpa using h
+  have sumF : ∑ q : ZMod n, fibre f q = n := by
+    simpa [fibre] using pre_total f (l := 1) (NeZero.pos n)
+  have sumR : ∑ q ∈ R, fibre f q = n := by
+    calc
+      _ = ∑ q : ZMod n, fibre f q := by
+        apply sum_subset (subset_univ _)
+        intro q _ hq
+        exact (fibre_zero_iff ..).mpr hq
+      _ = n := sumF
+  let extra (q : ZMod n) := fibre f q - 1
+  have pos (q : ZMod n) (hq : q ∈ R) : 0 < fibre f q := by
+    by_contra! H
+    exact (fibre_zero_iff ..).mp (by omega) hq
+  have pieces : ∑ q ∈ R, (extra q + 1) = n := by
+    calc
+      _ = ∑ q ∈ R, fibre f q := by
+        apply sum_congr rfl
+        intro q hq
+        have := pos q hq
+        dsimp [extra]; omega
+      _ = n := sumR
+  have budget : ∑ q ∈ R, extra q = 1 := by
+    rw [sum_add_distrib] at pieces
+    simp only [sum_const,nsmul_eq_mul,Nat.cast_id,Nat.mul_one] at pieces
+    omega
+  obtain ⟨v,hv,hv'⟩ : ∃ v ∈ R, 0 < extra v := by
+    by_contra! no
+    have zero := sum_eq_zero (fun q hq => Nat.eq_zero_of_le_zero (no q hq))
+    omega
+  have neuv : u ≠ v := by intro e; exact (miss v).mpr e.symm hv
+  have ev : extra v ≤ 1 := by
+    rw [← budget]
+    exact single_le_sum (fun q _ => Nat.zero_le (extra q)) hv
+  refine ⟨u,v,neuv,?_⟩
+  intro q
+  by_cases qu : q = u
+  · simpa [qu] using (fibre_zero_iff f u).mpr ((miss u).mpr rfl)
+  · have qr : q ∈ R := by by_contra h; exact qu ((miss q).mp h)
+    have pq := pos q qr
+    by_cases qv : q = v
+    · subst q
+      dsimp [extra] at hv' ev
+      simp [qu] <;> omega
+    · have le : extra q + extra v ≤ ∑ y ∈ R, extra y := by
+        calc
+          _ = ∑ y ∈ ({q,v} : Finset _), extra y := by simp [qv]
+          _ ≤ _ := sum_le_sum_of_subset_of_nonneg (by
+            intro y hy
+            simp only [mem_insert,mem_singleton] at hy
+            rcases hy with rfl|rfl
+            · exact qr
+            · exact hv)
+            (fun _ _ _ => Nat.zero_le _)
+      rw [budget] at le
+      simp only [if_neg qu,if_neg qv]
+      dsimp [extra] at le hv'
+      omega
+
+namespace Automaton
+
+/-- Necessary structure of an unresolved upper-bound instance after the
+growth, separation, and successor-jump arguments. -/
+theorem residual_of_no_short_word (A : Automaton n α) (hs : A.Synchronizing)
+    (hc : A.Circular) (ho : A.WeaklyOriented) (S : Finset (ZMod n)) (hS : S.Nonempty)
+    (no : ¬∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S) :
+    5 ≤ n ∧ 3 ≤ S.card ∧ S.card < n ∧
+    ∃ (a b : α) (j u v : ZMod n),
+      (∀ x, A.δ a x = x+j) ∧ (∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y) ∧
+      j ≠ 1 ∧ j ≠ -1 ∧ u ≠ v ∧ (u+1 = v ∨ u = v+1) ∧
+      (∀ q, fibre (A.δ b) q = if q = u then 0 else if q = v then 2 else 1) := by
+  classical
+  have hn : 5 ≤ n := by by_contra! h; exact no (A.small_bound hs hc ho S h hS)
+  have hm : 3 ≤ S.card := by
+    have hp := card_pos.mpr hS
+    by_contra! h
+    rcases (show S.card = 1 ∨ S.card = 2 by omega) with he|he
+    · exact no ⟨[],by simp,A.emptyWord_of_card_one S he⟩
+    · exact no (by simpa [he] using A.pair_bound hs S he)
+  have lt : S.card < n := by
+    have h := card_le_univ S
+    rw [ZMod.card] at h
+    by_contra! h'
+    have e : S.card = n := by omega
+    obtain ⟨w,hw,hSw⟩ := A.full_bound hs hc ho
+    exact no ⟨w,by simpa only [e] using hw,hSw.mono (subset_univ _)⟩
+  obtain ⟨a,j,hr,ht⟩ := A.circular_rotation hc ho (by omega)
+  have nj : ¬(j = 1 ∨ j = -1) := fun h => no (A.unit_jump_bound hs ho hr ht h S hm hn)
+  obtain ⟨b,hb⟩ := A.exists_singular hs ho (by omega)
+  have eq : (univ.image (A.δ b)).card+1 = n := by
+    by_contra h
+    exact no (A.corank_two_bound hs hc ho b (by omega) S hm hn)
+  obtain ⟨u,v,ne,prof⟩ := defect_profile _ eq
+  have both : u+1 = v ∨ u = v+1 := by
+    by_contra! h
+    exact no (A.separated_defect_bound hs hc ho b u v (by simp [prof])
+      (by simp [prof,Ne.symm ne]) h.1 h.2 S hm hn)
+  exact ⟨hn,hm,lt,a,b,j,u,v,hr,ht,fun h => nj (Or.inl h),fun h => nj (Or.inr h),ne,both,prof⟩
+
+end Automaton
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+
+variable {n : ℕ} [NeZero n] {α : Type*}
+
+/-- The elementary fold sending the predecessor of zero to zero. -/
+def foldPoint (z : ZMod n) : ZMod n := if z = -1 then 0 else z
+
+theorem fold_grows {z : ZMod n} {l : ℕ} (hl : 0 < l) (hz : z ∈ interval (-1) (l+1)) :
+    foldPoint z ∈ interval 0 l := by
+  by_cases e : z = -1
+  · simpa [foldPoint,e] using (mem_interval.mpr ⟨0,hl,by simp⟩ : (0 : ZMod n) ∈ interval 0 l)
+  · rw [foldPoint,if_neg e]
+    obtain ⟨k,hk,rfl⟩ := mem_interval.mp hz
+    cases k with
+    | zero => simp at e
+    | succ k => exact mem_interval.mpr ⟨k,by omega,by push_cast; abel⟩
+
+theorem fold_neutral (s : ZMod n) (l : ℕ) (hs : s ≠ 0) (he : s+l ≠ 0) (z : ZMod n)
+    (hz : z ∈ interval s l) : foldPoint z ∈ interval s l := by
+  by_cases e : z = -1
+  · subst z
+    obtain ⟨k,hk,h⟩ := mem_interval.mp hz
+    have add : s + ((k+1 : ℕ) : ZMod n) = 0 := by rw [Nat.cast_succ,← add_assoc,h]; simp
+    have lt : k+1 < l := by
+      by_contra! hl
+      have E : k+1=l := by omega
+      exact he (E ▸ add)
+    simpa [foldPoint] using (mem_interval.mpr ⟨k+1,lt,add⟩ : (0 : ZMod n) ∈ interval s l)
+  · simpa [foldPoint,e] using hz
+
+private def postStart (c d : ZMod n) (h : ℕ) : ZMod n := if d = 1 then c-1 else c-h
+
+namespace Automaton
+
+private theorem normalized_extend (A : Automaton n α) {b : α} {c d : ZMod n}
+    (hd : d = 1 ∨ d = -1) (hb : ∀ z, A.δ b (c+d*z) = foldPoint z)
+    {h t : ℕ} (hR : (0 : ZMod n) ∈ A.ready (1+h) t) :
+    postStart c d h ∈ A.ready (2+h) (t+1) := by
+  obtain ⟨w,hw,q,hq⟩ := A.mem_ready.mp hR
+  refine A.mem_ready.mpr ⟨b::w,by simpa using Nat.succ_le_succ hw,q,?_⟩
+  intro p hp
+  obtain ⟨k,hk,rfl⟩ := mem_interval.mp hp
+  apply hq
+  by_cases inc : d=1
+  · have eq : postStart c d h + k = c+d*(-1+(k : ZMod n)) := by simp [postStart,inc]; abel
+    rw [eq,hb]
+    exact fold_grows (by omega) (mem_interval.mpr ⟨k,by omega,rfl⟩)
+  · have rev := hd.resolve_left inc
+    have hk' : k ≤ 1+h := by omega
+    have eq : postStart c d h + k = c+d*(-1+((1+h-k : ℕ) : ZMod n)) := by
+      unfold postStart
+      rw [if_neg inc,rev,Nat.cast_sub hk',Nat.cast_add,Nat.cast_one,neg_one_mul]
+      abel
+    rw [eq,hb]
+    exact fold_grows (by omega) (mem_interval.mpr ⟨1+h-k,by omega,rfl⟩)
+
+private theorem short_to_zero (A : Automaton n α) {a : α} {j : ZMod n}
+    (hr : ∀ x, A.δ a x = x+j) (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    {s : ZMod n} {l t : ℕ} (hR : s ∈ A.ready l t) (hn : 2 ≤ n) (ns : s ≠ -j) :
+    (0 : ZMod n) ∈ A.ready l (t+(n-2)) := by
+  obtain ⟨i,hi,k,hk,h0⟩ := steer _ ht {s} {0} (singleton_nonempty _) (singleton_nonempty _)
+  have ei := mem_singleton.mp hi
+  subst i
+  have e := mem_singleton.mp h0
+  simp only [ZMod.card,card_singleton] at hk
+  have short : k ≤ n-2 := by
+    by_contra! long
+    have ek : k+1 = n := by omega
+    have endpt : (fun p : ZMod n => p-j)^[k+1] s = -j := by rw [Function.iterate_succ_apply',e]; simp
+    rw [ek,back_steps] at endpt
+    exact ns (by simpa using endpt)
+  have h' := A.ready_rotate hr hR k
+  rw [e] at h'
+  exact A.ready_mono (by omega) h'
+
+private theorem normalized_fast (A : Automaton n α) {a b : α} {j c d : ZMod n}
+    (hr : ∀ x, A.δ a x = x+j) (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    (hd : d = 1 ∨ d = -1) (hb : ∀ z, A.δ b (c+d*z) = foldPoint z)
+    (hn : 3 ≤ n) (nj : j ≠ 0) (j1 : j ≠ 1) {h t : ℕ}
+    (hi : (h : ZMod n) ≠ (if d=1 then j-2 else c+j))
+    (hR : postStart c d h ∈ A.ready (2+h) t) :
+    (0 : ZMod n) ∈ A.ready (2+h) (t+(n-2)) := by
+  by_cases ns : postStart c d h = -j
+  · have inc : d = 1 := by
+      by_contra inc
+      simp only [postStart,if_neg inc] at ns
+      apply hi
+      simp only [if_neg inc]
+      calc
+        (h : ZMod n) = c-(c-h) := by abel
+        _ = c+j := by rw [ns]; abel
+    have sc : c-1 = -j := by simpa [postStart,inc] using ns
+    let s := c-1
+    have ns0 : s ≠ 0 := by change c-1 ≠ 0; rw [sc]; simpa using nj
+    have neEnd : s+((2+h : ℕ) : ZMod n) ≠ 0 := by
+      intro he
+      apply hi
+      simp only [if_pos inc]
+      change c-1+((2+h : ℕ) : ZMod n) = 0 at he
+      rw [sc,Nat.cast_add,Nat.cast_ofNat] at he
+      calc
+        (h : ZMod n) = j-2+(-j+(2+(h : ZMod n))) := by abel
+        _ = _ := by rw [he,add_zero]
+    have c0 : c ≠ 0 := by
+      intro e
+      rw [e,zero_sub] at sc
+      exact j1 (neg_injective sc.symm)
+    have cNj : c ≠ -j := by
+      intro e
+      rw [← e] at sc
+      have o : (1 : ZMod n) = 0 := by simpa using sc
+      have := natCast_inj_lt (n := n) (by omega : 1 < n) (by omega : 0 < n) (by simpa using o)
+      omega
+    have start : s ∈ A.ready (2+h) t := by simpa [postStart,inc,s] using hR
+    have h1 : s ∈ A.ready (2+h) (t+1) := A.ready_mono (by omega) start
+    have h2 : s-j ∈ A.ready (2+h) (t+1) := by simpa using A.ready_rotate hr start 1
+    have h3 : s+c ∈ A.ready (2+h) (t+1) := by
+      obtain ⟨w,hw,q,hq⟩ := A.mem_ready.mp start
+      refine A.mem_ready.mpr ⟨b::w,by simpa using Nat.succ_le_succ hw,q,?_⟩
+      intro p hp
+      obtain ⟨k,hk,rfl⟩ := mem_interval.mp hp
+      apply hq
+      have E : s+c+(k : ZMod n) = c+d*(s+k) := by rw [inc,one_mul]; abel
+      rw [E,hb]
+      exact fold_neutral s _ ns0 neEnd _ (mem_interval.mpr ⟨k,hk,rfl⟩)
+    have n12 : s ≠ s-j := by simpa [sub_eq_add_neg] using nj
+    have n13 : s ≠ s+c := by simpa using c0
+    have n23 : s-j ≠ s+c := by simpa [sub_eq_add_neg] using Ne.symm cNj
+    have sub : ({s,s-j,s+c} : Finset _) ⊆ A.ready (2+h) (t+1) := by
+      intro x hx
+      simp only [mem_insert,mem_singleton] at hx
+      rcases hx with rfl|rfl|rfl
+      · exact h1
+      · exact h2
+      · exact h3
+    have cnt := card_le_card sub
+    simp [n12,n13,n23] at cnt
+    obtain ⟨x,hx,k,hk,hz⟩ := steer _ ht _ {0} ⟨s,h1⟩ (singleton_nonempty _)
+    rw [ZMod.card,card_singleton] at hk
+    have H := A.ready_rotate hr hx k
+    rw [mem_singleton.mp hz] at H
+    exact A.ready_mono (by omega) H
+  · exact A.short_to_zero hr ht hR (by omega) ns
+
+/-- Increasing or decreasing lifts of the elementary fold. At most one
+length needs all n letters; every other growth saves at least one. -/
+theorem normalized_growth (A : Automaton n α) {a b : α} {j c d : ZMod n}
+    (hr : ∀ x, A.δ a x = x+j) (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    (hd : d = 1 ∨ d = -1) (hb : ∀ z, A.δ b (c+d*z) = foldPoint z)
+    (hn : 3 ≤ n) (nj : j ≠ 0) (j1 : j ≠ 1) (k : ℕ) (hk : 2+k ≤ n) :
+    (A.ready (2+k) (2+(n-1)*k)).Nonempty := by
+  let bad : ZMod n := if d=1 then j-2 else c+j
+  have run (h : ℕ) (hh : h ≤ k) :
+      postStart c d h ∈ A.ready (2+h) (1+(n-1)*h+if bad.val < h then 1 else 0) := by
+    induction h with
+    | zero =>
+      have seed : (0 : ZMod n) ∈ A.ready 1 0 := A.mem_ready.mpr ⟨[],by simp,0,by simp⟩
+      simpa using A.normalized_extend hd hb (h := 0) seed
+    | succ h ih =>
+      have start := ih (by omega)
+      let t := 1+(n-1)*h+if bad.val<h then 1 else 0
+      change postStart c d h ∈ A.ready (2+h) t at start
+      by_cases crit : h=bad.val
+      · have target := A.all_starts hr ht (show (A.ready (2+h) t).Nonempty from ⟨_,start⟩) 0
+        have next := A.normalized_extend hd hb (h := h+1) (t := t+(n-1)) (by simpa [Nat.add_comm,Nat.add_assoc,Nat.add_left_comm] using target)
+        apply A.ready_mono _ next
+        dsimp [t]
+        rw [Nat.mul_succ]
+        split_ifs <;> omega
+      · have hcrit : (h : ZMod n) ≠ bad := by
+          intro E
+          have hval := congrArg ZMod.val E
+          rw [ZMod.val_natCast_of_lt (by omega)] at hval
+          exact crit hval
+        have target := A.normalized_fast hr ht hd hb hn nj j1 hcrit start
+        have next := A.normalized_extend hd hb (h := h+1) (t := t+(n-2)) (by simpa [Nat.add_comm,Nat.add_assoc,Nat.add_left_comm] using target)
+        apply A.ready_mono _ next
+        dsimp [t]
+        rw [Nat.mul_succ]
+        split_ifs <;> omega
+  refine ⟨_,A.ready_mono ?_ (run k (le_refl _))⟩
+  split_ifs <;> omega
+
+end Automaton
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+variable {n : ℕ} [NeZero n] {α : Type*}
+open Finset
+
+/-- Relabel the states by translation, possibly reversing the drawing of
+the circle. The boolean only chooses the sign in this coordinate change. -/
+def chart (v : ZMod n) (r : Bool) : Equiv.Perm (ZMod n) where
+  toFun z := if r then v-z else v+z
+  invFun z := if r then v-z else z-v
+  left_inv z := by cases r <;> simp <;> abel
+  right_inv z := by cases r <;> simp <;> abel
+
+private theorem chart_arcs (v : ZMod n) (r : Bool) (i : ZMod n) (l : ℕ) :
+    ∃ s, (interval i l).image (chart v r) = interval s l := by
+  cases r with
+  | false =>
+    refine ⟨v+i,?_⟩
+    ext x
+    constructor
+    · intro hx; obtain ⟨y,hy,rfl⟩ := mem_image.mp hx
+      obtain ⟨k,hk,rfl⟩ := mem_interval.mp hy
+      exact mem_interval.mpr ⟨k,hk,by change v+i+k = v+(i+k); abel⟩
+    · intro hx; obtain ⟨k,hk,rfl⟩ := mem_interval.mp hx
+      exact mem_image.mpr ⟨i+k,mem_interval.mpr ⟨k,hk,rfl⟩,by change v+(i+k) = v+i+k; abel⟩
+  | true =>
+    refine ⟨v-i-(l-1 : ℕ),?_⟩
+    ext x
+    have off (k : ℕ) (hk : k < l) : k + (l-1-k) = l-1 := by omega
+    have caster (k : ℕ) (hk : k < l) :
+        (k : ZMod n) + ((l-1-k : ℕ) : ZMod n) = ((l-1 : ℕ) : ZMod n) := by
+      rw [← Nat.cast_add,off k hk]
+    constructor
+    · intro hx; obtain ⟨y,hy,rfl⟩ := mem_image.mp hx
+      obtain ⟨k,hk,rfl⟩ := mem_interval.mp hy
+      apply mem_interval.mpr
+      refine ⟨l-1-k,by omega,?_⟩
+      change v-i-((l-1 : ℕ) : ZMod n)+((l-1-k : ℕ) : ZMod n) = v-(i+k)
+      rw [← caster k hk]; abel
+    · intro hx; obtain ⟨k,hk,rfl⟩ := mem_interval.mp hx
+      refine mem_image.mpr ⟨i+((l-1-k : ℕ) : ZMod n),mem_interval.mpr ⟨l-1-k,by omega,rfl⟩,?_⟩
+      change v-(i+((l-1-k : ℕ) : ZMod n)) = v-i-((l-1 : ℕ) : ZMod n)+k
+      rw [← caster k hk]; abel
+
+private theorem chart_symm_arcs (v : ZMod n) (r : Bool) (i : ZMod n) (l : ℕ) :
+    ∃ s, (interval i l).image (chart v r).symm = interval s l := by
+  cases r with
+  | true => exact chart_arcs v true i l
+  | false =>
+    have e : (chart v false).symm = chart (-v) false := by ext x; change x-v = -v+x; abel
+    rw [e]
+    exact chart_arcs _ _ _ _
+
+namespace Automaton
+
+def relabel (A : Automaton n α) (π : Equiv.Perm (ZMod n)) : Automaton n α :=
+  ⟨fun a z => π.symm (A.δ a (π z))⟩
+
+theorem act_relabel (A : Automaton n α) (π : Equiv.Perm (ZMod n)) (w : List α) (x : ZMod n) :
+    π ((A.relabel π).act w x) = A.act w (π x) := by
+  induction w generalizing x with
+  | nil => rfl
+  | cons a w ih => rw [act_cons,ih,act_cons]; simp [relabel]
+
+theorem sync_of_relabel (A : Automaton n α) (π : Equiv.Perm (ZMod n)) {w : List α}
+    {S : Finset (ZMod n)} (hs : (A.relabel π).Synchronizes w (S.image π.symm)) :
+    A.Synchronizes w S := by
+  obtain ⟨q,hq⟩ := hs
+  refine ⟨π q,?_⟩
+  intro p hp
+  have h := congrArg π (hq (π.symm p) (mem_image_of_mem _ hp))
+  simpa [act_relabel] using h
+
+theorem pre_relabel (A : Automaton n α) (π : Equiv.Perm (ZMod n)) (b : α) (T : Finset (ZMod n)) :
+    pre ((A.relabel π).δ b) T = (pre (A.δ b) (T.image π)).image π.symm := by
+  ext x
+  constructor
+  · intro h
+    have hx := mem_pre.mp h
+    refine mem_image.mpr ⟨π x,mem_pre.mpr (mem_image.mpr ⟨_,hx,?_⟩),by simp⟩
+    simp [relabel]
+  · intro h
+    obtain ⟨y,hy,rfl⟩ := mem_image.mp h
+    obtain ⟨z,hz,e⟩ := mem_image.mp (mem_pre.mp hy)
+    simpa [relabel,← e] using hz
+
+theorem fibre_relabel (A : Automaton n α) (π : Equiv.Perm (ZMod n)) (b : α) (z : ZMod n) :
+    fibre ((A.relabel π).δ b) z = fibre (A.δ b) (π z) := by
+  simp [fibre,pre_relabel,card_image_of_injective _ π.symm.injective]
+
+theorem chart_oriented (A : Automaton n α) (ho : A.WeaklyOriented) (v : ZMod n) (r : Bool) :
+    (A.relabel (chart v r)).WeaklyOriented := by
+  intro b i l hl
+  obtain ⟨p,ep⟩ := chart_arcs v r i l
+  obtain ⟨q,k,hk,eq⟩ := ho b p l hl
+  obtain ⟨z,ez⟩ := chart_symm_arcs v r q k
+  exact ⟨z,k,hk,by rw [pre_relabel,ep,eq,ez]⟩
+
+theorem chart_rot (A : Automaton n α) {a : α} {j : ZMod n} (hr : ∀ x, A.δ a x = x+j)
+    (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    (v : ZMod n) (r : Bool) :
+    (∀ x, (A.relabel (chart v r)).δ a x = x + (if r then -j else j)) ∧
+    (∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-(if r then -j else j))^[k] x = y) := by
+  constructor
+  · intro x
+    cases r <;> simp [relabel,chart,hr] <;> abel
+  · intro x y
+    obtain ⟨k,hk⟩ := ht (chart v r x) (chart v r y)
+    refine ⟨k,?_⟩
+    rw [back_steps] at hk ⊢
+    cases r with
+    | false =>
+      change v+x-(k : ZMod n)*j = v+y at hk
+      change x-(k : ZMod n)*j = y
+      exact add_left_cancel (a := v) (by rw [← hk]; abel)
+    | true =>
+      change v-x-(k : ZMod n)*j = v-y at hk
+      change x-(k : ZMod n)*(-j) = y
+      exact sub_right_injective (b := v) (show v-(x-(k : ZMod n)*(-j)) = v-y by rw [← hk,mul_neg]; abel)
+
+end Automaton
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+
+variable {n : ℕ} [NeZero n] {α : Type*}
+
+private theorem cast_ne_zero {k : ℕ} (hk : 0 < k) (hkn : k < n) : (k : ZMod n) ≠ 0 := by
+  intro e
+  have := natCast_inj_lt hkn (by omega : 0 < n) (by simpa using e)
+  omega
+
+private theorem cast_ne_last {k : ℕ} (hk : k+1 < n) : (k : ZMod n) ≠ -1 := by
+  intro e
+  apply cast_ne_zero (by omega : 0 < k+1) hk
+  simp [Nat.cast_add,e]
+
+namespace Automaton
+
+/-- With zero the doubled state and its predecessor missing, the lifts of
+1 through n-2 form a path of distinct adjacent points. Such a path cannot
+turn back. This determines the entire letter, including its double fibre. -/
+theorem normalized_shape (A : Automaton n α) (ho : A.WeaklyOriented) (b : α)
+    (hn : 5 ≤ n) (prof : ∀ z, fibre (A.δ b) z = if z = -1 then 0 else if z = 0 then 2 else 1) :
+    ∃ c d : ZMod n, (d=1 ∨ d = -1) ∧ ∀ z, A.δ b (c+d*z) = foldPoint z := by
+  classical
+  let f := A.δ b
+  let lift (z : ZMod n) := if h : ∃ x, f x = z then Classical.choose h else 0
+  have single (z : ZMod n) (h0 : z ≠ 0) (h1 : z ≠ -1) :
+      pre f {z} = {lift z} ∧ f (lift z) = z := by
+    have hcard : (pre f {z}).card = 1 := by simpa [fibre,f,h0,h1] using prof z
+    obtain ⟨x,hx⟩ := card_eq_one.mp hcard
+    have hz : f x = z := by
+      have mem : x ∈ pre f {z} := by rw [hx]; simp
+      simpa using mem
+    have ex : ∃ x, f x = z := ⟨x,hz⟩
+    have hL : f (lift z) = z := by simp only [lift,dif_pos ex]; exact Classical.choose_spec ex
+    have hmem : lift z ∈ pre f {z} := by simpa using hL
+    rw [hx,mem_singleton] at hmem
+    exact ⟨by rw [hx,hmem],hL⟩
+  have liftR (k : ℕ) (hk : 0<k) (hnk : k+1<n) : f (lift k) = (k : ZMod n) :=
+    (single k (cast_ne_zero hk (by omega)) (cast_ne_last hnk)).2
+  have unique' {z p : ZMod n} (z0 : z ≠ 0) (z1 : z ≠ -1) (hp : f p=z) :
+      p=lift z := by
+    have h : p ∈ pre f {z} := by simpa using hp
+    rwa [(single z z0 z1).1,mem_singleton] at h
+  have step (k : ℕ) (hk : 1≤k) (hkn : k+2<n) :
+      lift ((k+1 : ℕ) : ZMod n) = lift k+1 ∨ lift ((k+1 : ℕ) : ZMod n) = lift k-1 := by
+    let y := ((k+1 : ℕ) : ZMod n)
+    have singleK := (single k (cast_ne_zero hk (by omega)) (cast_ne_last (by omega))).1
+    have singleY := (single y (cast_ne_zero (by omega) (by omega)) (cast_ne_last (by omega))).1
+    have ne : lift k ≠ lift y := by
+      intro he
+      have E := congrArg f he
+      rw [liftR k hk (by omega),show f (lift y) = y from liftR _ (by omega) (by omega)] at E
+      have H := natCast_inj_lt (by omega : k<n) (by omega : k+1<n) E
+      omega
+    have eq : pre f (interval (k : ZMod n) 2) = {lift k,lift y} := by
+      have split : pre f (interval (k : ZMod n) 2) = pre f {(k : ZMod n)} ∪ pre f {y} := by
+        ext p
+        simp [y,interval_two,Nat.cast_add]
+      rw [split,singleK,singleY]; simp
+    obtain ⟨s,r,hr,e⟩ := ho b (k : ZMod n) 2 (by omega)
+    change pre f (interval (k : ZMod n) 2) = interval s r at e
+    rw [eq] at e
+    have len := congrArg Finset.card e
+    rw [interval_card s hr] at len
+    have er : r=2 := by simpa [ne] using len.symm
+    rw [er,interval_two] at e
+    have hL : lift k ∈ ({s,s+1} : Finset _) := e ▸ (by simp)
+    have hR : lift y ∈ ({s,s+1} : Finset _) := e ▸ (by simp)
+    change lift y = lift k + 1 ∨ lift y = lift k - 1
+    simp only [mem_insert,mem_singleton] at hL hR
+    rcases hL with hL|hL <;> rcases hR with hR|hR <;> simp_all
+  obtain ⟨d,hd,first⟩ : ∃ d : ZMod n, (d=1 ∨ d = -1) ∧
+      lift ((1+1 : ℕ) : ZMod n) = lift (1 : ℕ) + d := by
+    rcases step 1 (by decide) (by omega) with h|h
+    · exact ⟨1,Or.inl rfl,h⟩
+    · exact ⟨-1,Or.inr rfl,by simpa [sub_eq_add_neg] using h⟩
+  let c := lift 1-d
+  have chain (h : ℕ) (hh : h+3 < n) :
+      lift ((h+2 : ℕ) : ZMod n) = lift ((h+1 : ℕ) : ZMod n)+d := by
+    induction h with
+    | zero => exact first
+    | succ h ih =>
+      have E := ih (by omega)
+      have H := step (h+2) (by omega) (by omega)
+      have ne : lift ((h+2+1 : ℕ) : ZMod n) ≠ lift ((h+1 : ℕ) : ZMod n) := by
+        intro he
+        have he' := congrArg f he
+        rw [liftR _ (by omega) (by omega),liftR _ (by omega) (by omega)] at he'
+        have dif := natCast_inj_lt (by omega : h+2+1<n) (by omega : h+1<n) he'
+        omega
+      change lift ((h+2+1 : ℕ) : ZMod n) = lift ((h+2 : ℕ) : ZMod n)+d
+      rcases hd with rfl|rfl <;> rcases H with H|H <;> simp_all [sub_eq_add_neg,add_assoc]
+  have loc (h : ℕ) (hh : h+2<n) :
+      lift ((h+1 : ℕ) : ZMod n) = c+d*((h+1 : ℕ) : ZMod n) := by
+    induction h with
+    | zero => simp [c]
+    | succ h ih =>
+      change lift ((h+2 : ℕ) : ZMod n) = c+d*((h+2 : ℕ) : ZMod n)
+      rw [chain h (by omega), ih (by omega)]
+      push_cast; ring
+  have mid (z : ZMod n) (z0 : z ≠ 0) (z1 : z ≠ -1) : lift z = c+d*z := by
+    have hv := z.val_lt
+    have hz : 0 < z.val := by
+      by_contra! h
+      have E : z.val = 0 := by omega
+      have hh : (z.val : ZMod n) = 0 := by rw [E]; simp
+      exact z0 (by simpa using hh)
+    have last : z.val+1<n := by
+      by_contra! h
+      have E : z.val+1 = n := by omega
+      have hh : (z : ZMod n)+1 = 0 := by
+        have hh := congrArg (fun k : ℕ => (k : ZMod n)) E
+        simpa using hh
+      exact z1 (eq_neg_of_add_eq_zero_left hh)
+    have H := loc (z.val-1) (by omega)
+    simpa only [show z.val-1+1=z.val by omega,ZMod.natCast_zmod_val] using H
+  have midF (z : ZMod n) (z0 : z ≠ 0) (z1 : z ≠ -1) : f (c+d*z) = z := by
+    rw [← mid z z0 z1]
+    exact (single z z0 z1).2
+  have one : (1 : ZMod n) ≠ 0 := by simpa using cast_ne_zero (n := n) (by decide : 0<1) (by omega)
+  have nz : (0 : ZMod n) ≠ -1 := by simpa using one
+  refine ⟨c,d,hd,?_⟩
+  intro z
+  by_cases special : z=0 ∨ z = -1
+  · let y := f (c+d*z)
+    have y1 : y ≠ -1 := by
+      intro eq
+      have mem : (-1 : ZMod n) ∈ univ.image f := mem_image.mpr ⟨_,mem_univ _,eq⟩
+      have zero : fibre f (-1) = 0 := by simp [f,prof]
+      exact (fibre_zero_iff ..).mp zero mem
+    have y0 : y = 0 := by
+      by_contra yy
+      have hi := unique' yy y1 (rfl : f (c+d*z) = y)
+      rw [mid y yy y1] at hi
+      have same : z=y := by rcases hd with rfl|rfl <;> simpa using add_left_cancel hi
+      rcases special with h|h
+      · exact yy (same ▸ h)
+      · exact y1 (same ▸ h)
+    change y = foldPoint z
+    rcases special with h|h <;> simp [foldPoint,h,y0,nz]
+  · push_neg at special
+    simpa [foldPoint,special.2] using midF z special.1 special.2
+
+end Automaton
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+variable {n : ℕ} [NeZero n] {α : Type*}
+
+namespace Automaton
+
+private theorem normalized_bound (A : Automaton n α) {a b : α} {j c d : ZMod n}
+    (hr : ∀ x, A.δ a x = x+j) (ht : ∀ x y, ∃ k : ℕ, (fun p : ZMod n => p-j)^[k] x = y)
+    (hd : d = 1 ∨ d = -1) (hb : ∀ z, A.δ b (c+d*z) = foldPoint z)
+    (hn : 5 ≤ n) (j1 : j ≠ 1) (S : Finset (ZMod n)) (hm : 3 ≤ S.card) :
+    ∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S := by
+  let m := S.card
+  let g := (n-1)/m
+  let k := n-g-2
+  have hmn : m ≤ n := by simpa [m,ZMod.card] using card_le_univ S
+  have h3m : 3 ≤ m := hm
+  have hmg : m*g ≤ n-1 := by simpa [g,Nat.mul_comm] using Nat.div_mul_le_self (n-1) m
+  have h3g := Nat.mul_le_mul_right g h3m
+  have hL : 2+k+g = n := by dsimp [k]; omega
+  have hk : 2+k ≤ n := by omega
+  have nj : j ≠ 0 := by
+    intro e
+    obtain ⟨i,hi⟩ := ht 0 1
+    rw [back_steps,e] at hi
+    have one : (1 : ZMod n) ≠ 0 := by simpa using cast_ne_zero (n := n) (by decide : 0<1) (by omega)
+    exact one (by simpa using hi.symm)
+  obtain ⟨w,hw,hS⟩ := A.align_subset hr ht S hk
+    (by change m*(n-(2+k)) < n; rw [show n-(2+k) = g by omega]; omega)
+    (A.normalized_growth hr ht hd hb (by omega) nj j1 k hk)
+  rw [show n-(2+k) = g by omega] at hw
+  change w.length ≤ 2+(n-1)*k+m*g at hw
+  have H := closing_budget n m h3m hmn
+  change 2+((n:ℤ)-1)*((n:ℤ)-g-2)+m*g+((m:ℤ)-3) ≤ bound n m at H
+  have hK : ((n:ℤ)-g-2) = (k : ℤ) := by omega
+  rw [hK] at H
+  zify [show 1 ≤ n by omega] at hw
+  have low : (w.length : ℤ) ≤ B n m := by
+    rw [cast_B (by omega) hmn]
+    have h3 : (3 : ℤ) ≤ m := by exact_mod_cast h3m
+    linarith only [H,hw,h3]
+  exact ⟨w,by exact_mod_cast low,hS⟩
+
+/-- Cardoso's bound for every nonempty specified subset of a synchronizing
+weakly oriented circular automaton. There is no restriction on the jump,
+the rank of a letter, the alphabet, or the number of states other than
+nonemptiness of the state space. -/
+theorem weaklyOrientedCircular_bound (A : Automaton n α)
+    (hs : A.Synchronizing) (hc : A.Circular) (ho : A.WeaklyOriented)
+    (S : Finset (ZMod n)) (hne : S.Nonempty) :
+    ∃ w : List α, w.length ≤ B n S.card ∧ A.Synchronizes w S := by
+  classical
+  by_contra no
+  obtain ⟨hn,hm,_,a,b,j,u,v,hr,ht,nj1,njm,_,adj,prof⟩ :=
+    A.residual_of_no_short_word hs hc ho S hne no
+  obtain ⟨r,pu⟩ : ∃ r : Bool, chart v r (-1) = u := by
+    rcases adj with H|H
+    · refine ⟨false,?_⟩
+      change v+(-1) = u
+      rw [← H]; abel
+    · refine ⟨true,?_⟩
+      change v-(-1) = u
+      rw [H]; abel
+  let π := chart v r
+  have pv : π 0 = v := by cases r <;> simp [π,chart]
+  let A' := A.relabel π
+  have fprof (z : ZMod n) :
+      fibre (A'.δ b) z = if z = -1 then 0 else if z=0 then 2 else 1 := by
+    rw [show fibre (A'.δ b) z = fibre (A.δ b) (π z) from A.fibre_relabel π b z,prof]
+    have E1 : π z = u ↔ z = -1 := by rw [← pu]; exact π.injective.eq_iff
+    have E0 : π z = v ↔ z = 0 := by rw [← pv]; exact π.injective.eq_iff
+    simp only [E1,E0]
+  obtain ⟨c,d,hd,hb⟩ := A'.normalized_shape (A.chart_oriented ho v r) b hn fprof
+  obtain ⟨hr',ht'⟩ := A.chart_rot hr ht v r
+  have J : (if r then -j else j) ≠ 1 := by
+    cases r with
+    | false => exact nj1
+    | true =>
+      intro e
+      apply njm
+      simpa using congrArg Neg.neg e
+  let T := S.image π.symm
+  have card : T.card = S.card := card_image_of_injective _ π.symm.injective
+  obtain ⟨w,hw,hsw⟩ := A'.normalized_bound hr' ht' hd hb hn J T (by omega)
+  exact no ⟨w,card ▸ hw,A.sync_of_relabel π hsw⟩
+
+end Automaton
 end CardosoSubsetSynchronization
