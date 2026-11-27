@@ -12,6 +12,8 @@ import Conjectures.PetrTemperateIntersecting
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.YiboGaoCoxeterGeodesicHull
 import Conjectures.YuanParriloPermanentSphere
+import Conjectures.NabergallChordalDiagrams.Diagrams
+import Conjectures.NabergallChordalDiagrams.Series
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 
