@@ -1,4 +1,6 @@
-import Mathlib
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Data.Fintype.Card
+import Mathlib.Tactic.Push
 
 /-!
 # The slice-cover test for odd-coloring extensions
