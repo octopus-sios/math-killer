@@ -14,6 +14,11 @@ import Conjectures.YiboGaoCoxeterGeodesicHull
 import Conjectures.YuanParriloPermanentSphere
 import Conjectures.NabergallChordalDiagrams.Diagrams
 import Conjectures.NabergallChordalDiagrams.Series
+import Conjectures.NabergallChordalDiagrams.Assembly
+import Conjectures.NabergallChordalDiagrams.Clique
+import Conjectures.NabergallChordalDiagrams.Cuts
+import Conjectures.NabergallChordalDiagrams.Glue
+import Conjectures.NabergallChordalDiagrams.Split
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 
