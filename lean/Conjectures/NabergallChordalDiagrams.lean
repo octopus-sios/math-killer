@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.RingTheory.PowerSeries.Catalan
+import Mathlib.Tactic.Ring
 
 /-!
 # The lattice coefficient in the connected chordal diagram enumeration
@@ -22,7 +23,10 @@ def zChoose (n : ℕ) (k : ℤ) : ℕ :=
 
 private theorem zChoose_zero (k : ℤ) : zChoose 0 k = if k = 0 then 1 else 0 := by
   cases k with
-  | ofNat k => cases k <;> simp [zChoose] <;> omega
+  | ofNat k =>
+    cases k with
+    | zero => simp [zChoose]
+    | succ k => simp [zChoose]; omega
   | negSucc k => simp [zChoose]
 
 private theorem zChoose_succ (n : ℕ) (k : ℤ) :
