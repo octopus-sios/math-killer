@@ -1,0 +1,160 @@
+% Primary source: Chenyang Yuan, Pablo A. Parrilo,
+% "Maximizing Products of Linear Forms, and The Permanent of Positive Semidefinite Matrices"
+% arXiv:2002.04149v2 (2021-01-13), Math. Program. (2021), https://arxiv.org/abs/2002.04149
+% Verbatim macros, definition of r(A), and Section "A Conjecture" (conj:psd-per-approx & Pate's conjecture)
+
+% --- Preamble macros ---
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\DeclareMathOperator{\rel}{rel}
+\DeclareMathOperator{\spann}{span}
+\DeclareMathOperator{\GammaText}{Gamma}
+\newcommand{\cnormal}{\mathcal{C}\mathcal{N}}
+\newcommand{\iid}{i.i.d.\ }
+
+% --- Verbatim definition of r(A) and problem setup ---
+\section{Introduction}
+We study the problem of maximizing a product of linear forms on the complex
+$(n-1)$-sphere of radius $\sqrt n$:
+\begin{align} \label{eq:product-of-linear-forms}
+  r(A) \equiv \max_{\norm{x}^2=n} \prod_{i=1}^n \abs{\dotp{x, v_i}}^2,
+\end{align}
+where $A = V^\dagger V$ and $v_i$ are the columns of $V$. We show that the
+natural convex relaxation of \eqref{eq:product-of-linear-forms},
+\begin{align} \label{eq:convex-rel}
+  \max \, \prod_{i=1}^n v_i^\dagger P v_i \,\mbox{ s.t. }\,
+  \Tr(P) = n,\, P \succeq 0,
+\end{align}
+is also a relaxation of the permanent of $A$, which is defined by
+\begin{align} \label{eq:def-per}
+  \per(A) = \sum_{\sigma \in \mathbf{S}_n} \prod_{i=1}^n A_{i,\sigma(i)},
+\end{align}
+where the sum is over all $n!$ permutations of $n$ elements. Computing the
+permanent exactly is \#P-hard \cite{Valiantcomplexitycomputingpermanent1979},
+and approximation efforts have been focused on classes of matrices with
+computationally efficient certificates of permanent non-negativity. For matrices
+with non-negative entries, \cite{JerrumPolynomialtimeApproximationAlgorithm2004}
+gave a randomized algorithm achieving a $(1+\epsilon)$-approximation. There has
+been recent interest in approximating the permanent of HPSD matrices due to
+their applications in quantum information \cite{GrierNewhardnessresults2018}.
+The work by \cite{AnariSimplyExponentialApproximation2017a} gave the first
+polynomial-time algorithm for approximating the permanent of HPSD matrices with
+a simply exponential multiplicative approximation factor of
+$\frac{n!}{n^n}e^{-n\gamma}$, where $\gamma \approx 0.577$ is the
+Euler-Mascheroni constant. Their algorithm is based on the following convex
+program relaxation of the permanent.
+\begin{definition}
+  Given a HPSD matrix $A \in \C^{n \times n}$, we define $\rel(A)$ as the
+  solution to the optimization problem:
+  \begin{align}\label{eq:rel-opt-problem}
+    \rel(A) \equiv \left\{
+    \begin{array}{rl}
+      \min \,& \prod_{i=1}^n D_{ii} \\
+      \text{s.t.} & A \preceq D, \quad D \text{ is diagonal}
+    \end{array}
+                    \right.
+  \end{align}
+\end{definition}
+In this paper, we show that $\rel(A)$ is equivalent to the convex relaxation
+\eqref{eq:convex-rel}. Our main result, Theorem
+\ref{thm:approx-factor-prod-linear-complex}, uses this connection between the
+polynomial optimization problem \eqref{eq:product-of-linear-forms} and $\per(A)$
+to provide a new analysis of the approximation of $\per(A)$ in terms of the rank
+of the optimal solution to \eqref{eq:convex-rel}. By bounding this rank, we
+prove an improved approximation factor for all finite $n$:
+\begin{corollary} \label{cor:approx-factor} Given a HPSD matrix
+  $A \in \C^{n \times n}$, $\rel(A)$ is an
+  $\frac{n!}{n^n}e^{-nL_r}$-approximation to $\per(A)$:
+  \begin{align*}
+    \frac{n!}{n^n}e^{-nL_r} \rel(A) \le \per(A) \le \rel(A)
+  \end{align*}
+  where $r = O(\sqrt n)$, $L_r = H_{r-1} - \log(r)$, and
+  $H_r = \sum_{k=1}^{r} \frac{1}{k}$ is the $r$-th harmonic number.
+\end{corollary}
+From the definition of the Euler-Mascheroni constant,
+$\lim_{n \rightarrow \infty} L_r = \gamma$. For any finite $n$, $L_r < \gamma$
+and thus $\frac{n!}{n^n}e^{-nL_r} > \frac{n!}{n^n}e^{-n\gamma}$. More precisely,
+using Proposition \ref{prop:approx-asymptotics}, we can show that this is a
+$e^{O(\sqrt n)}$ multiplicative improvement.
+\cite{AnariSimplyExponentialApproximation2017a} also constructed a series of
+matrices $A_k$ such that $(\rel(A_k)/\per(A_k)))^{1/n} \rightarrow e^{1+\gamma}$
+as $k \rightarrow \infty$. However since this result only rules out improvements
+on the order of $e^{O(n)}$, it does not contradict Corollary
+\ref{cor:approx-factor}.
+
+In Section \ref{sec:proof} we analyze the convex relaxation of
+\eqref{eq:product-of-linear-forms}, describe a rounding procedure and prove its
+approximation factor. In particular we prove that
+\begin{align*}
+  e^{-nL_r} \rel(A) \le r(A) \le \rel(A).
+\end{align*}
+In Section \ref{sec:permanent} we prove Theorem
+\ref{thm:approx-factor-prod-linear-complex}. We first show that the convex
+relaxation of $r(A)$ is equivalent to $\rel(A)$. Then using the vector produced
+by the rounding procedure of the relaxation, we construct a rank-1 matrix whose
+permanent lower bounds $\per(A)$, thus showing that $\rel(A)$ also
+well-approximates $\per(A)$. Note that in
+\cite{AnariSimplyExponentialApproximation2017a} only the existence of this
+rank-1 matrix is shown, but in our analysis we provide an explicit construction
+of a rank-1 matrix whose permanent lower bounds $\per(A)$. This combined with
+the diagonal matrix in \eqref{eq:rel-opt-problem} whose permanent upper-bounds
+$\per(A)$ certifies the approximation. In Section \ref{sec:conj} we explore
+reasons why the convex relaxation of \eqref{eq:product-of-linear-forms} is
+equivalent to $\rel(A)$. We conjecture that \eqref{eq:product-of-linear-forms}
+is itself a $\frac{n!}{n^n}$ approximation to $\per(A)$, explain why it is an
+analogue of van der Waerden's conjecture, and show that it is implied by another
+long-standing permanent conjecture.
+
+\section{
+
+% --- Verbatim Section "A Conjecture" ---
+\section{A Conjecture} \label{sec:conj}
+Our analysis of $\rel(A)$ was inspired by the optimization problem
+\eqref{eq:product-of-linear-forms}, maximizing a product of linear forms over
+the complex sphere. We conjecture that the exact solution to this optimization
+problem is a tighter relaxation of the permanent.
+\begin{conjecture}\label{conj:psd-per-approx}
+  Given $A = V^\dagger V$, where $v_i$ are the columns of $V$, recall that
+  $r(A)$ is the maximum of a product of linear forms as defined in
+  \eqref{eq:product-of-linear-forms}. Then
+  \begin{align} \label{eq:conj} \frac{n!}{n^n} r(A) \le \per(A)
+    \le r(A).
+  \end{align}
+\end{conjecture}
+If the matrix $A$ is scaled so that $r(A) = 1$, then \eqref{eq:conj} is exactly
+the same bounds given by the van der Waerden's conjecture for doubly stochastic
+matrices (proved by \cite{FalikmanProofvanWaerden1981},
+\cite{EgorychevsolutionvanWaerden1981}
+\cite{GurvitsVanWaerdenSchrijverValiant2008a}). The lower bound follows from
+Lemma \ref{lem:per-rank-1}, but the upper bound cannot be proven by naively
+applying Proposition \ref{prop:per-int-rep} and bounding the integral over the
+complex sphere by its maximum. However, we can show that the upper bound is
+implied by another conjecture on permanents:
+\begin{conjecture}[Pate's conjecture \cite{Pateinequalityinvolvingpermanents1984}]
+  Given any $n \times n$ HPSD matrix $A$, let $A \otimes J_k$ be the Kronecker
+  product of $A$ with the $k \times k$ all-ones matrix. Then
+  \begin{align} \label{eq:pate-conj}
+    \per(A \otimes J_k) \ge  \per(A)^k (k!)^n.
+  \end{align}
+\end{conjecture}
+This conjecture has been proved in the case where $n = 2$, see
+\cite{Zhangupdatefewpermanent2016} for a survey of subsequent progress on this
+conjecture. Using the integral representation of the permanent (Proposition
+\ref{prop:per-int-rep}), we can write \eqref{eq:pate-conj} as:
+\begin{align*}
+  \Ex_{x\sim \cnormal(0, I_n)}\bracket{\prod_{i=1}^n \abs{\dotp{v_i,x}}^{2k}}^{1/k} \ge \per(A)
+  \Ex_{x\sim \cnormal(0, I_n)}\bracket{\prod_{i=1}^n \abs{x_i}^{2k}}^{1/k}
+\end{align*}
+Since both expectations are taken over homogeneous polynomials of degree $d$, we
+can apply Fact \ref{fact:gaussian-sphere-correction}, take
+$k \rightarrow \infty$ and get:
+\begin{align*}
+  \max_{\norm{x}^2 = n} \prod_{i=1}^n \abs{\dotp{v_i, x}}^2
+  \ge \per(A) \max_{\norm{x}^2 = n} \prod_{i=1}^n \abs{x_i}^2 = \per(A).
+\end{align*}
+% There is reason to believe that Conjecture \ref{conj:psd-per-approx} is easier
+% to prove than Pate's conjecture. For fixed $n$, Conjecture
+% \ref{conj:psd-per-approx} is a statement about semialgebraic sets (which can
+% be verified by algorithms from computational algebraic geometry), but in order
+% to prove it with Pate's conjecture, we need its result for all $k$.
+
+\section{
