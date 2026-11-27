@@ -42,6 +42,31 @@
       "verify_script": "results/nabergall-chordal-diagrams/verify.py",
       "lean_partial_file": "lean/Conjectures/NabergallChordalDiagrams.lean",
       "lean_partial_theorem": "NabergallChordalDiagrams.walk_coefficient"
+    },
+    {
+      "slug": "petr-temperate-intersecting",
+      "title": "Petr–Turek temperate intersecting families (upper-half proof and exact n <= 8)",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Jan Petr and Pavel Turek",
+        "paper": "Towards odd-sunflowers: temperate families and lightnings",
+        "journal": "Journal of Combinatorial Theory, Series A 220 (2026)",
+        "doi": "10.1016/j.jcta.2025.106133",
+        "arxiv_id": "2406.18437v2",
+        "url": "https://arxiv.org/abs/2406.18437v2",
+        "target": "Conjecture 1.7"
+      },
+      "summary": "Proves the sharp lightning upper bound L_k = (1/2) binom(2k, k) + binom(2k, k+1) + binom(2k-1, k+2) for every k >= 2 across the entire upper half of the Boolean cube (whenever at most one member has size < k), establishes an O(N_k / k^2) additive bound on the four central ranks (k >= 6), and proves by exact integer search that the unrestricted maxima on [4], [6], [8] are 7, 26, 98. Unrestricted k >= 5 remains open.",
+      "proof_file": "results/petr-temperate-intersecting/PROOF.md",
+      "source_file": "results/petr-temperate-intersecting/SOURCE.tex",
+      "verify_script": "results/petr-temperate-intersecting/verify.py",
+      "lean_partial_file": "lean/Conjectures/PetrTemperateIntersecting.lean",
+      "lean_partial_theorems": [
+        "PetrTemperateIntersecting.lightning_lower_bound",
+        "PetrTemperateIntersecting.upper_four"
+      ]
     }
   ]
 }
