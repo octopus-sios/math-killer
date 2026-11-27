@@ -1,0 +1,85 @@
+% Primary source: Jan Petr, "Towards odd-sunflowers: temperate families and lightnings"
+% arXiv:2406.18437v2 (2024-07-14), https://arxiv.org/abs/2406.18437
+% Verbatim preamble macros and Section 1 definitions + Conjecture (conj:intersecting-even)
+
+% --- Preamble macros ---
+\newcommand{\fly}[0]{\mathcal{F}}
+\newcommand{\pot}[1]{\mathcal{P}(#1)}
+\newcommand{\muf}[0]{\mu_{\fly}}
+\newcommand{\muft}[0]{\mu_{\widetilde{\fly}}}
+\newcommand{\saw}[0]{temperate }
+\newcommand{\sawt}[1]{$#1$-temperate}
+\newcommand{\jan}[1]{\textcolor{orange}{\textbf{#1}}}
+\newcommand{\pavel}[1]{\textcolor{blue}{\textbf{#1}}}
+
+% --- Verbatim introduction, definitions, and conjecture ---
+\section{Introduction}
+
+Let $[n]=\{1,\ldots,n\}$. For a family $\fly \subseteq \pot{[n]}$ and a set $A \in \pot{[n]}$, let $\muf(A)=|\pot{A} \cap \fly|$.
+Given a non-negative integer $t$, we say $\fly$ is \textit{\sawt{t}} if $\muf(A) \leq \sum_{j=0}^t \binom{|A|}{j}$ for all $A \in \fly$. Note that $\muf(A) \leq \sum_{j=0}^t \binom{|A|}{j}$ is trivially satisfied for all $A$ with $|A|\leq t$.
+Of particular interest to us will be \sawt{1} families, i.e. families $\fly$ where $\muf(A) \leq 1+|A|$ for all $A \in \fly$.
+For brevity, we will refer to \sawt{1} families as \textit{\saw}families. 
+
+Simple examples of \sawt{t} families include antichains (for $t\geq0$), chains (for $t \geq 1)$ and the union of any $t+1$ consecutive layers of the hypercube (for $t \geq 0$) since any set $A$ of size $|A| \geq l$ has precisely $\sum_{j=0}^l \binom{|A|}{j}$ subsets which lie at most $l$ layers below $A$.
+
+In this short paper, we begin the investigation of properties of \sawt{t} families by considering the following two extremal questions. Recall that a family is called \emph{intersecting} if the intersection of any two elements of it is non-empty.
+
+\begin{question} \label{qu:nintersecting}
+What is the maximum size of a \sawt{t} family on $[n]$?
+\end{question}
+
+\begin{question} \label{qu:intersecting}
+What is the maximum size of an intersecting \sawt{t} family on $[n]$?
+\end{question}
+
+\subsection{Main results}
+
+As we shall see, the answer to \Cref{qu:nintersecting} is given by the total size of the $t+1$ largest layers of the hypercube.
+
+\begin{theorem}\label{th:nintersecting}
+Let $t\leq n$ be non-negative integers. The maximum size of a \sawt{t} family on $[n]$ is $\sum_{j=0}^{t} \binom{n}{\lfloor(n-t)/2\rfloor + j}$. 
+\end{theorem}
+
+Moreover, we classify all the \sawt{t} families which attain the maximal size. We use $\binom{[n]}{k}$ to denote the set of subsets of $[n]$ of size $k$.
+
+\begin{theorem}\label{th:nintersecting-class}
+Let $t \leq n$ be non-negative integers.
+
+\begin{enumerate}[\normalfont(a)]
+\item\label{item:first}
+If $t \equiv n \pmod{2}$, the only \sawt{t} family of maximal size is $\bigcup_{j=0}^{t} \binom{[n]}{(n-t)/2 + j}$.
+
+\item\label{item:second}
+If $t=n-1$, any family of size $2^n-1$ is a \sawt{t} family of maximal size.
+
+\item\label{item:third}
+If $t \not\equiv n \pmod 2$ and $t < n-1$, then there are two \sawt{t} families of maximal size: $\bigcup_{j=0}^{t} \binom{[n]}{(n-t-1)/2 + j}$ and $\bigcup_{j=0}^{t} \binom{[n]}{(n-t+1)/2 + j}$.
+\end{enumerate}
+\end{theorem}
+
+The case of \Cref{qu:intersecting} turns out to be more convoluted. In this paper, we restrict our attention to the case of intersecting \saw families. In such a setting, we obtain the following answer for odd $n$.
+
+\begin{theorem} \label{th:intersecting-odd}
+The maximum size of an intersecting \saw family on $[n]$ for odd $n=2k-1$ is $\binom{2k-1}{k} + \binom{2k-1}{k+1}$.
+\end{theorem}
+
+As with the non-intersecting case, we provide the full classification of the extremal families.
+
+\begin{theorem}\label{th:intersecting-class}
+For odd $n=2k-1$ the unique intersecting \saw family of maximal size is $\binom{[2k-1]}{k}\cup\binom{[2k-1]}{k+1}$ unless $n=3$, in which case there are three additional such families. These are $\{ A \in \pot{[3]} : i\in A\}$ for each $i\in [3]$. 
+\end{theorem}
+
+For even $n$, we make the following conjecture.
+
+\begin{conjecture} \label{conj:intersecting-even}
+The maximum size of an intersecting \saw family on $[n]$ for even $n=2k$ is $\frac{1}{2}\binom{2k}{k}+\binom{2k}{k+1}+\binom{2k-1}{k+2}$.
+\end{conjecture}
+
+We believe one of the extremal constructions supporting \Cref{conj:intersecting-even} is the following one, whose name comes from the shape the contained elements resemble when drawn in the Hesse diagram of the hypercube, with rows ordered lexicographically. By a \textit{lightning}, we mean the family on $[2k]$ which contains:
+\begin{itemize}
+\item all elements of $\binom{[2k]}{k}$ containing $1$, and
+\item all elements of $\binom{[2k]}{k+1}$, and
+\item all elements of $\binom{[2k]}{k+2}$ not containing $1$.
+\end{itemize}
+
+\subsection{Background and motivation}
