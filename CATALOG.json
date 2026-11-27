@@ -20,6 +20,28 @@
       "verify_script": "results/guan-transversal-achievement/verify.py",
       "lean_file": "lean/Conjectures/GuanTransversalAchievement.lean",
       "lean_theorem": "GuanTransversalAchievement.optimalDurationLowerBound"
+    },
+    {
+      "slug": "nabergall-chordal-diagrams",
+      "title": "Connected chordal chord diagrams (Nabergall's Conjecture 8.5)",
+      "verdict": "proved",
+      "status": "⬜",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Lukas Nabergall",
+        "paper": "The combinatorics of a tree-like functional equation for connected chord diagrams",
+        "journal": "Combinatorial Theory 3(3), #8 (2023)",
+        "doi": "10.5070/C63362791",
+        "arxiv_id": "2104.02296v1",
+        "url": "https://escholarship.org/uc/item/1qg5647z",
+        "target": "Conjecture 8.5"
+      },
+      "summary": "For every n >= 1, the number of rooted chord diagrams of size n whose crossing graph is connected and chordal equals C_{n-1}^2 = ((1/n) binom(2n-2, n-1))^2, proved via clique-boundary sector triangulation, earliest-cut irreducible factorization, and Clebsch–Gordan generating-function extraction.",
+      "proof_file": "results/nabergall-chordal-diagrams/PROOF.md",
+      "source_file": "results/nabergall-chordal-diagrams/SOURCE.tex",
+      "verify_script": "results/nabergall-chordal-diagrams/verify.py",
+      "lean_partial_file": "lean/Conjectures/NabergallChordalDiagrams.lean",
+      "lean_partial_theorem": "NabergallChordalDiagrams.walk_coefficient"
     }
   ]
 }
