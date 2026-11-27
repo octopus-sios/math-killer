@@ -7,18 +7,24 @@ import Conjectures.HerzogSchonheimNonSolvable
 import Conjectures.KashimaOzekiKtreeOddColoring
 import Conjectures.Kourovka1846SquareOvergroup
 import Conjectures.NabergallChordalDiagrams
+import Conjectures.NabergallChordalDiagrams.Assembly
+import Conjectures.NabergallChordalDiagrams.Clique
+import Conjectures.NabergallChordalDiagrams.Counting
+import Conjectures.NabergallChordalDiagrams.Cuts
+import Conjectures.NabergallChordalDiagrams.Diagrams
+import Conjectures.NabergallChordalDiagrams.Enumeration
+import Conjectures.NabergallChordalDiagrams.Factors
+import Conjectures.NabergallChordalDiagrams.Glue
+import Conjectures.NabergallChordalDiagrams.Polygon
+import Conjectures.NabergallChordalDiagrams.Separator
+import Conjectures.NabergallChordalDiagrams.Series
+import Conjectures.NabergallChordalDiagrams.Split
+import Conjectures.NabergallChordalDiagrams.Triangulation
 import Conjectures.PattanayakTwoDegenerateLinearArboricity
 import Conjectures.PetrTemperateIntersecting
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.YiboGaoCoxeterGeodesicHull
 import Conjectures.YuanParriloPermanentSphere
-import Conjectures.NabergallChordalDiagrams.Diagrams
-import Conjectures.NabergallChordalDiagrams.Series
-import Conjectures.NabergallChordalDiagrams.Assembly
-import Conjectures.NabergallChordalDiagrams.Clique
-import Conjectures.NabergallChordalDiagrams.Cuts
-import Conjectures.NabergallChordalDiagrams.Glue
-import Conjectures.NabergallChordalDiagrams.Split
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
 

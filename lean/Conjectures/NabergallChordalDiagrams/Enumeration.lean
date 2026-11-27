@@ -26,13 +26,13 @@ private theorem free_choices (i j k : ℕ) : Fintype.card (Choice .sequence i j 
     (Finsupp.single (i+j) 1 : Series.WeightRow) k := by
   by_cases h : i+j=k
   · let z : Choice .sequence i j k := ⟨⟨0,by omega⟩,rfl,by simpa using h⟩
-    haveI : Unique (Choice .sequence i j k) :=
+    have : Unique (Choice .sequence i j k) :=
       ⟨⟨z⟩,fun x => Subtype.ext (Fin.ext (x.property.1 : x.val.val=0))⟩
-    simp [Finsupp.single_apply,h]
-  · haveI : IsEmpty (Choice .sequence i j k) := ⟨fun x =>
+    simp [h]
+  · have : IsEmpty (Choice .sequence i j k) := ⟨fun x =>
       let hz : x.val.val=0 := x.property.1
       h (by simpa [hz] using x.property.2)⟩
-    simp [Finsupp.single_apply,h]
+    simp [h]
 
 private def relabelLinks (i j k : ℕ) : Choice .linked i (j+1) k ≃
     {u : Fin (min i j) // i+j-1-2*u.val=k} where
@@ -76,7 +76,7 @@ private theorem irreducible_one : I_count 1 1 = 1 := by
   have wf : oneFragment.weight=1 := by
     rw [Fragment.weight_eq_one_iff]
     exact ⟨0,fun x => ⟨fun _ => Subsingleton.elim _ _,fun _ => rfl⟩⟩
-  haveI : Nonempty oneFragment.Chord := ⟨⟨0,le_rfl⟩⟩
+  have : Nonempty oneFragment.Chord := ⟨⟨0,le_rfl⟩⟩
   have ch : Chordal oneFragment.graph := by
     intro k hk f inj _
     let u : Fin k := ⟨0,by omega⟩
@@ -86,7 +86,7 @@ private theorem irreducible_one : I_count 1 1 = 1 := by
   let x : IrreducibleFragment 1 1 :=
     ⟨⟨oneFragment,⟨SimpleGraph.Connected.of_subsingleton,ch⟩,wf,Nat.zero_lt_one⟩,
       fun g hp hq => (by omega : False).elim⟩
-  haveI : Unique (IrreducibleFragment 1 1) := ⟨⟨x⟩,fun _ => Subsingleton.elim _ _⟩
+  have : Unique (IrreducibleFragment 1 1) := ⟨⟨x⟩,fun _ => Subsingleton.elim _ _⟩
   exact Fintype.card_unique
 
 private theorem seed_count (n k : ℕ) :
@@ -95,7 +95,7 @@ private theorem seed_count (n k : ℕ) :
   · let e : IrreducibleFragment n k ≃ Target .linked n k :=
       Equiv.subtypeEquivRight (fun _ => ⟨fun h => ⟨h,hn⟩,And.left⟩)
     simpa [I_count,Series.seed,show n≠1 by omega, ← Nat.card_eq_fintype_card] using Fintype.card_congr e
-  · haveI : IsEmpty (Target .linked n k) := ⟨fun x => hn x.property.2⟩
+  · have : IsEmpty (Target .linked n k) := ⟨fun x => hn x.property.2⟩
     simp only [Fintype.card_of_isEmpty, Nat.add_zero]
     rcases (show n=0 ∨ n=1 by omega) with rfl|rfl
     · cases k with

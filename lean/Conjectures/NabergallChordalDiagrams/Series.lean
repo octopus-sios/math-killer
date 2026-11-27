@@ -205,7 +205,7 @@ theorem recurrences_canonical : Recurrences Irec Hrec := by
   have badI (n k : ℕ) (bad : k=0 ∨ n<k) : Irec n k = 0 := by
     rw [ci, split_support _ _ _ _ bad, add_zero]
     · by_cases hn : n=1
-      · simp [seed, hn, Finsupp.single_apply, show 1 ≠ k by omega]
+      · simp [seed, hn, show 1 ≠ k by omega]
       · simp [seed, hn]
     · intro i j hi hj hh
       rw [links_apply]
@@ -217,7 +217,7 @@ theorem recurrences_canonical : Recurrences Irec Hrec := by
     rw [ch, badI n k bad, zero_add]
     apply split_support _ _ _ _ bad
     intro i j hi hj hh
-    simp [Finsupp.single_apply, show i+j ≠ k by omega]
+    simp [show i+j ≠ k by omega]
   exact Recurrences.of_pointwise (fun n => badI n 0 (Or.inl rfl))
     (fun n => badH n 0 (Or.inl rfl)) (fun n k hk => badI n k (Or.inr hk))
     (fun n k hk => badH n k (Or.inr hk)) ch ci

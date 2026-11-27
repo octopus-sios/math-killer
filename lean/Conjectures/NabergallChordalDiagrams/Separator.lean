@@ -79,13 +79,13 @@ theorem shortcut {V : Type*} {G : SimpleGraph V} (ch : Chordal G)
     by_cases a : i.val=0 <;> by_cases d : j.val=0
     · simp only [f,a,d,ite_true,G.loopless.irrefl,and_true,false_iff]; omega
     · simp only [f,a,d,ite_true,ite_false]
-      rw [atEnds _ (by omega)]; simp only [and_true,and_false,or_false,false_or]; omega
+      rw [atEnds _ (by omega)]; simp only [and_true, and_false, false_or]; omega
     · simp only [f,a,d,ite_true,ite_false]
-      rw [G.adj_comm, atEnds _ (by omega)]; simp only [and_true,and_false,or_false,false_or]; omega
+      rw [G.adj_comm, atEnds _ (by omega)]; simp only [and_true, and_false, or_false]; omega
     · simp only [f,a,d,ite_false]
       rw [← SimpleGraph.induce_adj (s := T) (u := p.getVert _) (v := p.getVert _),
         edges _ _ (by omega) (by omega)]
-      simp only [and_false,or_false,false_or]; omega
+      simp only [and_false, or_false]; omega
 
 def Fringe {V : Type*} (G : SimpleGraph V) (U : Set V) (x : V) :=
   x ∉ U ∧ ∃ w ∈ U, G.Adj w x

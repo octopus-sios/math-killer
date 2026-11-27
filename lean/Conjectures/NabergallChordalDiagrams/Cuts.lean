@@ -27,7 +27,7 @@ def chordAt (F : Fragment N) (x : Fin N) : F.Chord :=
 @[simp] theorem mate_chordAt (F : Fragment N) (x : Fin N) :
     F.mate (F.chordAt x).val = min x (F.mate x) := by
   rcases le_total x (F.mate x) with h | h <;>
-    simp [max_eq_right, max_eq_left, min_eq_left, min_eq_right, h]
+    simp [h]
 
 @[simp] theorem chordAt_mate (F : Fragment N) (x : Fin N) :
     F.chordAt (F.mate x) = F.chordAt x := by
@@ -47,7 +47,7 @@ theorem chordAt_eq_iff (F : Fragment N) (x y : Fin N) :
     simp only [mate_chordAt] at h₂
     rcases le_total x (F.mate x) with hx | hx <;>
       rcases le_total y (F.mate y) with hy | hy <;>
-      simp_all [max_eq_right, max_eq_left, min_eq_left, min_eq_right]
+      simp_all
   · rintro (rfl | rfl) <;> simp
 
 theorem start_chordAt (F : Fragment N) (x : Fin N) :
@@ -57,7 +57,7 @@ theorem start_chordAt (F : Fragment N) (x : Fin N) :
   · simp [start, h]
   · have h' : min x (F.mate x) ≠ max x (F.mate x) := by
       rcases lt_or_gt_of_ne h with h | h <;>
-        simp [min_eq_left, min_eq_right, max_eq_left, max_eq_right, h.le, h.ne, h.ne']
+        simp [h.le, h.ne]
     unfold start
     rw [mate_chordAt, chordAt_val, ite_eq_right h', ite_eq_right h, Fin.val_min]
 
@@ -172,13 +172,12 @@ def Good (F : Fragment N) := ∀ c, W.Boundary F c → ∀ d, W.Boundary F d →
 theorem hits_at (F : Fragment N) (p : Fin N) :
     W.Hits F (F.chordAt p) ↔ W.Contains p ∨ W.Contains (F.mate p) := by
   rcases le_total p (F.mate p) with h | h <;>
-    simp [Hits, max_eq_left, max_eq_right, min_eq_left, min_eq_right, h, or_comm]
+    simp [Hits, h, or_comm]
 
 theorem internal_at (F : Fragment N) (p : Fin N) :
     W.Internal F (F.chordAt p) ↔ W.Contains p ∧ W.Contains (F.mate p) ∧ F.mate p ≠ p := by
   rcases le_total p (F.mate p) with h | h <;>
-    simp [Internal, max_eq_left, max_eq_right, min_eq_left, min_eq_right, h, and_comm,
-      and_left_comm, and_assoc, ne_comm]
+    simp [Internal, h, and_comm, and_left_comm, and_assoc, ne_comm]
 
 theorem boundary_chordMap_iff (F : Fragment N) (c : (W.restrict F).Chord) :
     W.Boundary F (W.chordMap F c) ↔ (W.restrict F).mate c.val = c.val := by
