@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Nat.Choose.Basic
+import Mathlib.Data.Fintype.Powerset
+import Mathlib.Tactic.NormNum
 
 /-! The lightning lower bound for every even dimension, and the sharp unrestricted
 upper bound in dimension four. These results do not assert the conjectural upper
