@@ -92,6 +92,30 @@
         "CardosoSubsetSynchronization.steer",
         "CardosoSubsetSynchronization.closing_budget"
       ]
+    },
+    {
+      "slug": "yuan-parrilo-permanent-sphere",
+      "title": "Yuan–Parrilo permanent–sphere conjecture (order n <= 4, rank <= 3, and c > 5/6 bound)",
+      "verdict": "partially_proved",
+      "status": "⬜",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Chenyang Yuan and Pablo A. Parrilo",
+        "paper": "Maximizing Products of Linear Forms, and The Permanent of Positive Semidefinite Matrices",
+        "journal": "Mathematical Programming (2021)",
+        "doi": "10.1007/s10107-021-01616-3",
+        "arxiv_id": "2002.04149v2",
+        "url": "https://arxiv.org/abs/2002.04149v2",
+        "target": "Conjecture 5.1"
+      },
+      "summary": "Proves per(A) <= r(A) for every complex Hermitian positive semidefinite (HPSD) matrix of order n <= 4 and whenever (d)_{n-1} <= n^{n-1} (in particular n >= 2*rank(A) - 2, ruling out all rank <= 3 counterexamples; first open case (n=5, d=4)), and establishes the dimension-free exponential lower bound r(A) >= c^n per(A) with c = e exp(-sum_{j>=0} 2^{-j-1} log(1+2^j)) approx 0.836208 > 5/6 (improving e^{-gamma} approx 0.5615).",
+      "proof_file": "results/yuan-parrilo-permanent-sphere/PROOF.md",
+      "source_file": "results/yuan-parrilo-permanent-sphere/SOURCE.tex",
+      "verify_script": "results/yuan-parrilo-permanent-sphere/verify.py",
+      "lean_partial_file": "lean/Conjectures/YuanParriloPermanentSphere.lean",
+      "lean_partial_theorems": [
+        "YuanParriloPermanentSphere.permanent_four_matching"
+      ]
     }
   ]
 }
