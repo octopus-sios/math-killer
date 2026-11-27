@@ -50,6 +50,7 @@ theorem filled_fiber_capacity {ι α : Type*} [DecidableEq α]
     _ ≤ ∑ x ∈ L ×ˢ H, x.1 * x.2 :=
       Finset.sum_le_sum_of_subset_of_nonneg sub (fun _ _ _ => Nat.zero_le _)
     _ = (∑ l ∈ L, l) * (∑ h ∈ H, h) := by
-      simp [Finset.sum_product, Finset.sum_mul, Finset.mul_sum] <;> exact Finset.sum_comm
+      simp [Finset.sum_product, Finset.sum_mul, Finset.mul_sum]
+      exact Finset.sum_comm
 
 end HerzogSchonheimNonSolvable

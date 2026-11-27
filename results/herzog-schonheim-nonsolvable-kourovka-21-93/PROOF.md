@@ -98,10 +98,12 @@ The small-order exit $vo<2000$ uses [Hu–Lin](https://doi.org/10.28919/ejma.202
 
 In each row bound 3 of §2, multiplied by $K(o)$, is less than one. This is an upper bound from divisibility, not an assumption that every divisor is realized.
 
-**Finite exceptional box.** For $q<2^{16}$ take $(C,r)$ from GM Table 5, so that $c\le C+\log_2\log_2q$ and $v\le q^r$; for $F_4$ conservatively take $C=19$ from their proof. The following exponents $a$ give $u\ge q^a$ directly from the same table, with $u=351,416$ used at $G_2(3),G_2(4)$:
+**Finite exceptional box.** For $q<2^{16}$ take $(C,r)$ verbatim from GM Table 5, so that $c\le C+\log_2\log_2q$ and $v\le q^r$. The following table records $(C,r)$ together with safe lower-bound exponents $a$ giving $u\ge q^a$ directly from GM Table 5, with $u=351,416$ used at $G_2(3),G_2(4)$:
 
 | Type | ${}^2B_2$ | $G_2$ | ${}^2G_2$ | ${}^3D_4$ | $F_4$ | ${}^2F_4$ | $E_6$ | ${}^2E_6$ | $E_7$ | $E_8$ |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| $C$ | 4 | 11 | 5 | 12 | 19 | 9 | 27 | 25 | 50 | 166 |
+| $r$ | 6 | 14 | 8 | 29 | 52 | 28 | 78 | 82 | 133 | 248 |
 | $a$ | 2 | 4 | 3 | 9 | 11 | 10 | 16 | 18 | 27 | 50 |
 
 Use $o=6f$, or $o=f$ for the Suzuki and the two Ree families, with their odd-exponent field restrictions. The primorial bound for $v<2^{rz}$ and bound 2 of §2 suffice in every remaining row.

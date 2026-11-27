@@ -170,11 +170,11 @@ def classical(kind,n,q,p,f):
     raise ValueError(("classical gap",group,N,m,o))
 
 
-# GM Table 5: type, C (19 rather than 14 for F4, cf. their proof),
-# upper order exponent r, safe lower minimal-index exponent a.
-EX = [('Sz',4,6,2), ('G2',11,14,4), ('Ree',5,8,3), ('3D4',4,29,9),
-      ('F4',19,52,11), ('2F4',15,29,10), ('E6',27,78,16),
-      ('2E6',29,78,18), ('E7',50,133,27), ('E8',166,248,50)]
+# GM Table 5 (arXiv:2509.25118v2): type, C, upper order exponent r,
+# and safe lower minimal-index exponent a.
+EX = [('Sz',4,6,2), ('G2',11,14,4), ('Ree',5,8,3), ('3D4',12,29,9),
+      ('F4',19,52,11), ('2F4',9,28,10), ('E6',27,78,16),
+      ('2E6',25,82,18), ('E7',50,133,27), ('E8',166,248,50)]
 
 
 def exceptional(q,p,f,kind,c,r,a):
