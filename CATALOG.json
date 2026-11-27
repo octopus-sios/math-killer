@@ -214,6 +214,26 @@
         "Kourovka1846.not_square_of_unique_pair",
         "Kourovka1846.witness_not_square"
       ]
+    },
+    {
+      "slug": "ma-mattiolo-steffen-wolf-five-regular-class-two",
+      "title": "Carving-width and elementary-abelian Petersen-lift obstructions to 5-edge-connected 5-regular class 2 multigraphs",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Yulai Ma, Davide Mattiolo, Eckhard Steffen, and Isaak H. Wolf",
+        "paper": "Pairwise disjoint perfect matchings in r-edge-connected r-regular graphs",
+        "journal": "SIAM Journal on Discrete Mathematics 37 (2023), 1548-1565",
+        "doi": "10.1137/22M1500654",
+        "arxiv_id": "2206.10975v2",
+        "url": "https://arxiv.org/abs/2206.10975v2",
+        "target": "Problem 1.6 (prob:5_reg_class_2)"
+      },
+      "summary": "Proves that every 5-edge-connected 5-regular loopless multigraph of carving width at most 7 (via 7 parity-allowed port templates across 20,979 oriented joins), as well as every 5-edge-connected F_p^d-voltage lift (p in {2,3,5,7}, d >= 0) of P+M+N for perfect matchings M, N of the Petersen graph P (via exact cubic profiles and 131 verified 50-vertex quintic colorings), is 5-edge-colorable, while edge-connectivity 4 is sharp across cyclic covers of every degree n >= 2 without triple edges. Ma–Mattiolo–Steffen–Wolf Problem 1.6 remains open in general.",
+      "proof_file": "results/ma-mattiolo-steffen-wolf-five-regular-class-two/PROOF.md",
+      "source_file": "results/ma-mattiolo-steffen-wolf-five-regular-class-two/SOURCE.tex",
+      "verify_script": "results/ma-mattiolo-steffen-wolf-five-regular-class-two/verify.py"
     }
   ]
 }

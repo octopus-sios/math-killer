@@ -8,9 +8,9 @@ Every entry below links directly to its verbatim primary source (`SOURCE.tex`), 
 
 | Metric | Count |
 |---|---:|
-| **Total Published Results** | **9** |
+| **Total Published Results** | **10** |
 | `✅` Lean 4 Verified (zero `sorry`, kernel-replayed) | 3 |
-| `🟢` Exact Computational Proof + Independent Audit | 3 |
+| `🟢` Exact Computational Proof + Independent Audit | 4 |
 | `🟡` Lean 4 Formalization In Progress | 0 |
 | `⬜` Written Proof Independently Audited (queued for Lean) | 3 |
 
@@ -27,6 +27,7 @@ Every entry below links directly to its verbatim primary source (`SOURCE.tex`), 
 | 7 | **[Petr–Turek Conjecture 1.7 (Temperate Intersecting Families)](results/petr-temperate-intersecting/PROOF.md)** — **Partially resolved**: proved the sharp lightning bound $L_k = \frac{1}{2}\binom{2k}{k} + \binom{2k}{k+1} + \binom{2k-1}{k+2}$ for all $k \ge 2$ throughout the entire upper half of the Boolean cube (at most one set of size $< k$, extending Williams's 3-layer theorem), plus exact unrestricted maxima $7, 26, 98$ on $[4], [6], [8]$ (unrestricted $k \ge 5$ remains open). | `🟢` Exact Compute + Audited | [Proof](results/petr-temperate-intersecting/PROOF.md) · [Source](results/petr-temperate-intersecting/SOURCE.tex) · [Verify](results/petr-temperate-intersecting/verify.py) · [Lean helper](lean/Conjectures/PetrTemperateIntersecting.lean) · [arXiv](https://arxiv.org/abs/2406.18437v2) |
 | 8 | **[Yuan–Parrilo Permanent–Sphere Conjecture (Order n ≤ 4, Rank ≤ 3, & c > 5/6 Bound)](results/yuan-parrilo-permanent-sphere/PROOF.md)** — **Partially resolved**: proved $\operatorname{per}(A) \le r(A)$ for every complex HPSD matrix of order $n \le 4$ and whenever $(d)_{n-1} \le n^{n-1}$ (including all rank $\le 3$ matrices; first open case is order $5$, rank $4$), and improved the universal exponential bound from $e^{-\gamma} \approx 0.5615$ to $c \approx 0.836208 > 5/6$. | `⬜` Audited (queued for Lean) | [Proof](results/yuan-parrilo-permanent-sphere/PROOF.md) · [Source](results/yuan-parrilo-permanent-sphere/SOURCE.tex) · [Verify](results/yuan-parrilo-permanent-sphere/verify.py) · [Lean helper](lean/Conjectures/YuanParriloPermanentSphere.lean) · [arXiv](https://arxiv.org/abs/2002.04149v2) |
 | 9 | **[Kashima–Ozeki Odd Coloring Conjecture (All 4-Trees & 5-Trees)](results/kashima-ozeki-ktree-odd-coloring/PROOF.md)** — **Partially resolved ($k = 4, 5$, unbounded order)**: proved that every finite 4-tree is odd 6-colorable and every finite 5-tree is odd 7-colorable (both sharp), settling the Kashima–Ozeki conjecture through $k = 5$ via finite rooted-forest closure certificates ($k \ge 6$ remains open). | `🟢` Exact Compute + Audited | [Proof](results/kashima-ozeki-ktree-odd-coloring/PROOF.md) · [Source](results/kashima-ozeki-ktree-odd-coloring/SOURCE.tex) · [Verify](results/kashima-ozeki-ktree-odd-coloring/verify.py) · [Lean helper](lean/Conjectures/KashimaOzekiKtreeOddColoring.lean) · [arXiv](https://arxiv.org/abs/2504.20573v1) |
+| 10 | **[Carving-Width and Elementary-Abelian Petersen-Lift Obstructions to 5-Edge-Connected 5-Regular Class 2 Multigraphs](results/ma-mattiolo-steffen-wolf-five-regular-class-two/PROOF.md)** — **Partially resolved**: proved that every 5-edge-connected 5-regular loopless multigraph of carving width at most 7, as well as every 5-edge-connected voltage lift over $\mathbb F_p^d$ ($p \in \{2,3,5,7\}$, $d \ge 0$) of $P+M+N$ for perfect matchings $M,N$ of the Petersen graph $P$, is 5-edge-colorable, while edge-connectivity 4 is sharp across cyclic covers of every degree $n \ge 2$ without triple edges (Ma–Mattiolo–Steffen–Wolf Problem 1.6 remains open in general). | `🟢` Exact Compute + Audited | [Proof](results/ma-mattiolo-steffen-wolf-five-regular-class-two/PROOF.md) · [Source](results/ma-mattiolo-steffen-wolf-five-regular-class-two/SOURCE.tex) · [Verify](results/ma-mattiolo-steffen-wolf-five-regular-class-two/verify.py) · [arXiv](https://arxiv.org/abs/2206.10975v2) |
 
 ## Verification Standard
 
