@@ -3,6 +3,7 @@ import Conjectures.EggertNilpotentAlgebraKourovka1752
 import Conjectures.FouliSylvesterMatroids
 import Conjectures.GuanTransversalAchievement
 import Conjectures.KashimaOzekiKtreeOddColoring
+import Conjectures.Kourovka1846SquareOvergroup
 import Conjectures.NabergallChordalDiagrams
 import Conjectures.PetrTemperateIntersecting
 import Conjectures.YuanParriloPermanentSphere
