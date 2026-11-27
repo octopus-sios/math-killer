@@ -116,6 +116,32 @@
       "lean_partial_theorems": [
         "YuanParriloPermanentSphere.permanent_four_matching"
       ]
+    },
+    {
+      "slug": "kashima-ozeki-ktree-odd-coloring",
+      "title": "Kashima–Ozeki odd coloring conjecture (all 4-trees and 5-trees)",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Masaki Kashima and Kenta Ozeki",
+        "paper": "Odd coloring of k-trees",
+        "journal": "Discrete Applied Mathematics (2026)",
+        "doi": "10.1016/j.dam.2026.03.033",
+        "arxiv_id": "2504.20573v1",
+        "url": "https://arxiv.org/abs/2504.20573v1",
+        "target": "Conjecture (conj:ktree)"
+      },
+      "summary": "Proves that every finite 4-tree is odd 6-colorable and every finite 5-tree is odd 7-colorable (both sharp, with no bound on vertex order) via exact integer bitset rooted-forest closure certificates (72 terminal forests for k=4; 917 terminal forests for k=5), settling the Kashima–Ozeki conjecture through k=5. The conjecture remains open for k >= 6.",
+      "proof_file": "results/kashima-ozeki-ktree-odd-coloring/PROOF.md",
+      "source_file": "results/kashima-ozeki-ktree-odd-coloring/SOURCE.tex",
+      "verify_script": "results/kashima-ozeki-ktree-odd-coloring/verify.py",
+      "lean_partial_file": "lean/Conjectures/KashimaOzekiKtreeOddColoring.lean",
+      "lean_partial_theorems": [
+        "KashimaOzekiKtreeOddColoring.not_covered_iff",
+        "KashimaOzekiKtreeOddColoring.covered_iff_step",
+        "KashimaOzekiKtreeOddColoring.oddAt_iff_masks_differ"
+      ]
     }
   ]
 }
