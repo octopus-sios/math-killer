@@ -1,0 +1,84 @@
+% Masaki Kashima and Kenta Ozeki, "Odd coloring of k-trees".
+% Verbatim excerpts from arXiv:2504.20573v1 (29 April 2025).
+% https://arxiv.org/abs/2504.20573v1
+
+% Theorem environments used in the excerpt.
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\section{Introduction}\label{section:intro}
+
+Throughout the paper, we only consider simple, finite, and undirected graphs.
+For integers $k$ and $\ell$ with $k\leq \ell$, let $[k,\ell]$ denote the set of integers at least $k$ and at most $\ell$.
+In particular, for a positive integer $k$, let $[k]$ denote $\{1,2,\dots , k\}$.
+
+A $k$-coloring of a graph $G$ is a map $\varphi$ from the vertex set $V(G)$ to the set $[k]$ such that $\varphi(u)\neq \varphi(v)$ for every edge $uv$ of $G$.
+For a $k$-coloring $\varphi$ of $G$, we say that a vertex $v$ of $G$ \emph{satisfies the odd condition with respect to $\varphi$} if $|\varphi^{-1}(i)\cap N_G(v)|$ is odd for some color $i\in [k]$.
+An \emph{odd $k$-coloring} of $G$ is a $k$-coloring $\varphi$ of $G$ such that every non-isolated vertex of $G$ satisfies the odd condition with respect to $\varphi$.
+This notion was recently introduced by Petru\v{s}evski and \v{S}krekovski~\cite{PS2022}, and has been studied in many publications \cite{CPS2022, CCKP2023, C2024, CLS2023, DOP2024, KMOOT2024+, KZ2024, MSTY2024, PP2023, PS2022, TY2023, WY2024}.
+This paper focuses on odd coloring of $k$-trees.
+
+For a positive integer $k$, a graph $G$ is a \emph{$k$-tree} if there is a sequence $G_0, G_1, \dots , G_s$ of induced subgraphs of $G$ such that 
+\begin{itemize}
+  \item $G_0$ is isomorphic to $K_{k+1}$, $G_s=G$, and
+  \item for every $i\in [s]$, there is a vertex $v_{i+k+1}\in V(G_i)\setminus V(G_{i-1})$ such that $V(G_i)=V(G_{i-1})\cup \{v_{i+k+1}\}$ and $N_G(v_{i+k+1})\cap V(G_{i-1})$ is a clique of order $k$ of $G$.
+\end{itemize}
+By setting $V(G_0)=\{v_1,v_2,\dots , v_{k+1}\}$, we obtain an ordering $v_1,v_2,\dots , v_n$ of the vertex set of $G$ where $n=s+k+1$.
+We call this ordering an \emph{addition ordering} of a $k$-tree $G$.
+Note that a sequence of subgraphs with the above properties is not unique, and thus an addition ordering of a given $k$-tree is not unique.
+For every addition ordering of a $k$-tree $G$, $N_G(v_i)\cap \{v_j\mid 1\leq j\leq i-1\}$ is a clique of order $k$ for every $i\in [s]$, and in particular, $G$ is $k$-degenerate.
+Thus, every $k$-tree is $(k+1)$-colorable, and furthermore, every $k$-tree is uniquely $(k+1)$-colorable.
+On the other hand, the bound does not hold for odd coloring of $k$-trees.
+Indeed, let $G$ be a $k$-tree such that $V(G)=\{v_i\mid 1\leq i\leq k\}\cup \{u_j\mid 0\leq j\leq k\}$, $\{v_i\mid 1\leq i\leq k\}\cup \{u_0\}$ is a clique of $G$, and $N_G(u_j)=\{v_i\mid 1\leq i\leq k, i\neq j\}\cup \{u_0\}$ for each $j\in [k]$. 
+Let $\varphi:V(G)\to [k+1]$ be a proper $(k+1)$-coloring of $G$.
+Since every $k$-tree is uniquely $(k+1)$-colorable, without loss of generality, we may assume that $\varphi(v_i)=\varphi(u_i)=i$ for each $i\in [k]$ and $\varphi(u_0)=k+1$.
+Then $\varphi^{-1}(i)\cap N_G(u_0)=\{v_i,u_i\}$ for every $i\in [k]$ and thus $u_0$ does not satisfy the odd condition with respect to $\varphi$.
+Hence, $G$ is not odd $(k+1)$-colorable.
+
+A natural question is whether the odd chromatic number of a $k$-tree is bounded by a function on $k$.
+The answer is yes, according to the following theorem by Cranston, Lafferty, and Song~\cite{CLS2023}.
+A class $\mathcal{F}$ of graphs is said to be \emph{minor-closed} if for every graph $G\in \mathcal{F}$ and for every minor $H$ of $G$, $H$ is also contained in $\mathcal{F}$.
+
+\begin{theorem}[\cite{CLS2023}]\label{thm:minor closed}
+  Let $\mathcal{F}$ be a minor-closed family of graphs such that every graph in $\mathcal{F}$ is $d$-degenerate.
+  Then, every graph in $\mathcal{F}$ is odd $(2d+1)$-colorable.
+\end{theorem}
+
+For a positive integer $k$, let $\mathcal{G}_k$ be the set of all graphs with tree-width at most $k$.
+It is known that $\mathcal{G}_k$ is a minor-closed family and that every graph in $\mathcal{G}_k$ is $k$-degenerate.
+For every positive integer $k$, every $k$-tree has tree-width exactly $k$, and thus the following corollary immediately follows from Theorem~\ref{thm:minor closed}.
+
+\begin{corollary}\label{cor:known bound}
+  Let $k$ be a positive integer.
+  Every graph of tree-width at most $k$ is odd $(2k+1)$-colorable.
+  In particular, every $k$-tree is odd $(2k+1)$-colorable.
+\end{corollary}
+
+Our first main result improves the upper bound of the odd chromatic number of $k$-trees as follows.
+
+\begin{theorem}\label{thm:ktree}
+  For every positive integer $k$, every $k$-tree is odd $\left(k+2\left\lfloor\log_2 k\right\rfloor+3\right)$-colorable.
+\end{theorem}
+
+Let $f(k)$ be a function such that every $k$-tree is odd $(k+f(k))$-colorable.
+Under this notation, we have $f(k)\leq 2\left\lfloor\log_2 k\right\rfloor+3$ from Theorem~\ref{thm:ktree}, which improves the bound of $f(k)\leq k+1$ obtained from Corollary~\ref{cor:known bound} in terms of the order of $k$.
+As we mentioned above, there is a $k$-tree which is not odd $(k+1)$-colorable, and hence $f(k)$ is bounded by $2\leq f(k)\leq 2\left\lfloor\log_2 k\right\rfloor+3$.
+Our second and third results show that the lower bound is attained when $k=2,3$.
+
+\begin{theorem}\label{thm:2tree}
+  Every 2-tree is odd $4$-colorable.
+\end{theorem}
+
+\begin{theorem}\label{thm:3tree}
+  Every 3-tree is odd $5$-colorable.
+\end{theorem}
+
+Since every maximal outerplanar graph is a 2-tree, Theorem~\ref{thm:2tree} implies that every maximal outerplanar graph is odd $4$-colorable, which is a corollary of the result in~\cite{KMOOT2024+}.
+
+Considering these results and the result that every tree is odd $3$-colorable in Caro, Petru\v{s}evski, and \v{S}krekovski~\cite{CPS2022}, we pose the following conjecture, which states that the lower bound of $f(k)$ is attained for every $k$.
+
+\begin{conjecture}\label{conj:ktree}
+  For every positive integer $k$, every $k$-tree is odd $(k+2)$-colorable.
+\end{conjecture}
