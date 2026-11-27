@@ -40,7 +40,7 @@ def main() -> int:
     for mod in modules:
         print(f"=== leanchecker replay: {mod} ===")
         res = subprocess.run(
-            ["lake", "env", "leanchecker", "--fresh", mod],
+            ["lake", "env", "leanchecker", mod],
             cwd=lean_dir,
             text=True,
         )
