@@ -1,9 +1,11 @@
 # The square-root overgroup bound is sharp
 
 **Theorem.** Let $n\ge 4096$, let $G=A_n$, and put $g=(1\,2\,3\,4)(5\,6)$. If a finite group $H$ contains a copy of $G$ in which the image of $g$ is a square in $H$, then
+
 $$
 |H|\ \ge\ 2|A_n|^2.
 $$
+
 Equality is attainable with *all* elements of $G$ squares. Thus the answer to [Kourovka Notebook 18.46](https://arxiv.org/html/1401.0300v50) is **yes**, for infinitely many groups, even if just one specified root is required.
 
 There is also a small sharp witness for simultaneous roots: the dihedral group of order eight has minimum host order $128$ (Section 4).
@@ -17,24 +19,30 @@ For any finite nonabelian simple $G$ and fixed $g\in G$, take a least-order fini
 Take a minimal nontrivial normal subgroup $N$ of $H$. It is a direct product $S^t$ of isomorphic simple groups permuted transitively by $H$; $S$ is nonabelian since $G\le N$. Indeed, take a minimal nontrivial normal subgroup of $N$. Its $H$-conjugates generate $N$ and distinct conjugates commute. If they were abelian, $N$ would be abelian. Each therefore has trivial center, since its center is normal in $N$. So each meets the product of the others trivially. This gives a direct product, in which each factor must itself be simple by minimal normality in $N$.
 
 At least one coordinate projection embeds $G$ into $S$, by simplicity. Since $N$ fixes each factor by conjugation, transitivity implies $[H:N]\ge t$. If $t\ge2$, we get
+
 $$
 |H|\ \ge\ t|S|^t\ \ge\ 2|G|^2.
 $$
+
 If $t=1$, the normal subgroup $C_H(S)$ meets $S$ trivially, as $S$ is centerless. It cannot contain $G\le S$, so it is trivial. Conjugation identifies $H$ with a subgroup of $\operatorname{Aut}(S)$, with $S$ acting by inner automorphisms. A counterexample to the claimed lower bound would therefore give
+
 $$
 G\le S\le H\le\operatorname{Aut}(S),\qquad |S|<2|G|^2.
 $$
+
 No normality of the given copy of $G$ is assumed.
 
 ## 2. The simple group cannot be of Lie type or sporadic
 
 First, any embedding $A_n\hookrightarrow\operatorname{PGL}_d(k)$ over an algebraically closed field satisfies
+
 $$
 d\ \ge\ \lfloor n/5\rfloor+1.
 $$
+
 There is a direct product of $b=\lfloor n/5\rfloor$ copies of $A_5$ on disjoint five-letter blocks. Lifts to $\operatorname{GL}_d(k)$ from **distinct** factors commute: for fixed $Y$ lifting an element of one factor and variable $X$ lifting an element of another, $XYX^{-1}Y^{-1}$ is scalar. This scalar is independent of the lift $X$ and is multiplicative in its projective class, so defines a homomorphism $A_5\to k^\times$. It is trivial because $A_5$ is perfect.
 
-Take $r=2$ in characteristic different from two, and $r=3$ in characteristic two. Choose an element of order $r$ from each factor; the images generate $C_r^b$. Rescale the lifts so that their $r$th powers are one. These commuting matrices are simultaneously diagonalizable since $r$ is invertible in $k$. Their projective classes belong to a group of size $r^{d-1}$: normalize the last diagonal entry to one, leaving at most $r$ choices for each other entry. Thus $b\le d-1$. This estimate applies to embeddings over finite fields by scalar extension.
+Take $r=2$ in characteristic different from two, and $r=3$ in characteristic two. Choose an element of order $r$ from each factor; the images generate $C_r^b$. Rescale the lifts so that raising each to the power $r$ gives one. These commuting matrices are simultaneously diagonalizable since $r$ is invertible in $k$. Their projective classes belong to a group of size $r^{d-1}$: normalize the last diagonal entry to one, leaving at most $r$ choices for each other entry. Thus $b\le d-1$. This estimate applies to embeddings over finite fields by scalar extension.
 
 We now apply CFSG and the standard order formulas; see R. Wilson, [*The Finite Simple Groups*](https://doi.org/10.1007/978-1-84800-988-2), Chapters 1, 3–5. Let $G=A_n$ with $n\ge4096$.
 
@@ -45,6 +53,7 @@ We now apply CFSG and the standard order formulas; see R. Wilson, [*The Finite S
 **Classical groups of Lie type:** use the natural projective dimension $d$. For field parameter $q$ of characteristic $p$, the $p$-part of the order of $S$ is $q^a$. In the linear and unitary families $a=d(d-1)/2$; in types $B_l,C_l$ it is $l^2$ with $d=2l+1,2l$, respectively; in the two even-dimensional orthogonal families $d=2l$, $a=l(l-1)$. Here the dimensions are large, so the low-dimensional exceptions do not occur; the central divisors are prime to $p$. In particular, $4a\ge(d-2)^2$. By the projective degree estimate, $d-2\ge n/5-2\ge n/6$, giving $a\ge n^2/144$.
 
 Take $j$ such that $2^j\le n<2^{j+1}$. For $j\ge12$ we have $2^j\ge288(j+1)$: it holds at $12$ and doubling preserves it. Thus $a\ge2n(j+1)$ and
+
 $$
 |S|\ \ge\ 2^a\ \ge\ 2^{2n(j+1)}\ >\ (n!)^2\ >\ 2|A_n|^2.
 $$
@@ -75,9 +84,11 @@ It remains to eliminate two cases: $D\le K\trianglelefteq H$ with $|K|=16$ and q
 **Generating all marked kernels.** For a group $B$ and a coset representative $x$ with $x^2\in B$ normalizing $B$, let $f$ be conjugation by $x$ on $B$, and $a=x^2$. Then $f(a)=a$ and $f^2=\operatorname{Inn}(a)$, with $\operatorname{Inn}(a)(u)=aua^{-1}$. Take $B=D$ and enumerate every such pair $(f,a)$. The table on normal forms $u x^i$, $i=0,1$, is forced: multiply $u x^i$ and $v x^j$ with coefficient $u f^i(v)$, multiplying that coefficient on the right by $a$ if $i=j=1$, and take exponent $i+j\bmod 2$. This includes every possible marked $K$. The verifier labels the elements of $D$ by $r^i s^j$, and the elements of $K$ by $r^i s^j x^k$. It enumerates automorphisms by trying all images of the displayed generators, evaluating these normal forms, and checking bijectivity and compatibility with right multiplication by each generator. That check implies compatibility with every product.
 
 **Testing the quotient cosets.** Now take $B=K$. The same necessary pair $(f,a)$ for a coset $Kx$ of order dividing two in $H/K$ gives its whole set of squares:
+
 $$
 U(f,a)=\{u f(u)a:u\in K\}.
 $$
+
 Conjugation on $K$ induces a homomorphism $H/K\to\operatorname{Out}(K)$; the class of $Kx$ maps to $[f]$. Write $T=\{u^2:u\in K\}$, a set, not the subgroup generated by squares.
 
 1. For quotient $V$, take the three nonidentity cosets in the order $v,w,vw$. Their data must satisfy $[f_3]=[f_1][f_2]=[f_2][f_1]$. For each compatible triple the test asks if $T\cup U_1\cup U_2\cup U_3$ contains the marked $D$. We allow all triples satisfying this necessary condition; no sufficiency assertion about lifting an outer action is needed.
@@ -87,4 +98,4 @@ Running the adjacent Python verifier produces **16** labelled kernel tables. **N
 
 ## Verification scope
 
-The result for arbitrary $A_n$ with $n\ge4096$ is a written proof using CFSG. Lean proves the unique-two-cycle obstruction for the explicit witness with arbitrary fixed points; it does not formalize CFSG. The Python verifier checks the degree-$4096$ instance data and a corrupted square permutation. For the independent $D$ example it exhausts the two finite coset tests in Section 4 from the group law alone, without GAP, floats, or stored catalogues.
+The result for arbitrary $A_n$ with $n\ge4096$ is a written proof using CFSG. Lean proves the unique-two-cycle obstruction for the explicit witness with arbitrary fixed points; it does not formalize CFSG. The Python verifier checks the degree $4096$ instance data and a corrupted square permutation. For the independent $D$ example it exhausts the two finite coset tests in Section 4 from the group law alone, without GAP, floats, or stored catalogues.
