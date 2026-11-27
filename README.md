@@ -8,8 +8,8 @@ Every entry below links directly to its verbatim primary source (`SOURCE.tex`), 
 
 | Metric | Count |
 |---|---:|
-| **Total Published Results** | **0** |
-| `✅` Lean 4 Verified (zero `sorry`, kernel-replayed) | 0 |
+| **Total Published Results** | **1** |
+| `✅` Lean 4 Verified (zero `sorry`, kernel-replayed) | 1 |
 | `🟢` Exact Computational Proof + Independent Audit | 0 |
 | `🟡` Lean 4 Formalization In Progress | 0 |
 | `⬜` Written Proof Independently Audited (queued for Lean) | 0 |
@@ -18,7 +18,7 @@ Every entry below links directly to its verbatim primary source (`SOURCE.tex`), 
 
 | # | Problem & Result | Status | Links |
 |---:|---|---|---|
-| — | *Awaiting first verified publication.* | — | — |
+| 1 | **[Guan's Transversal Achievement Conjecture](results/guan-transversal-achievement/PROOF.md)** — **Proved** exact optimal winning ply is $2n+3$ for all $n \ge 4$: Player 2 blocks every win through ply $2n+1$ via an $(n-2)$-matching invariant and an O-transversal counterthreat (matching Guan's $2n+3$ upper bound). | `✅` Lean 4 | [Proof](results/guan-transversal-achievement/PROOF.md) · [Source](results/guan-transversal-achievement/SOURCE.tex) · [Verify](results/guan-transversal-achievement/verify.py) · [Lean](lean/Conjectures/GuanTransversalAchievement.lean) · [arXiv](https://arxiv.org/abs/2608.13501v1) |
 
 ## Verification Standard
 

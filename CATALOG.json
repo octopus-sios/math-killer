@@ -1,4 +1,25 @@
 {
   "schema_version": 1,
-  "entries": []
+  "entries": [
+    {
+      "slug": "guan-transversal-achievement",
+      "title": "Optimal winning ply in the transversal achievement game (Guan's sharpness conjecture)",
+      "verdict": "proved",
+      "status": "✅",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Kevin Guan",
+        "paper": "The transversal achievement game on a square grid",
+        "arxiv_id": "2608.13501v1",
+        "url": "https://arxiv.org/abs/2608.13501v1",
+        "target": "Conjecture (conj:sharp)"
+      },
+      "summary": "For every n >= 4, the second player in the n x n transversal achievement game prevents a first-player win through ply 2n+1 via an (n-2)-matching invariant and an O-transversal counterthreat, proving with Guan's upper bound that the exact optimal winning ply is 2n+3.",
+      "proof_file": "results/guan-transversal-achievement/PROOF.md",
+      "source_file": "results/guan-transversal-achievement/SOURCE.tex",
+      "verify_script": "results/guan-transversal-achievement/verify.py",
+      "lean_file": "lean/Conjectures/GuanTransversalAchievement.lean",
+      "lean_theorem": "GuanTransversalAchievement.optimalDurationLowerBound"
+    }
+  ]
 }
