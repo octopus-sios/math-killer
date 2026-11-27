@@ -7,6 +7,7 @@ import Conjectures.HerzogSchonheimNonSolvable
 import Conjectures.KashimaOzekiKtreeOddColoring
 import Conjectures.Kourovka1846SquareOvergroup
 import Conjectures.NabergallChordalDiagrams
+import Conjectures.PattanayakTwoDegenerateLinearArboricity
 import Conjectures.PetrTemperateIntersecting
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.YuanParriloPermanentSphere
