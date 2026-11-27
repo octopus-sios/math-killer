@@ -1,0 +1,83 @@
+% Source: Christian Gaetz and Yibo Gao, "The hull metric on Coxeter groups"
+% arXiv:2012.06841v2 (submitted December 2020; revised 12 May 2022)
+% Verbatim excerpt from the primary LaTeX source (Section 1 and Section 2.1--2.2),
+% preserving all macros, definitions, and labels used in Conjecture 1.2.
+
+% --- Macros from preamble ---
+\DeclareMathOperator{\conv}{Conv}
+\DeclareMathOperator{\cay}{Cay}
+\DeclareMathOperator{\id}{id}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+
+% --- Section 1: Introduction ---
+\section{Introduction}
+Let $G$ be a connected undirected graph with vertices $V(G)$ and let
+\[
+d:V(G)\times V(G)\rightarrow\Z_{\geq0}
+\]
+denote the shortest-path distance between vertices, clearly a metric on $V(G)$. A subset $C \subseteq V(G)$ is \emph{convex} if no shortest path between two vertices from $C$ leaves $C$: whenever $u,v \in C$ and $d(u,w)+d(w,v)=d(u,v)$ we must have $w \in C$. For $X \subseteq V(G)$, the \textit{convex hull} $\conv(X)$ is the intersection  (itself clearly convex) of all convex sets containing $X$.
+
+The following definition, which to our knowledge has not been considered before, is central to this work.
+
+\begin{defin}
+\label{def:metric-property}
+We say a graph $G$ has the \textit{hull property} if for every $u,v,w\in V(G)$,
+\begin{equation}
+\label{eq:hull-property}
+\left|\conv(u,v)\right|\cdot \left|\conv(v,w)\right|\geq \left|\conv(u,w)\right|.
+\end{equation}
+Equivalently, $G$ has the hull property if and only if
+\[
+\log \left|\conv(-,-)\right|:V(G)\times V(G)\rightarrow\R_{\geq0}
+\]
+is a metric on $V(G)$.
+It has the \textit{strong hull property} if for every $u,v,w\in V(G)$,
+\begin{equation}
+\label{eq:strong-hull}
+\left|\conv(u,v)\right|\cdot\left|\conv(v,w)\right|\geq\left|\conv(u,v,w)\right|.
+\end{equation}
+\end{defin}
+
+\subsection{Main results}
+For a Coxeter group $W$ we write $\cay(W)$ for the undirected right Cayley graph for $W$ with the generating set of simple reflections (see Section~\ref{sec:coxeter-background}).
+
+\begin{conj}
+\label{conj:main-conjecture}
+Let $W$ be any Coxeter group, then $\cay(W)$ has the strong hull property.
+\end{conj}
+
+In addition to the infinite families of groups for which we prove Conjecture~\ref{conj:main-conjecture} below, we have also verified the conjecture by computer for the finite Coxeter groups of types $G_2, H_3, D_4,$ and $F_4$.
+
+% --- Section 2: Background on Coxeter groups ---
+\section{Background on Coxeter groups}
+\label{sec:coxeter-background}
+
+\subsection{Coxeter groups and weak order}
+A \emph{Coxeter group} is a group $W$ together with a distinguished generating set $S=\{s_1,\ldots,s_r\}$ subject to relations $s_i^2=\id$ for $i=1,\ldots,r$ and $(s_is_j)^{m_{ij}}=\id$ for $i\neq j \in \{1, \ldots, r\}$ for some numbers $m_{ij} \in \{2,3,\ldots\} \sqcup \{\infty\}$.  The $r \times r$ matrix with entries $m_{ij}$ is the \emph{Coxeter matrix}. The elements of $S$ are called \emph{simple reflections}, while their $W$-conjugates are called \emph{reflections}; the set of reflections is denoted $T$.  Given an element $w \in W$, an expression
+\[
+w=s_{i_1}\cdots s_{i_{\ell}}
+\]
+of minimal length is called a \emph{reduced word} for $w$, and in this case $\ell=\ell(w)$ is the \emph{length} of $w$.
+
+The \emph{(right) weak order} $(W, \leq_R)$ has cover relations $w \lessdot_R ws$ whenever $\ell(ws)=\ell(w)+1$ and $s \in S$.  A reflection $t \in T$ is a \emph{(left) inversion} of $w$ if $\ell(tw)<\ell(w)$, and the set of inversions of $w$ is denoted $T_L(w)$.
+
+\subsection{Convexity in Coxeter groups}
+We say a subset $C \subseteq W$ is \emph{convex} if it is convex in the Cayley graph $\cay(W,S)$ (the Hasse diagram of weak order).  For $D \subseteq A \subseteq T$, we write 
+\[
+W(D,A) \coloneqq \{w \in W \: | \: D \subseteq T_L(w) \subseteq A\}.
+\]
+
+\begin{theorem}[Tits \cite{Tits}]
+\label{thm:tits-convexity}
+A set $C \subseteq W$ is convex if and only if $C=W(D,A)$ for some $D \subseteq A \subseteq T$.
+\end{theorem}
+
+\begin{prop}[Bj\"{o}rner and Wachs \cite{Bjorner-Wachs-gen-quo}]
+\label{prop:convex-hull-from-inversions}
+Let $x_1, \ldots, x_d \in W$, then 
+\[
+\conv(x_1, \ldots, x_d) =\left\{ w \in W \; \middle| \; \bigcap_{i=1}^d T_L(x_i) \subseteq T_L(w) \subseteq \bigcup_{i=1}^d T_L(x_i)\right\}.
+\]
+In particular, $\conv(\id,x)=[e,x]_R$ for all $x \in W$.
+\end{prop}
