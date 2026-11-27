@@ -11,9 +11,18 @@ import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.Zify
 
-/-! Words are read from left to right. The cyclic order on the states is the
-standard order modulo `n`; the distinguished circular letter is not required
-to be the successor in that order. -/
+/-! # Cardoso's sharp subset bound for weakly oriented circular automata
+
+The joint statement is `CardosoSubsetSynchronization.sharp_weakly_oriented_circular`.
+Words are read left to right; a prepended letter takes an inverse image.
+The states have the standard cyclic order modulo `n`, but the circular letter
+need not be its successor.
+
+For the upper bound we count expanding interval placements, then handle an
+adjacent single defect by relabeling it as a translated or reflected fold.
+For sharpness an integer cost on singleton preimages bounds the length of
+every word in the Černý automaton; a specified evenly spaced subset, with the
+longer gaps grouped together, forces Cardoso's value. -/
 
 namespace CardosoSubsetSynchronization
 
@@ -1447,7 +1456,7 @@ theorem defect_profile (f : ZMod n → ZMod n) (hr : (univ.image f).card+1 = n) 
 
 namespace Automaton
 
-/-- Necessary structure of an unresolved upper-bound instance after the
+/-- Structure forced by a hypothetical violation after the
 growth, separation, and successor-jump arguments. -/
 theorem residual_of_no_short_word (A : Automaton n α) (hs : A.Synchronizing)
     (hc : A.Circular) (ho : A.WeaklyOriented) (S : Finset (ZMod n)) (hS : S.Nonempty)
@@ -2030,4 +2039,475 @@ theorem weaklyOrientedCircular_bound (A : Automaton n α)
   exact no ⟨w,card ▸ hw,A.sync_of_relabel π hsw⟩
 
 end Automaton
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+
+/-- False folds the predecessor of zero onto zero; true rotates by one. -/
+def cernyAutomaton (n : ℕ) : Automaton n Bool :=
+  ⟨fun a z => if a then z+1 else foldPoint z⟩
+
+variable {n : ℕ} [NeZero n]
+
+theorem cerny_circular : (cernyAutomaton n).Circular := by
+  let π := chart (1 : ZMod n) false
+  refine ⟨true,π,by funext x; change x+1 = 1+x; abel,?_⟩
+  intro x y
+  have it (k : ℕ) : (π : ZMod n → ZMod n)^[k] x = x+k := by
+    induction k with
+    | zero => simp
+    | succ k ih => rw [Function.iterate_succ_apply',ih]; change 1+(x+k)=x+((k+1 : ℕ) : ZMod n); push_cast; abel
+  refine ⟨(y-x).val,?_⟩
+  rw [it,ZMod.natCast_zmod_val]; abel
+
+private theorem cerny_trans (x y : ZMod n) : ∃ k : ℕ, (fun p : ZMod n => p-1)^[k] x = y := by
+  refine ⟨(x-y).val,?_⟩
+  rw [back_steps,ZMod.natCast_zmod_val,mul_one]; abel
+
+theorem cerny_synchronizing : (cernyAutomaton n).Synchronizing := by
+  let A := cernyAutomaton n
+  by_cases eq : n=1
+  · obtain ⟨q,hq⟩ := A.emptyWord_of_card_one univ (by simp [ZMod.card,eq])
+    exact ⟨[],q,fun p => hq p (mem_univ _)⟩
+  have hn := NeZero.pos n
+  have hr (x : ZMod n) : A.δ true x = x+1 := rfl
+  have hb (z : ZMod n) : A.δ false (0+1*z) = foldPoint z := by simp [A,cernyAutomaton]
+  have hit (k : ℕ) : ∃ t, (A.ready (2+k) t).Nonempty := by
+    induction k with
+    | zero =>
+      have seed : (0 : ZMod n) ∈ A.ready 1 0 := A.mem_ready.mpr ⟨[],by simp,0,by simp⟩
+      exact ⟨_,_,A.normalized_extend (Or.inl rfl) hb (h := 0) seed⟩
+    | succ k ih =>
+      obtain ⟨t,ht⟩ := ih
+      have start := A.all_starts hr cerny_trans ht 0
+      have ext := A.normalized_extend (Or.inl rfl) hb (h := k+1) (t := t+(n-1))
+        (by simpa [Nat.add_comm,Nat.add_assoc,Nat.add_left_comm] using start)
+      exact ⟨_,_,ext⟩
+  obtain ⟨t,i,hi⟩ := hit (n-2)
+  obtain ⟨w,hw,q,hq⟩ := A.mem_ready.mp hi
+  rw [show 2+(n-2)=n by omega,interval_full] at hq
+  exact ⟨w,q,fun p => hq p (mem_univ _)⟩
+
+private theorem fold_pre_grow {l : ℕ} (hl : 0<l) :
+    pre (foldPoint (n := n)) (interval 0 l) = interval (-1) (l+1) := by
+  ext z
+  constructor
+  · intro hz
+    by_cases e : z = -1
+    · exact mem_interval.mpr ⟨0,by omega,by simp [e]⟩
+    · have h : z ∈ interval 0 l := by simpa only [mem_pre,foldPoint,if_neg e] using hz
+      obtain ⟨k,hk,rfl⟩ := mem_interval.mp h
+      exact mem_interval.mpr ⟨k+1,by omega,by push_cast; abel⟩
+  · exact fun hz => mem_pre.mpr (fold_grows hl hz)
+
+private theorem fold_pre_keep (s : ZMod n) {l : ℕ} (hs : s ≠ 0) (he : s+l ≠ 0) :
+    pre foldPoint (interval s l) = interval s l := by
+  ext z
+  constructor
+  · intro hz
+    have hm := mem_pre.mp hz
+    by_cases e : z = -1
+    · subst z
+      rw [foldPoint,if_pos rfl] at hm
+      obtain ⟨k,hk,E⟩ := mem_interval.mp hm
+      cases k with
+      | zero => simp [hs] at E
+      | succ k =>
+        refine mem_interval.mpr ⟨k,by omega,?_⟩
+        rw [Nat.cast_succ,← add_assoc] at E
+        exact eq_neg_of_add_eq_zero_left E
+    · simpa [foldPoint,e] using hm
+  · exact fun hz => mem_pre.mpr (fold_neutral s l hs he z hz)
+
+private theorem fold_pre_shrink (s : ZMod n) {l : ℕ} (hl : l<n) (he : s+l = 0) :
+    pre foldPoint (interval s l) = interval s (l-1) := by
+  have notZero : (0 : ZMod n) ∉ interval s l := by
+    intro h
+    obtain ⟨k,hk,e⟩ := mem_interval.mp h
+    have := natCast_inj_lt (hk.trans hl) hl (add_left_cancel (e.trans he.symm))
+    omega
+  have last (k : ℕ) (hk : k<l) : s+(k : ZMod n) = -1 ↔ k+1=l := by
+    constructor
+    · intro e
+      have E : s+((k+1 : ℕ) : ZMod n) = 0 := by rw [Nat.cast_add,Nat.cast_one,← add_assoc,e]; simp
+      exact natCast_inj_lt (by omega) hl (add_left_cancel (E.trans he.symm))
+    · intro e
+      apply eq_neg_of_add_eq_zero_left
+      rw [add_assoc,← Nat.cast_one (R := ZMod n),← Nat.cast_add,e,he]
+  ext z
+  constructor
+  · intro h
+    have hz := mem_pre.mp h
+    by_cases e : z = -1
+    · exact False.elim (notZero (by simpa [foldPoint,e] using hz))
+    · rw [foldPoint,if_neg e] at hz
+      obtain ⟨k,hk,rfl⟩ := mem_interval.mp hz
+      have ne : k+1≠l := fun H => e ((last k hk).mpr H)
+      exact mem_interval.mpr ⟨k,by omega,rfl⟩
+  · intro h
+    obtain ⟨k,hk,rfl⟩ := mem_interval.mp h
+    have ne : s+(k : ZMod n) ≠ -1 := fun E => (show k+1≠l by omega) ((last k (by omega)).mp E)
+    apply mem_pre.mpr
+    rw [foldPoint,if_neg ne]
+    exact mem_interval.mpr ⟨k,by omega,rfl⟩
+
+private theorem succ_pre (s : ZMod n) (l : ℕ) :
+    pre (fun z : ZMod n => z+1) (interval s l) = interval (s-1) l := by
+  ext z
+  simp only [mem_pre,mem_interval]
+  constructor
+  · rintro ⟨k,hk,E⟩
+    exact ⟨k,hk,by calc
+      _ = (s+(k : ZMod n))-1 := by abel
+      _ = _ := by rw [E]; abel⟩
+  · rintro ⟨k,hk,rfl⟩
+    exact ⟨k,hk,by abel⟩
+
+/-- Lower bound charged to a singleton preimage after reading a word
+backwards. A proper nonsingleton arc owes both a length charge and the
+backward displacement of its start from the most recent fold. -/
+private def arcCost (s : ZMod n) (l : ℕ) : ℤ :=
+  if l<2 then 0 else 1+(n : ℤ)*((l : ℤ)-2) + (if l=n then 0 else (n : ℤ)-1-s.val)
+
+private theorem cost_nonneg (s : ZMod n) (l : ℕ) : 0 ≤ arcCost s l := by
+  have hs := s.val_lt
+  unfold arcCost
+  split_ifs with h e
+  · omega
+  all_goals have hl : 0 ≤ (l:ℤ)-2 := by omega
+            nlinarith [mul_nonneg (by positivity : 0 ≤ (n:ℤ)) hl]
+
+private theorem val_back (s : ZMod n) : s.val ≤ (s-1).val+1 := by
+  by_cases h : 0<s.val
+  · have E : ((s.val-1 : ℕ) : ZMod n) = s-1 := by rw [Nat.cast_sub h]; simp
+    have hl := s.val_lt
+    rw [← E,ZMod.val_natCast_of_lt (by omega)]; omega
+  · omega
+
+private theorem cost_back (s : ZMod n) (l : ℕ) : arcCost (s-1) l ≤ arcCost s l + 1 := by
+  have := val_back s
+  unfold arcCost
+  split_ifs <;> omega
+
+private theorem cost_grow {l : ℕ} (h0 : 0<l) (hl : l<n) :
+    arcCost (-1 : ZMod n) (l+1) ≤ arcCost (0 : ZMod n) l + 1 := by
+  have hn : 1≤n := by omega
+  have cast : ((n-1 : ℕ) : ZMod n) = -1 := by rw [Nat.cast_sub hn]; simp
+  have vl : (-1 : ZMod n).val = n-1 := by rw [← cast,ZMod.val_natCast_of_lt (by omega)]
+  simp only [arcCost,vl,ZMod.val_zero,Nat.cast_zero,Nat.cast_sub hn,Nat.cast_one,Nat.cast_add]
+  by_cases h1 : l=1
+  · subst l; simp
+  · split_ifs <;> first | omega | nlinarith
+
+private theorem cost_shrink (s : ZMod n) {l : ℕ} (hl : l<n) :
+    arcCost s (l-1) ≤ arcCost s l + 1 := by
+  by_cases H : l-1<2
+  · simp only [arcCost,if_pos H]
+    have := cost_nonneg s l
+    unfold arcCost at this
+    omega
+  · have H' : ¬l<2 := by omega
+    simp only [arcCost,if_neg H,if_neg H',if_neg (by omega : l-1≠n),if_neg hl.ne,
+      Nat.cast_sub (by omega : 1≤l),Nat.cast_one]
+    nlinarith
+
+private theorem cerny_step_cost (a : Bool) (s : ZMod n) (l : ℕ) (hl : l≤n) :
+    ∃ i k, k≤n ∧ pre ((cernyAutomaton n).δ a) (interval s l) = interval i k ∧
+      arcCost i k ≤ arcCost s l + 1 := by
+  cases a with
+  | true => exact ⟨s-1,l,hl,succ_pre ..,cost_back ..⟩
+  | false =>
+    by_cases h0 : l = 0
+    · subst l
+      exact ⟨s,0,by omega,by ext p; simp [interval,pre],by omega⟩
+    by_cases full : l=n
+    · subst l
+      exact ⟨s,n,hl,by ext p; simp [pre],by omega⟩
+    by_cases st : s=0
+    · subst s
+      exact ⟨-1,l+1,by omega,fold_pre_grow (by omega),cost_grow (by omega) (by omega)⟩
+    by_cases en : s+l=0
+    · exact ⟨s,l-1,by omega,fold_pre_shrink s (by omega) en,cost_shrink s (by omega)⟩
+    · exact ⟨s,l,hl,fold_pre_keep s st en,by omega⟩
+
+theorem cerny_weaklyOriented : (cernyAutomaton n).WeaklyOriented := by
+  intro a s l hl
+  obtain ⟨i,k,hk,eq,_⟩ := cerny_step_cost a s l hl
+  exact ⟨i,k,hk,eq⟩
+
+private theorem cerny_word_cost (w : List Bool) (q : ZMod n) :
+    ∃ i l, l ≤ n ∧ pre ((cernyAutomaton n).act w) {q} = interval i l ∧ arcCost i l ≤ w.length := by
+  induction w with
+  | nil => exact ⟨q,1,NeZero.pos n,by ext p; simp,by simp [arcCost]⟩
+  | cons a w ih =>
+    obtain ⟨s,l,hl,E,cost⟩ := ih
+    obtain ⟨i,k,hk,K,upper⟩ := cerny_step_cost a s l hl
+    refine ⟨i,k,hk,?_,by simp only [List.length_cons,Nat.cast_add,Nat.cast_one]; omega⟩
+    rw [← K]
+    ext p
+    simp only [mem_pre,Automaton.act_cons]
+    rw [← E,mem_pre]
+
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+variable {n : ℕ} [NeZero n]
+
+/-- For a balanced witness put the longer spacings first, including the
+spacing across zero, so every long spacing ends at a small residue. -/
+private def place (g e k : ℕ) : ℕ := k*g + min k (e-1)
+
+private def spaced (n m g e : ℕ) : Finset (ZMod n) :=
+  (range m).image fun (k : ℕ) => (place g e k : ZMod n)
+
+private theorem place_lt {n m g e k : ℕ} (hn : n=m*g+e) (he : 0<e) (hk : k<m) :
+    place g e k < n := by
+  have h := Nat.mul_le_mul_right g hk.le
+  have minb := Nat.min_le_right k (e-1)
+  dsimp [place]; omega
+
+private theorem spaced_card {m g e : ℕ} (hn : n=m*g+e) (he : 0<e) (hg : 0<g) :
+    (spaced n m g e).card=m := by
+  rw [spaced,card_image_of_injOn,card_range]
+  intro k hk t ht E
+  have eq := natCast_inj_lt (place_lt hn he (mem_range.mp hk)) (place_lt hn he (mem_range.mp ht)) E
+  have mono (p q : ℕ) (h : p<q) : place g e p < place g e q := by
+    have h1 := Nat.mul_lt_mul_of_pos_right h hg
+    have h2 : min p (e-1) ≤ min q (e-1) := min_le_min_right _ h.le
+    dsimp [place]; omega
+  rcases lt_trichotomy k t with h|h|h
+  · exact False.elim ((mono _ _ h).ne eq)
+  · exact h
+  · exact False.elim ((mono _ _ h).ne eq.symm)
+
+/-- Every point is followed within g steps by a witness point. If all g
+steps were necessary, the endpoint of that spacing has small residue. -/
+private theorem spaced_hit {m g e : ℕ} (hn : n=m*g+e) (he : 1≤e) (hem : e≤m) (hg : 0<g)
+    (q : ZMod n) : ∃ d ≤ g, q+d ∈ spaced n m g e ∧
+      (d = g → (q+d).val ≤ (e-1)*(g+1)) := by
+  classical
+  let X (k : ℕ) := if k=m then n else place g e k
+  have ex : ∃ k, k≤m ∧ q.val ≤ X k := ⟨m,le_refl _,by simpa [X] using q.val_lt.le⟩
+  let k := Nat.find ex
+  have goal : k≤m ∧ q.val≤X k := Nat.find_spec ex
+  have mn (h : ℕ) (hh : h<k) : X h < q.val := by
+    by_contra! x
+    exact Nat.find_min ex hh ⟨by omega,x⟩
+  let d := X k-q.val
+  have de : q.val+d = X k := by dsimp [d]; omega
+  have dcast : q+(d : ZMod n) = (X k : ZMod n) := by
+    have e := congrArg (fun z : ℕ => (z : ZMod n)) de
+    simpa using e
+  have memX : (X k : ZMod n) ∈ spaced n m g e := by
+    by_cases eq : k=m
+    · have mem0 : (0 : ZMod n) ∈ spaced n m g e := by
+        exact mem_image.mpr ⟨0,mem_range.mpr (by omega),by simp [place]⟩
+      simpa [X,eq] using mem0
+    · exact mem_image.mpr ⟨k,mem_range.mpr (by omega),by simp [X,eq]⟩
+  have step : d ≤ g ∧ (d=g → (X k : ZMod n).val ≤ (e-1)*(g+1)) := by
+    by_cases h0 : k=0
+    · have m0 : 0<m := by omega
+      have zero : X k = 0 := by simp [X,h0,Nat.ne_of_lt m0,place]
+      dsimp [d]; rw [zero]; simp [hg.ne']
+    · let p := k-1
+      have suc : p+1=k := by dsimp [p]; omega
+      have pm : p<m := by omega
+      have prev := mn p (by omega)
+      have XP : X p = p*g+min p (e-1) := by simp [X,pm.ne,place]
+      rw [XP] at prev
+      by_cases last : k=m
+      · have hp : e-1 ≤ p := by omega
+        rw [min_eq_right hp] at prev
+        have em : (p+1)*g+e = n := by rw [suc,last,← hn]
+        rw [Nat.add_mul,Nat.one_mul] at em
+        have xk : X k=n := by simp [X,last]
+        rw [xk] at de ⊢
+        exact ⟨by omega,by simp⟩
+      · have xk : X k = k*g + min k (e-1) := by simp [X,last,place]
+        have bound : X k < n := by rw [xk]; exact place_lt hn he (by omega : k<m)
+        rw [ZMod.val_natCast_of_lt bound]
+        have mult : k*g = p*g+g := by rw [← suc,Nat.add_mul,Nat.one_mul]
+        by_cases long : k≤ e-1
+        · have hp : p ≤ e-1 := by omega
+          rw [min_eq_left hp] at prev
+          rw [min_eq_left long] at xk
+          have lim := Nat.mul_le_mul_right (g+1) long
+          rw [Nat.mul_add,Nat.mul_one] at lim
+          exact ⟨by omega,fun _ => by omega⟩
+        · have hp : e-1≤p := by omega
+          rw [min_eq_right hp] at prev
+          rw [min_eq_right (by omega : e-1 ≤ k)] at xk
+          exact ⟨by omega,fun e => by omega⟩
+  exact ⟨d,step.1,dcast.symm ▸ memX,fun e => dcast.symm ▸ step.2 e⟩
+
+/-- An arc containing the witness must have length at least n-g. In the
+equality case the start of the arc is an endpoint of a long spacing. -/
+private theorem arc_of_spaced {m g e l : ℕ} (hn : n=m*g+e) (he : 1≤e) (hem : e≤m)
+    (hg : 0<g) {i : ZMod n} (hl : l≤n) (hS : spaced n m g e ⊆ interval i l) :
+    n ≤ l+g ∧ (l+g=n → i.val ≤ (e-1)*(g+1)) := by
+  obtain ⟨d,hd,hp,ep⟩ := spaced_hit hn he hem hg (i+l)
+  obtain ⟨k,hk,E⟩ := mem_interval.mp (hS hp)
+  have ce : (k : ZMod n) = ((l+d : ℕ) : ZMod n) := by
+    apply add_left_cancel (a:=i)
+    simpa [Nat.cast_add,add_assoc] using E
+  have wrap : n ≤ l+d := by
+    by_contra! h
+    have := natCast_inj_lt (by omega : k<n) h ce
+    omega
+  refine ⟨by omega,?_⟩
+  intro exactLen
+  have eg : d=g := by omega
+  have endpt : i+(l : ZMod n)+d = i := by
+    rw [add_assoc,← Nat.cast_add,eg,exactLen]; simp
+  simpa only [endpt] using ep eg
+
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+variable {n : ℕ} [NeZero n]
+
+private theorem full_cost {i : ZMod n} {t : ℕ} (hn : 2≤n) (h : arcCost i n ≤ t) :
+    (n-1)^2 ≤ t := by
+  simp [arcCost,show ¬n<2 by omega] at h
+  zify [show 1≤n by omega]
+  nlinarith only [h]
+
+/-- For each size there is one specified subset of the Černý automaton
+which cannot be reset in fewer than Cardoso's number of letters. -/
+theorem cerny_sharp (m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) :
+    ∃ S : Finset (ZMod n), S.card = m ∧ ∀ w : List Bool,
+      (cernyAutomaton n).Synchronizes w S → B n m ≤ w.length := by
+  classical
+  have hn : 0<n := NeZero.pos n
+  by_cases m1 : m=1
+  · refine ⟨{0},by simp [m1],?_⟩
+    intro w _; simp [m1,B_singleton hn]
+  by_cases full : m=n
+  · refine ⟨univ,by simp [ZMod.card,full],?_⟩
+    intro w hw
+    obtain ⟨q,hq⟩ := hw
+    obtain ⟨i,l,hl,E,h⟩ := cerny_word_cost w q
+    have allpre : pre ((cernyAutomaton n).act w) {q} = univ :=
+      eq_univ_of_forall (fun x => mem_pre.mpr (mem_singleton.mpr (hq x (mem_univ _))))
+    rw [allpre] at E
+    have len := congrArg Finset.card E
+    rw [card_univ,ZMod.card,interval_card i hl] at len
+    rw [← len] at h
+    rw [full,B_full hn]
+    exact full_cost (by omega) h
+  let g := (n-1)/m
+  let e := (n-1)%m+1
+  have hg : 0<g := Nat.div_pos (by omega) hm
+  have he : 1≤e := by dsimp [e]; omega
+  have hem : e≤m := by dsimp [e]; have := Nat.mod_lt (n-1) hm; omega
+  have dec : n=m*g+e := by
+    have := Nat.mod_add_div (n-1) m
+    dsimp [g,e]; omega
+  have price : (B n m : ℤ) = 1+(n:ℤ)*((n:ℤ)-g-2)+((n:ℤ)-1)-((e:ℤ)-1)*((g:ℤ)+1) := by
+    rw [cast_B hm hmn]
+    change ((n:ℤ)-1)^2-(g:ℤ)*(2*n-m*(g+1)-1) = _
+    have de : (n:ℤ)=m*(g:ℤ)+e := by exact_mod_cast dec
+    nlinarith [congrArg (· * (g:ℤ)) de]
+  let S := spaced n m g e
+  have hcard : S.card=m := spaced_card dec he hg
+  refine ⟨S,hcard,?_⟩
+  intro w hw
+  obtain ⟨q,hq⟩ := hw
+  obtain ⟨i,l,hl,E,hcost⟩ := cerny_word_cost w q
+  have sub : S ⊆ interval i l := by
+    intro p hp
+    rw [← E]
+    exact mem_pre.mpr (mem_singleton.mpr (hq p hp))
+  have ml := card_le_card sub
+  rw [hcard,interval_card i hl] at ml
+  have h2 : 2≤l := by omega
+  by_cases eq : l=n
+  · rw [eq] at hcost
+    exact (Nat.sub_le _ _).trans (full_cost (by omega) hcost)
+  obtain ⟨cover,start⟩ := arc_of_spaced dec he hem hg hl sub
+  simp only [arcCost,if_neg (by omega : ¬l<2),if_neg eq] at hcost
+  suffices H : (B n m : ℤ) ≤ w.length by exact_mod_cast H
+  by_cases tight : l+g=n
+  · have small := start tight
+    zify [he] at small
+    have e' : (l:ℤ)=(n:ℤ)-g := by omega
+    rw [← e'] at price
+    linarith only [price,hcost,small]
+  · have le : (n:ℤ)-g-2+1 ≤ (l:ℤ)-2 := by omega
+    have mult := mul_le_mul_of_nonneg_left le (by positivity : (0:ℤ) ≤ n)
+    have nonneg := mul_nonneg (show (0:ℤ) ≤ (e:ℤ)-1 by omega)
+      (show (0:ℤ) ≤ (g:ℤ)+1 by positivity)
+    have val : (0:ℤ) ≤ (n:ℤ)-1-i.val := by have := i.val_lt; omega
+    linarith only [price,hcost,mult,nonneg,val]
+
+/-- The upper bound is attained, not just approached: a shortest word for
+this subset of the Černý automaton has exactly the stated length. -/
+theorem cerny_attains (m : ℕ) (hm : 1≤m) (hmn : m≤n) :
+    ∃ S : Finset (ZMod n), S.card=m ∧
+      (∃ w : List Bool, w.length=B n m ∧ (cernyAutomaton n).Synchronizes w S) ∧
+      ∀ w : List Bool, (cernyAutomaton n).Synchronizes w S → B n m ≤ w.length := by
+  obtain ⟨S,card,lower⟩ := cerny_sharp m hm hmn
+  obtain ⟨w,hw,hs⟩ := (cernyAutomaton n).weaklyOrientedCircular_bound cerny_synchronizing
+    cerny_circular cerny_weaklyOriented S (card_pos.mp (by omega))
+  rw [card] at hw
+  exact ⟨S,card,⟨w,le_antisymm hw (lower w hs),hs⟩,lower⟩
+
+end CardosoSubsetSynchronization
+namespace CardosoSubsetSynchronization
+
+open Finset
+universe u
+
+/-- For a nonempty specified subset, being constant on the subset is exactly
+the usual cardinality-one image condition. -/
+theorem Automaton.synchronizes_iff_image_card {n : ℕ} {α : Type*} (A : Automaton n α)
+    (w : List α) (S : Finset (ZMod n)) (hne : S.Nonempty) :
+    A.Synchronizes w S ↔ (S.image (A.act w)).card = 1 := by
+  constructor
+  · rintro ⟨q,hq⟩
+    apply card_eq_one.mpr
+    refine ⟨q,?_⟩
+    ext x
+    simp only [mem_image,mem_singleton]
+    constructor
+    · rintro ⟨p,hp,rfl⟩; exact hq p hp
+    · rintro rfl
+      obtain ⟨p,hp⟩ := hne
+      exact ⟨p,hp,hq p hp⟩
+  · intro h
+    obtain ⟨q,H⟩ := card_eq_one.mp h
+    exact ⟨q,fun p hp => mem_singleton.mp (H ▸ mem_image_of_mem (A.act w) hp)⟩
+
+/-- The rotation found from an n-cycle has a unit jump in the preserved
+order, not necessarily jump one. -/
+theorem Automaton.coprime_jump {n : ℕ} [NeZero n] {α : Type*} (A : Automaton n α)
+    (hc : A.Circular) (ho : A.WeaklyOriented) (hn : 3 ≤ n) :
+    ∃ a j, (∀ x, A.δ a x = x+j) ∧ Nat.Coprime j.val n := by
+  obtain ⟨a,j,hr,ht⟩ := A.circular_rotation hc ho hn
+  obtain ⟨k,hk⟩ := ht 0 (-1)
+  rw [back_steps,zero_sub] at hk
+  have inv : (k : ZMod n)*j = 1 := neg_injective hk
+  have u : IsUnit j := ⟨⟨j,(k : ZMod n),by simpa [mul_comm] using inv,inv⟩,rfl⟩
+  exact ⟨a,j,hr,(ZMod.isUnit_iff_coprime j.val n).mp (by simpa using u)⟩
+
+/-- The sharp class theorem. The image-cardinality formulation applies to
+every specified m-subset; the same bound is attained on the Černý automaton
+for every admissible n and m. -/
+theorem sharp_weakly_oriented_circular {n : ℕ} [NeZero n] (m : ℕ) (hm : 1≤m) (hmn : m≤n) :
+    (∀ {α : Type u} (A : Automaton n α), A.Synchronizing → A.Circular → A.WeaklyOriented →
+      ∀ S : Finset (ZMod n), S.card=m →
+      ∃ w : List α, w.length ≤ B n m ∧ (S.image (A.act w)).card=1) ∧
+    (cernyAutomaton n).Synchronizing ∧ (cernyAutomaton n).Circular ∧ (cernyAutomaton n).WeaklyOriented ∧
+    ∃ S : Finset (ZMod n), S.card=m ∧
+      (∃ w : List Bool, w.length=B n m ∧ (cernyAutomaton n).Synchronizes w S) ∧
+      ∀ w : List Bool, (cernyAutomaton n).Synchronizes w S → B n m ≤ w.length := by
+  refine ⟨?_,cerny_synchronizing,cerny_circular,cerny_weaklyOriented,cerny_attains m hm hmn⟩
+  intro α A hs hc ho S hS
+  have hne := card_pos.mp (show 0<S.card by omega)
+  obtain ⟨w,hw,h⟩ := A.weaklyOrientedCircular_bound hs hc ho S hne
+  exact ⟨w,by simpa [hS] using hw,(A.synchronizes_iff_image_card w S hne).mp h⟩
+
 end CardosoSubsetSynchronization
