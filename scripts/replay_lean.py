@@ -43,6 +43,7 @@ def main() -> int:
             ["lake", "env", "leanchecker", mod],
             cwd=lean_dir,
             text=True,
+            timeout=300,
         )
         if res.returncode != 0:
             print(f"ERROR: leanchecker failed on module {mod} (exit {res.returncode})", file=sys.stderr)
