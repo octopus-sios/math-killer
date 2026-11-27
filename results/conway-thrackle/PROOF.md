@@ -23,7 +23,7 @@ We use the established embedding theorem for thrackleable graphs (Lovász–Pach
 
 ### Reduction to a connected minimum-degree-two core
 
-Fix $\alpha \ge 1$ and define $T_\alpha(n) = \max\bigl(n, \alpha(n - 1)\bigr)$. Adding a leaf increases $T_\alpha(n)$ by at least $1$, and $T_\alpha$ is superadditive: $T_\alpha(n_1) + T_\alpha(n_2) \le T_\alpha(n_1 + n_2)$ for all $n_1, n_2 \ge 1$. By strong induction on $n$ (formalized as `ConwayThrackle.Reduction.forest_reduction`), to prove $m \le T_\alpha(n)$ for all thrackleable graphs it suffices to prove $m \le \alpha(n - 1)$ for every connected thrackleable graph $G$ with minimum degree at least $2$ and $m > n$.
+Fix $\alpha \ge 1$ and define $T_\alpha(n) = \max\bigl(n, \alpha(n - 1)\bigr)$. Adding a leaf increases $T_\alpha(n)$ by at least $1$, and $T_\alpha$ is superadditive: $T_\alpha(n_1) + T_\alpha(n_2) \le T_\alpha(n_1 + n_2)$ for all $n_1, n_2 \ge 1$. By strong induction on $n$ (formalized as `ConwayThrackle.forest_reduction`), to prove $m \le T_\alpha(n)$ for all thrackleable graphs it suffices to prove $m \le \alpha(n - 1)$ for every connected thrackleable graph $G$ with minimum degree at least $2$ and $m > n$.
 
 Such a graph $G$ is connected and not a cycle, so its sphere or parity $\mathbb{RP}^2$ embedding is a $2$-cell embedding with Euler characteristic $\chi = n - m + f \ge 1$ in which every face $F$ has even boundary length $D(F) \ge 6$ (counted with multiplicity, allowing non-simple donor walks).
 

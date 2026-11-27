@@ -234,6 +234,35 @@
       "proof_file": "results/ma-mattiolo-steffen-wolf-five-regular-class-two/PROOF.md",
       "source_file": "results/ma-mattiolo-steffen-wolf-five-regular-class-two/SOURCE.tex",
       "verify_script": "results/ma-mattiolo-steffen-wolf-five-regular-class-two/verify.py"
+    },
+    {
+      "slug": "conway-thrackle",
+      "title": "Conway's thrackle conjecture: 5(n-1)/4 upper bound, settlement for n <= 15, and musquash exclusions",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "John H. Conway (recorded by D. R. Woodall, 1971); Dániel Gábor Simon (2026 upper bound)",
+        "paper": "Conway's thrackle conjecture: a new upper bound of 4n/3 (Dániel Gábor Simon, Oct 2026); D. R. Woodall, Thrackles and deadlock (1971)",
+        "arxiv_id": "2610.31589v2",
+        "url": "https://arxiv.org/abs/2610.31589v2",
+        "target": "Conway's Thrackle Conjecture (m <= n) and Global Edge-Bound Problem"
+      },
+      "summary": "Settles Conway's thrackle conjecture (m <= n) for all graphs on n <= 15 vertices (improving n <= 12) plus four 16-vertex minimal bicyclic obstructions via audited strict-RUP SAT/LRAT refutations, lowers the global upper bound from floor(4(n-1)/3) to floor(5(n-1)/4) for all n >= 5 via zero-curvature discharging (combinatorial discharging and forest reduction formalized in Lean 4), proves 5/4 is the exact sharpness wall of the NSB(16) embedding framework via girth-8 periodic witnesses and a 255-vertex dual showing Theta(1,7,9) necessity, and excludes all distinct cycles of length <= 7 sharing a vertex with any standard odd or Woodall distinct musquash. Conway's full conjecture remains open for general n >= 16.",
+      "proof_file": "results/conway-thrackle/PROOF.md",
+      "source_file": "results/conway-thrackle/SOURCE.tex",
+      "verify_script": "results/conway-thrackle/verify.py",
+      "lean_partial_file": "lean/Conjectures/ConwayThrackleBound.lean",
+      "lean_partial_theorems": [
+        "ConwayThrackle.ThreadA.bound_of_E2b",
+        "ConwayThrackle.forest_reduction",
+        "ConwayThrackle.ThreadA.bound_of_NSB13",
+        "ConwayThrackle.ThreadA.bound_of_NSB14",
+        "ConwayThrackle.ThreadA.bound_of_C4",
+        "ConwayThrackle.ThreadA.bound_of_NSB15",
+        "ConwayThrackle.ThreadA.bound_of_E2",
+        "ConwayThrackle.ThreadA.bound_of_NSB16"
+      ]
     }
   ]
 }
