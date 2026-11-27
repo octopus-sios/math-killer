@@ -166,6 +166,31 @@
         "EggertNilpotentAlgebra.square_span_carrier",
         "EggertNilpotentAlgebra.eggert_char_two_of_surjective_square"
       ]
+    },
+    {
+      "slug": "fouli-sylvester-matroids-linear-presentation",
+      "title": "Counterexamples to the Sylvester characterization of linearly presented graded Möbius algebras (Fouli et al., Conjecture 4.1)",
+      "verdict": "disproved",
+      "status": "🟢",
+      "date": "2026-11-27",
+      "source": {
+        "authors": "Louiza Fouli, Sean Grate, Selvi Kara, Adam LaClair, Jason McCullough, Vinh Nguyen, Aleksandra Sobieska, and Prajwal Udanshive",
+        "paper": "Graded Betti numbers of graded Möbius algebras of uniform matroids",
+        "arxiv_id": "2609.03827v1",
+        "url": "https://arxiv.org/abs/2609.03827v1",
+        "target": "Conjecture 4.1 (conj:Sylv_iff_lin_pres)"
+      },
+      "summary": "Disproves the Sylvester-to-linear-presentation direction of Conjecture 4.1 of Fouli et al. (arXiv:2609.03827v1) via an infinite rank-3 family of quadratic Sylvester matroids indexed by F_2^m (m >= 3, starting at 15 points with beta_{2,4} = 20 and lower bound beta_{2,4} >= 2^{m-2}(2^m-1)(2^m-2)/6) and a 15-point quadratic Steiner triple system with every pair in a unique 3-circuit (beta_{2,4} = 4), each certified over Q by an explicit Koszul 2-cycle and separating boundary-killing functional. Proposition 4.4 of the paper proves the forward direction.",
+      "proof_file": "results/fouli-sylvester-matroids-linear-presentation/PROOF.md",
+      "source_file": "results/fouli-sylvester-matroids-linear-presentation/SOURCE.tex",
+      "verify_script": "results/fouli-sylvester-matroids-linear-presentation/verify.py",
+      "lean_partial_file": "lean/Conjectures/FouliSylvesterMatroids.lean",
+      "lean_partial_theorems": [
+        "FouliSylvesterMatroids.cycle_not_boundary",
+        "FouliSylvesterMatroids.cycle_closed",
+        "FouliSylvesterMatroids.unit_pairing",
+        "FouliSylvesterMatroids.separator_kills_column"
+      ]
     }
   ]
 }
