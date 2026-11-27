@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Data.Fintype.Card
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Linarith
 
 /-! The additive counting step in the weakly oriented circular case of Cardoso's
 subset conjecture. A placement is counted at length `l` when its end is higher
