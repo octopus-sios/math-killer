@@ -168,6 +168,88 @@ def long_ears():
     return cases
 
 
+def sparse_checks():
+    """Reduced exterior path states for the three-arm move and parity overlay."""
+    tips = 'uwt'
+    arm = 0
+    for rs in product(range(2), repeat=3):
+        for old in exteriors(dict.fromkeys('v'+tips, 1), (0,)+rs):
+            assert any(linear(attach(old, [('v',x) for x in tips], p))
+                       for p in ((B,R,R),(R,B,R),(R,R,B)))
+            arm += 1
+
+    def word(length, first, repeat):
+        w = [first]
+        for i in range(1,length):
+            w.append(w[-1] ^ int(i not in repeat))
+        return w
+
+    def joins(w, cycle, marks):
+        # At a marked high vertex there is no old edge of its repeat color.
+        size = len(w) if cycle else len(w)+1
+        nb = {k:[] for k in range(size)}
+        for i,c in enumerate(w):
+            j = (i+1) % size
+            nb[i].append((j,c))
+            nb[j].append((i,c))
+        merged = []
+        for c in (R,B):
+            unseen = set(nb)
+            while unseen:
+                v = unseen.pop()
+                live = [v]
+                comp = {v}
+                for u in live:
+                    for x,col in nb[u]:
+                        if col == c and x in unseen:
+                            unseen.remove(x)
+                            comp.add(x)
+                            live.append(x)
+                if len(comp) < 2:
+                    continue
+                old = {x for x in comp if x % 2 == 0 and
+                       not (x in marks and nb[x][0][1] == c)}
+                if len(old)>1:
+                    merged.append((c,old))
+        return merged
+
+    rings = paths = delayed = 0
+    for h in range(2,8):
+        for bits in product((0,1), repeat=h):
+            mark = {2*i for i in range(h) if bits[i]}
+            repeat = set(mark)
+            if len(mark)%2:
+                repeat.add(min(mark)+1)
+            w = word(2*h, R, repeat)
+            assert (w[-1] == w[0]) == (0 in mark)
+            assert not joins(w, True, mark)
+            rings += 1
+
+        length = 2*(h-1)
+        for bits in product((0,1), repeat=h-2):
+            mark = {2*(i+1) for i in range(h-2) if bits[i]}
+            for first, last in product((R,B),repeat=2):
+                w = word(length, first, mark)
+                if w[-1] != last:
+                    if not mark:
+                        continue  # delayed paths checked separately below
+                    w = word(length, first, mark | {min(mark)-1})
+                assert w[-1] == last and not joins(w,False,mark)
+                paths += 1
+        if h >= 3:
+            for part in partitions(list(range(h))):
+                if max(map(len,part))>2:
+                    continue
+                loc = {x:i for i,group in enumerate(part) for x in group}
+                i = next(i for i in range(h-1) if loc[i] != loc[i+1])
+                for first in (R,B):
+                    w = word(length, first, {2*i+1})
+                    assert w[-1] == first
+                    assert joins(w,False,set()) == [(first,{2*i,2*i+2})]
+                    delayed += 1
+    return arm,rings,paths,delayed
+
+
 def peel2(vertices, edges):
     nb = {x: set() for x in vertices}
     for x,y in edges:
@@ -239,6 +321,8 @@ if __name__ == '__main__':
     print('Twin four-cycle: PASS (%d boundary cases)' % check_twins())
     print('Distinct-arm fusion: PASS (%d liftable input cases)' % check_fusion())
     print('Ear extension: PASS (%d endpoint/protection checks)' % long_ears())
+    print('Sparse overlay: PASS (%d three-arm, %d cyclic, %d prescribed path, %d delayed path states)'
+          % sparse_checks())
     print('Sharpness graph: %d valid colorings of 4096; every one has two defects.'
           % sharpness())
     examples()
