@@ -509,6 +509,23 @@
         "Erdos86Obstructions.hamiltonFibreObstruction",
         "Erdos86Obstructions.threeEdgeDefect"
       ]
+    },
+    {
+      "slug": "barranca-induced-subgraph-spectral-determination",
+      "title": "Barranca's Conjecture 2.1.2: the only graphs recognizable by spectrum as induced subgraphs are K1, 2K1, K2, K3 and P3",
+      "verdict": "proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Emily Barranca",
+        "paper": "Recognizing Induced Subgraph and Tree Structure from the Adjacency Spectrum of a Graph (Ph.D. dissertation, University of Rhode Island, 2024)",
+        "url": "https://doi.org/10.23860/diss-1678",
+        "target": "Conjecture 2.1.2 (p. 26): K1, 2K1, K2, K3 and P3 are the only graphs recognizable by spectrum (Definition 2.1.1)"
+      },
+      "summary": "Proves Barranca's conjecture in full: among nonempty finite simple graphs, exactly K1, 2K1, K2, K3 and P3 have the property that adjacency-cospectral hosts always agree on containing them as induced subgraphs. An integral spectral trade (every integral-spectrum graph plus cliques/stars/isolates is cospectral with a union of cliques and stars), applied to the F_2^n Cayley hull of any pattern, excludes every connected pattern other than cliques and stars; explicit cospectral pairs exclude K_m (m >= 4) and K_{1,m} (m >= 3); an induced-embedding cancellation lemma reduces disconnected patterns to ten explicit seed pairs on at most 8 vertices, checked by exact integer characteristic polynomials and induced-injection search in verify.py (with mutation controls); and the five positive cases follow from trace counts and positive semidefiniteness of A + I on unions of cliques.",
+      "proof_file": "results/barranca-induced-subgraph-spectral-determination/PROOF.md",
+      "source_file": "results/barranca-induced-subgraph-spectral-determination/SOURCE.tex",
+      "verify_script": "results/barranca-induced-subgraph-spectral-determination/verify.py"
     }
   ]
 }
