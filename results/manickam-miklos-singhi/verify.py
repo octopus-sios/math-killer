@@ -9,8 +9,8 @@ Verifies all three computational pillars with exact integer / rational arithmeti
      exact slice-moment identities, the elementary n >= 3k^2 backup, and mutation tests.
 
   2. Complete Milojevic-Sudakov (arXiv:2606.30287v1) Conjectures 1 & 3 on p in [0, 1/3]:
-     - Analytic proof on [0, 1/7] and exact unit-fraction coloring at p = 1/q (incl. p = 1/3)
-       are Lean 4 kernel-verified (Conjectures.ManickamMiklosSinghi.BernoulliOneSeventh).
+     - Lean 4 kernel verification on [0, 1/7] and of the Alon–Emek–Feldman–Tennenholtz
+       (2013) unit-fraction coloring argument at p = 1/q (incl. p = 1/3).
      - Exact integer replay of [1/7, 3/10] (bernoulli_constants.py) + mutation test.
      - Exact integer + int128 C++ replay of [29/100, 8/25] and [8/25, 1/3)
        (bernoulli_extension.py + prefix.cpp) + mutation test.

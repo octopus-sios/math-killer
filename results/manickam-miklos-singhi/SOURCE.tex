@@ -88,6 +88,7 @@
 \newtheorem{defn}[theorem]{Definition}
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{proposition}[theorem]{Proposition}
 
 \newcommand\lref[1]{Lemma~\ref{lem:#1}}
 \newcommand\tref[1]{Theorem~\ref{thm:#1}}
@@ -414,6 +415,41 @@ nonnegative $k$-element subsets in $X$. For $n \geq 8k^{2}$, however, the expres
 
 \medbreak
 \noindent{\sc Acknowledgement:}  We are grateful to Simeon Ball, Chris Godsil, Po-Shen Loh, Karen Meagher, Bruce Rothschild, Benny Sudakov, Terence Tao, Jacques Verstra\"{e}te, and Rick Wilson for their advice.
+
+
+\section*{Milojevi\'c--Sudakov: primary statements for Pillar II}
+
+Aleksa Milojevi\'c and Benny Sudakov,
+\emph{On the Probability a Weighted Bernoulli Sum Exceeds Its Mean},
+\href{https://arxiv.org/abs/2606.30287v1}{arXiv:2606.30287v1}, 29 June 2026.
+The three statement blocks below are excerpted verbatim from
+\href{https://arxiv.org/e-print/2606.30287v1}{the v1 TeX source},
+with trailing whitespace normalized and original labels retained.
+The source is licensed under
+\href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0}.
+The surrounding archive text is not part of the excerpts.
+
+% Definitions of macros used in the excerpts, from the v1 preamble.
+\begingroup
+\def\eps{\varepsilon}
+\def\bR{\mathbb{R}}
+\def\Pb{\mathbb{P}}
+
+\begin{conjecture}\label{conj:prob}
+Let $0\leq p\leq 1/3$ be a fixed real number. Let $w\in \bR_{>0}^m$ be such that $\sum_{i=1}^m w_i=1$, and let $v\in \{0, 1\}^m$ be a random vector with i.i.d. Bernoulli$(p)$ coordinates. Then
+\[\Pb[\langle v, w\rangle\geq p]\geq p.\]
+\end{conjecture}
+
+\begin{conjecture}
+\label{q:MMS_variant}
+For any constants $\eps, C>0$, and every sufficiently large integers $n, k$ satisfying $n\geq (3+\eps)k$, we have the following. Let $x_1, \dots, x_n$ be real numbers whose sum is $0$, such that at most $C$ among them are nonnegative and such that any two negative values $x_i, x_j$ are equal. Then, at least $\binom{n-1}{k-1}$ of the $k$-element subsets $S\subseteq [n]$ have nonnegative sum.
+\end{conjecture}
+
+\begin{proposition}\label{prop:counterexample}
+Conjecture~\ref{conj:prob} does not hold for any $p\in (1/3, 1)$, with the exception of $p=1/2$.
+\end{proposition}
+
+\endgroup
 
 \bibliographystyle{plain}
 \bibliography{MMSQuadratic}
