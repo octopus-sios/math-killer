@@ -43,6 +43,7 @@ import Conjectures.NabergallChordalDiagrams.Triangulation
 import Conjectures.PattanayakTwoDegenerateLinearArboricity
 import Conjectures.PetrTemperateIntersecting
 import Conjectures.ReinerStantonQBinomialUnimodality
+import Conjectures.StanleyJackNearPieri
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.TuzaConjecture
 import Conjectures.YiboGaoCoxeterGeodesicHull

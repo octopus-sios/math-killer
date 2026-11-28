@@ -1,0 +1,84 @@
+% R. P. Stanley, Some combinatorial properties of Jack symmetric functions,
+% Advances in Mathematics 77 (1989), 76--115.
+% DOI: 10.1016/0001-8708(89)90015-7
+% Author's scan: https://math.mit.edu/~rstan/pubs/pubfiles/73.pdf
+%
+% Normalization (mathematical definitions of (2)--(4), Theorem 1.1,
+% and Theorem 5.8 in self-contained notation).
+\[
+ z_\rho=\prod_{i\ge1}i^{m_i(\rho)}m_i(\rho)!,
+ \qquad
+ \langle p_\rho,p_\sigma\rangle
+   =\delta_{\rho\sigma} z_\rho\alpha^{\ell(\rho)} .
+\]
+Here \(m_i(\rho)\) counts parts of size \(i\), \(\ell(\rho)\) counts
+all parts, and \(p_\rho\) is the product of the corresponding power sums.
+The \(J_\rho\) are mutually orthogonal, with
+\[
+ J_\rho=\sum_{\eta\le\rho}v_{\rho\eta}(\alpha)m_\eta,\qquad
+ v_{\rho,1^n}=n! \quad(n=|\rho|).
+\]
+Here \(m_\eta\) is a monomial symmetric function, and \(\eta\le\rho\)
+means \(|\eta|=|\rho|\) and
+\(\sum_{i=1}^k\eta_i\le\sum_{i=1}^k\rho_i\) for every \(k\).
+For a box \(s\) let \(A(s),l(s)\) be the number of boxes strictly
+to its right and strictly below it, respectively, in English notation.
+Write
+\[
+ H_\rho=\prod_{s\in\rho}(\alpha A(s)+l(s)+1),\qquad
+ H'_\rho=\prod_{s\in\rho}(\alpha(A(s)+1)+l(s)),\qquad
+ j_\rho=H_\rho H'_\rho .
+\]
+Thus \(J_\rho=H_\rho P_\rho\) for the monic Jack polynomial \(P_\rho\)
+and \(j_\rho=\langle J_\rho,J_\rho\rangle\).
+
+% Verbatim, Stanley, p. 110 (typesetting transcribed).
+\paragraph{8.3. Conjecture.}
+For fixed \(\lambda,\mu,\) and \(\nu\), the quantity
+\(\langle J_\mu J_\nu,J_\lambda\rangle\) is a polynomial in
+\(\alpha\) with nonnegative integer coefficients.
+
+% Normalization cross-check: https://www.symmetricfunctions.com/jack.htm
+% The scalar product in the conjecture is j_lambda times the coefficient
+% of J_lambda in J_mu J_nu, NOT the coefficient itself.
+
+% Additional source: Ryan Mickler, The Stanley conjecture revisited,
+% arXiv:2401.01582v3, Sec. 3.1.1, Conjecture 3.3 (July 20, 2025).
+% https://arxiv.org/pdf/2401.01582v3
+% The following gives the precise equation in symbol rather than color
+% notation. The arrays are read in source order from top to bottom,
+% within each line from left to right; first mu, then nu, then lambda.
+% Each row of the table specifies the coefficient on every word in it.
+\[
+\begin{array}{r|l}
+ 7 & \mathtt{UUUUUUUULUUL}\\
+-2 & \mathtt{UUUUUUUUUUUL}\\
+ 1 & \mathtt{ULUUUUUUUUUL},\mathtt{UUUULUUUUUUL},\mathtt{UUUUUUUUULUL}\\
+-2 & \mathtt{LUUUUUUULUUL},\mathtt{UULUUUUULUUL},\mathtt{UUULUUUULUUL},\\
+   & \mathtt{UUUUULLULUUU},\mathtt{UUUUUUULLUUL},\mathtt{UUUUUUUULULL}\\
+-2 & \mathtt{ULUUUUUULUUL},\mathtt{UUUULUUULUUL},\mathtt{UUUUUUUULLUL}\\
+ 1 & \mathtt{LLUUUUUULUUL},\mathtt{ULLUUUUULUUL},\mathtt{UUULLUUULUUL},\\
+   & \mathtt{UUUULLLULUUU},\mathtt{UUUUUUULLLUL},\mathtt{UUUUUUUULLLL}\\
+ 1 & \mathtt{LUUUULLULUUU},\mathtt{UULLUUUULUUL},\mathtt{LUUUUUUULULL},\\
+   & \mathtt{UULUUUULLUUL},\mathtt{UUULUUUULULL},\mathtt{UUUUULLLLUUU}.
+\end{array}
+\]
+For \(\nu=(2,1)\) and three added boxes in distinct rows and columns,
+the window \(R\) cuts out their three rows and three columns (taking
+their intersections inside the partition). The arrays have shapes
+\(21,21,321\) after deleting the unused rows and columns. Evaluate a word
+\(D\) by taking the product of the indicated hooks of \(\mu,\nu\)
+in its first six slots, divided by the product of the indicated hooks of
+\(\lambda\) in its last six slots. Each hook is taken in the actual shape.
+The factor \(F_R\) outside the window is the product of ratios of hooks
+of \(\mu\) to hooks of \(\lambda\), using lower hooks in affected rows,
+upper hooks in affected columns, and cancelling the unchanged hooks elsewhere.
+Mickler asks that the sum solve the residue equations (46) for
+all four spacings \({\bf v}\in{\mathbb Z}_{\ge0}^4\), and have weight zero.
+The rational-function equality that implies those equations is
+\[
+ \frac{\langle J_\mu J_{21},J_\lambda\rangle}{j_\lambda F_R}
+    =\sum_D c_D[D]_R .
+\]
+The weight of the sum is
+\(\sum_D c_D(\#L_{\rm num}(D)-\#L_{\rm den}(D))\).
