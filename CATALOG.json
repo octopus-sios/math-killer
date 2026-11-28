@@ -412,6 +412,24 @@
         "le_tuzaNu_iff_adj",
         "tuzaTau_le_iff"
       ]
+    },
+    {
+      "slug": "tuza-five-vertex-bipartizer",
+      "title": "Tuza's conjecture for five-vertex bipartizers and sharp near-Mantel density threshold (e(G) >= n^2/4 - 3n + C)",
+      "verdict": "partially_proved",
+      "status": "⬜",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Zhen Liu and Qinghou Zeng",
+        "paper": "Tuza's conjecture for graphs with at least n^2/4 - cn edges",
+        "arxiv_id": "2610.15539v1",
+        "url": "https://arxiv.org/abs/2610.15539v1",
+        "target": "Conjecture 1.1 (Tuza's Conjecture) and Theorem 1.2 (near-Mantel density threshold)"
+      },
+      "summary": "Proves Tuza's inequality tau(G) <= 2*nu(G) unconditionally for every finite simple graph G admitting a vertex set S of size |S| <= 5 such that G - S is bipartite (no density or codegree assumption), via weak König-Egerváry link reductions, a Hall-type star reduction, Galvin list edge-coloring, and five-vertex core analysis. As a corollary, improves the near-Mantel edge-density threshold of Liu and Zeng (arXiv:2610.15539v1, Oct 2026) from c < 2 to every fixed c < 3, sharpens the endpoint to e(G) >= n^2/4 - 3n + C with C = binom(693600, 2) + 349 for sufficiently large n, and establishes the quantization law n^2/4 - jn/2 + O(1) for the maximum edge count of large counterexamples in terms of the least bipartization number j (with j >= 6 if any counterexample exists). Supplementary exact finite checks in verify.py exhaust all 1,024 five-vertex cores, 1,099 small links, and 16,589 boundary Hall shapes plus 2 rejected mutations. Universal Tuza's conjecture, |S| = 6, and C = 0 remain open.",
+      "proof_file": "results/tuza-five-vertex-bipartizer/PROOF.md",
+      "source_file": "results/tuza-five-vertex-bipartizer/SOURCE.tex",
+      "verify_script": "results/tuza-five-vertex-bipartizer/verify.py"
     }
   ]
 }
