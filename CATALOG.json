@@ -526,6 +526,24 @@
       "proof_file": "results/barranca-induced-subgraph-spectral-determination/PROOF.md",
       "source_file": "results/barranca-induced-subgraph-spectral-determination/SOURCE.tex",
       "verify_script": "results/barranca-induced-subgraph-spectral-determination/verify.py"
+    },
+    {
+      "slug": "guralnick-tongviet-tracey-baer-suzuki",
+      "title": "Guralnick–Tong-Viet–Tracey Baer–Suzuki variations: prime-order commutator criterion for O_p(G) (Conjecture 2) proved; Engel-product criterion (Conjecture 1) proved at p = 2 and for PSL2/PGL2",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Robert M. Guralnick, Hung P. Tong-Viet, Gareth Tracey",
+        "paper": "Weakly subnormal subgroups and variations of the Baer-Suzuki theorem (J. London Math. Soc. (2) 111 (2025), e70057)",
+        "arxiv_id": "2402.00804v1",
+        "url": "https://arxiv.org/abs/2402.00804v1",
+        "target": "Conjecture 2 (conjD): x of prime order p with every [x,g] trivial or p-singular lies in O_p(G); Conjecture 1 (multicommutators)"
+      },
+      "summary": "Theorem A proves Conjecture 2 in full: if x has prime order p in a finite group G and x is not in O_p(G), some commutator [x,g] is nontrivial of order prime to p. The key new step is a lifting lemma for class products through a normal odd p-subgroup with cyclic Sylow quotient, proved via the class multiplication formula and a scalar-action lemma (an odd normal p-subgroup acts by scalars in any irreducible character nonvanishing on an invariably generating pair, via an explicit class-two orbit basis), applied to the quotient-level selection in GTT's minimal-counterexample reduction. Theorem B proves Conjecture 1 (products of k-fold Engel commutators all p-elements implies x in O_p(G)) for p = 2 in every finite group, and for G = PSL2(q) or PGL2(q) at every p, via a nonsplit-torus trace test and Baer's Engel theorem; the residual A6 / M10 case is an exact finite lemma over all 1440 automorphisms of A6 checked in verify.py with mutation controls. Conjecture 1 remains open in general at odd primes.",
+      "proof_file": "results/guralnick-tongviet-tracey-baer-suzuki/PROOF.md",
+      "source_file": "results/guralnick-tongviet-tracey-baer-suzuki/SOURCE.tex",
+      "verify_script": "results/guralnick-tongviet-tracey-baer-suzuki/verify.py"
     }
   ]
 }
