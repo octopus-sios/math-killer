@@ -13,6 +13,38 @@ import Conjectures.Kourovka1846SquareOvergroup.Cosets
 import Conjectures.Kourovka1846SquareOvergroup.Reduction
 import Conjectures.Kourovka1846SquareOvergroup.Table
 import Conjectures.Kourovka1846SquareOvergroup.Upper
+import Conjectures.ManickamMiklosSinghi
+import Conjectures.ManickamMiklosSinghi.BernoulliOneSeventh
+import Conjectures.ManickamMiklosSinghi.Foundation
+import Conjectures.ManickamMiklosSinghi.SevenKAverage
+import Conjectures.ManickamMiklosSinghi.SevenKBand
+import Conjectures.ManickamMiklosSinghi.SevenKBase
+import Conjectures.ManickamMiklosSinghi.SevenKBootstrap
+import Conjectures.ManickamMiklosSinghi.SevenKBound
+import Conjectures.ManickamMiklosSinghi.SevenKCaps
+import Conjectures.ManickamMiklosSinghi.SevenKCells
+import Conjectures.ManickamMiklosSinghi.SevenKChain
+import Conjectures.ManickamMiklosSinghi.SevenKExposure
+import Conjectures.ManickamMiklosSinghi.SevenKFinal
+import Conjectures.ManickamMiklosSinghi.SevenKFullMoments
+import Conjectures.ManickamMiklosSinghi.SevenKGap
+import Conjectures.ManickamMiklosSinghi.SevenKHolder
+import Conjectures.ManickamMiklosSinghi.SevenKLoss
+import Conjectures.ManickamMiklosSinghi.SevenKLossScalar
+import Conjectures.ManickamMiklosSinghi.SevenKMean
+import Conjectures.ManickamMiklosSinghi.SevenKMix
+import Conjectures.ManickamMiklosSinghi.SevenKMixScalar
+import Conjectures.ManickamMiklosSinghi.SevenKMomentWeights
+import Conjectures.ManickamMiklosSinghi.SevenKNormalize
+import Conjectures.ManickamMiklosSinghi.SevenKParams
+import Conjectures.ManickamMiklosSinghi.SevenKQuartic
+import Conjectures.ManickamMiklosSinghi.SevenKReduction
+import Conjectures.ManickamMiklosSinghi.SevenKScalar
+import Conjectures.ManickamMiklosSinghi.SevenKStar
+import Conjectures.ManickamMiklosSinghi.SevenKStarWeights
+import Conjectures.ManickamMiklosSinghi.SevenKStart
+import Conjectures.ManickamMiklosSinghi.SevenKStats
+import Conjectures.ManickamMiklosSinghi.SevenKTransport
 import Conjectures.MarcusDeOliveira
 import Conjectures.MarcusDeOliveira.AllCompounds
 import Conjectures.MarcusDeOliveira.Arrowhead
@@ -48,10 +80,3 @@ import Conjectures.TuzaConjecture
 import Conjectures.YiboGaoCoxeterGeodesicHull
 import Conjectures.YiboGaoWeylConvexBalance
 import Conjectures.YuanParriloPermanentSphere
-
-/-! Root module importing every verified conjecture module under `Conjectures/`.
-
-Keep this file in exact 1-to-1 sync with `lean/Conjectures/*.lean` (enforced by
-`scripts/check_catalog.py`), so `ProofAudit.lean` and CI audit every published
-theorem transitively.
--/
