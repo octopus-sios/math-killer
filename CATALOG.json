@@ -385,6 +385,33 @@
       "proof_file": "results/gessel-zhuang-inverse-peak-real-rooted/PROOF.md",
       "source_file": "results/gessel-zhuang-inverse-peak-real-rooted/SOURCE.tex",
       "verify_script": "results/gessel-zhuang-inverse-peak-real-rooted/verify.py"
+    },
+    {
+      "slug": "tuza-conjecture",
+      "title": "Tuza's 1981 conjecture: universal bound 14*tau(G) <= 39*nu(G) and colored-family bound 21/8",
+      "verdict": "partially_proved",
+      "status": "✅",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Zsolt Tuza (1981); Sichen Wang (2026 baseline)",
+        "paper": "A Bound Below 2.8 for Tuza's Conjecture (Sichen Wang, Sept 2026); Z. Tuza, Graphs and Combinatorics 6 (1990), 373-380",
+        "arxiv_id": "2609.13831v1",
+        "url": "https://arxiv.org/abs/2609.13831v1",
+        "target": "Tuza's Conjecture (tau(G) <= 2*nu(G)) and Universal Constant Bound"
+      },
+      "summary": "Proves the universal bound 14*tau(G) <= 39*nu(G) (tau(G) <= (39/14)*nu(G) approx 2.7857*nu(G)) for every finite simple graph G via simultaneous triangle-book rotation on distinct red opposites, safe opposite switching, and a 6-inequality rational cover certificate—improving both Sichen Wang's Sept 2026 record (165/59 approx 2.7966, arXiv:2609.13831v1) and Tyler B. Hughes's Nov 2026 unrefereed draft (81/29 approx 2.7931). Also proves the sharper red-blue colored-family bound 8*tau_R(G) + 5*|private| <= 21*nu_R(G) (21/8 = 2.625 < 8/3). Formalized end-to-end in Lean 4 on Mathlib's SimpleGraph (552 theorems, zero sorry, standard axioms only, MIT-licensed adaptation of Wang's tuza-lean base). Partially resolves Tuza's conjecture by lowering the universal constant; tau(G) <= 2*nu(G) remains open.",
+      "proof_file": "results/tuza-conjecture/PROOF.md",
+      "source_file": "results/tuza-conjecture/SOURCE.tex",
+      "verify_script": "results/tuza-conjecture/verify.py",
+      "lean_file": "lean/Conjectures/TuzaConjecture.lean",
+      "lean_theorem": "tuza_bound_39_14",
+      "lean_supporting_theorems": [
+        "tuza_bound_39_14_standard",
+        "colored_tuza_bound_21_8",
+        "colored_tuza_bound_21_8_plain",
+        "le_tuzaNu_iff_adj",
+        "tuzaTau_le_iff"
+      ]
     }
   ]
 }
