@@ -1,0 +1,24 @@
+% C. A. Schroeder, arXiv:2609.26464v1 (22 September 2026).
+% Verbatim excerpts: notation, Example 2.6 and Conjecture 3.5.
+
+\newcommand{\mr}[1]{\mathrm{#1}}
+
+\newcommand{\Irr}[1]{\mathrm{Irr}(#1)}
+
+\newcommand{\q}[1]{\overline{#1}}
+
+The collection of irreducible complex characters of $G$ is denoted $\Irr{G}$. It is known that $k(G)=|\Irr{G}|$. Let $\chi_1$ be the trivial character, which we often denote as $1_G$. The irreducible characters are orthonormal with respect to the inner product $[\chi_i, \chi_j] = (1/|G|) \sum_{g \in G} \chi_i(g) \q{\chi_j(g)}$.
+
+Now let $\pi$ be a collection of primes. Let $G_\pi \subseteq G$ denote the set of $\pi$-elements of~$G$, let $\mr{Cl}_\pi(G)$ denote the collection of $G$-conjugacy classes of $\pi$-elements, let $|G|_\pi$ denote the $\pi$-part of the integer $|G|$, and let $k_{\pi}(G)$ be the number of $\pi$-conjugacy classes of $G$.
+
+Now we define the class function $\Pi_{\pi,G}$ by
+\begin{align*}
+    \Pi_{\pi,G}(g) = \begin{cases}
+        |\mathbf{C}_G(g)| & \text{if $g \in G$ is a $\pi$-element} \\
+        0 & \text{otherwise}.
+    \end{cases}
+\end{align*}
+
+\begin{conjecture}\label{c:Picharacter}
+Let $G$ be a finite group, and let $\pi$ be an arbitrary collection of primes. Then $\Pi_{\pi,G}$ is a character of $G$; that is, $[\Pi_{\pi,G},\chi] \ge 0$ for all $\chi \in \Irr{G}$. 
+\end{conjecture}
