@@ -1,0 +1,22 @@
+% From R. M. Guralnick, H. P. Tong-Viet, G. Tracey, arXiv:2402.00804v1.
+% Weakly subnormal subgroups and variations of the Baer-Suzuki theorem,
+% J. London Math. Soc. (2) 111 (2025), e70057, Conjectures 1 and 2.
+% Source macros, conventions, and statements (original labels).
+\newcommand{\geqs}{\geqslant}
+\renewcommand{\geq}{\geqs}
+\newtheorem{conjecture}{Conjecture}
+
+Before stating our main theorems, we fix some standard notation. For an element $g$ of a group $G$, we will write $o(g)$ for the order of $g$. We will write $\Phi(G)$, $F(G)$, $E(G)$, and $F^*(G)$ for the Frattini subgroup, Fitting subgroup, layer, and generalized Fitting subgroup of $G$, respectively.
+
+Recall that if $g\in G$ is an element of a finite group $G$ and $p$ is a prime, then  $g$ is called a $p'$-element (or a $p$-regular element) if its order is coprime to $p$; it is called $p$-singular if its order is divisible by $p$.
+
+We propose the following conjecture which is the one of strongest possible generalizations of the Baer-Suzuki theorem (as well
+as Baer's theorem). Let  $k\ge 1$ be an integer and let $x\in G$ be a $p$-element.  Let $$\Gamma_k(x)=\{[g,{}_kx]:= [g,\underbrace{x,x,\dots, x}_{k \text{ times}}]: g\in G\},$$
+where we define $[x_1,x_2,\dots,x_n]=[[x_1,x_2,\dots,x_{n-1}],x_n]$ for  $x_1,x_2,\dots,x_n\in G$ and any integer $n\ge 2$.
+\begin{conjecture}\label{conj: multicommutators}
+Let $G$ be a finite group and let $p$ be a prime divisor of $|G|$. Let $x\in G$ be a $p$-element, and suppose that for some integer $k\geq 1$, $ab$ is a $p$-element for all $a,b\in \Gamma_k(x)$. Then $x\in O_p(G)$.
+\end{conjecture}
+
+\begin{conjecture}\label{conjD}
+Let $G$ be a finite group and let $p$ be a prime. Let $x\in G$ be an element of order $p$.   If $[x,g]$ is either $1$ or $p$-singular for every element $g\in G$, then $x\in O_p(G)$.
+\end{conjecture}
