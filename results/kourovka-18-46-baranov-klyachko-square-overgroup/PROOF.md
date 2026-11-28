@@ -62,7 +62,7 @@ This leaves only $S=A_m$. We have $m\ge n$ from $|S|\ge|A_n|$, and $m<2n$ since 
 
 ## 3. The remaining action has no root
 
-For $m\ge n\ge4096$, $\operatorname{Aut}(A_m)=S_m$. Consider the embedded $G$ acting on these $m$ letters. On a nontrivial orbit a point stabilizer has index at most $m<2n$. Such a proper subgroup must be a natural point stabilizer by Dixon–Mortimer, [*Permutation Groups*](https://doi.org/10.1007/978-1-4612-0731-3), Theorem 5.2A (take parameter $2$; $2n<\binom n2$ and none of the exceptions apply). Thus each nontrivial orbit is equivariantly isomorphic to the natural $n$-letter action. Since the embedding is faithful and $m<2n$, there is exactly one such orbit; all other points are fixed.
+For $m\ge n\ge4096$, $\operatorname{Aut}(A_m)=S_m$. Consider the embedded $G$ acting on these $m$ letters. On a nontrivial orbit a point stabilizer has index at most $m<2n$. Such a proper subgroup must be a natural point stabilizer by Dixon–Mortimer, [*Permutation Groups*](https://doi.org/10.1007/978-1-4612-0731-3), Theorem 5.2A (take parameter $2$; $2n<\binom n2$ and none of the exceptions apply). Thus each nontrivial orbit is isomorphic to the natural $n$-letter action up to an automorphism of $A_n$ (as $\operatorname{Aut}A_n=S_n$, this preserves cycle type). Since the embedding is faithful and $m<2n$, there is exactly one such orbit; all other points are fixed.
 
 In this representation $g$ still has exactly one two-cycle. If $h^2=g$, then $h$ commutes with $g$ and preserves the two points of least $g$-period two. The square of any permutation of that pair fixes both points, whereas $g$ interchanges them. This rules out the last possible smaller host.
 
@@ -98,7 +98,7 @@ Running the adjacent Python verifier produces **16** labelled kernel tables. **N
 
 ## Verification scope
 
-The result for arbitrary $A_n$ with $n\ge4096$ is a written proof using CFSG. Lean proves the unique-two-cycle obstruction for the explicit witness with arbitrary fixed points; it does not formalize CFSG. The Python verifier checks the degree $4096$ instance data and a corrupted square permutation. For the independent $D$ example it exhausts the two finite coset tests in Section 4 from the group law alone, without GAP, floats, or stored catalogues.
+The result for arbitrary $A_n$ with $n\ge4096$ is a written proof using CFSG; Lean formalizes only its final step, the unique-two-cycle obstruction for the explicit witness with arbitrary fixed points. The sharp $D_8$ answer (minimum simultaneous host order exactly $128=2|D_8|^2$) and the general upper bound $2|G|^2$ are fully proved in Lean; see *Lean verification of sharpness* below. The Python verifier checks the degree $4096$ instance data and a corrupted square permutation. For the independent $D$ example it exhausts the two finite coset tests in Section 4 from the group law alone, without GAP, floats, or stored catalogues.
 
 
 ### Lean verification of sharpness
