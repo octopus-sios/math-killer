@@ -75,6 +75,8 @@ import Conjectures.NabergallChordalDiagrams.Triangulation
 import Conjectures.PattanayakTwoDegenerateLinearArboricity
 import Conjectures.PetrTemperateIntersecting
 import Conjectures.ReinerStantonQBinomialUnimodality
+import Conjectures.SolusStableHypersimplex
+import Conjectures.SolusStableHypersimplex.Midpoint
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.TuzaConjecture
 import Conjectures.WillemsBrauerCharacterSquares

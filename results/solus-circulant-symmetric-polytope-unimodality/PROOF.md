@@ -124,3 +124,19 @@ $$
 This polynomial has degree $m$ with leading coefficient 1 (also immediate from (2) since $m>r$). For $x<-1/8$, take $a=\rho e^{\mathrm i\theta}$ in the upper half plane, $b=\overline a$. Then $\rho^2=x(x-1)>x^2$. As $x$ runs from $-1/8$ to $-\infty$, the argument varies continuously from $0$ to $\pi$ in the limit. At each $\theta=k\pi/m$ for $0\le k<m$, the term $2\rho^m\cos(m\theta)$ strictly dominates $x^m$ in absolute value and has sign $(-1)^k$. The initial sign also holds at $-1/8$. Use the points in first-hitting order and finally use the leading sign $(-1)^m$ at a sufficiently negative argument. The $m$ intervening intervals each contain a distinct zero, exhausting the degree. Newton's inequalities give log-concavity. This remark is an argument-count sketch; the closed formula for this family is checked exactly by `verify.py` only for $m\le 40$.
 
 **Independent checks.** Run `python3 -I verify.py` in this directory: the binomial formula is checked against all distinct sums of vertices through $n=10$ and, independently, against direct enumeration of the window-constrained subsets through $n=16$. The verifier also rejects a corrupted coefficient vector and checks log-concavity for all 25,599 admissible pairs through $n=320$. The optional command `python3 -I verify.py --band 321 1024 --jobs 22` checks all 189,625 pairs in that range with $d\le 2+8\sqrt{7n}$. The theorem covers the parameters outside these computations as well.
+
+## Lean verification scope
+
+The formalization on this review branch targets the **window-subset
+counts**, not the construction of the Ehrhart numerator. The two statements
+are `SolusStableHypersimplex.windowCount_logConcave` (consecutive triples)
+and `SolusStableHypersimplex.windowCount_pos_of_le` (positive support is
+downward closed). The objects counted are subsets of the labelled cycle,
+including the tests on windows that cross the cut at zero. The proof uses a
+finite-box midpoint inequality for natural-valued functions. For support,
+scaling a prefix vector from endpoint $2k$ to $2j$ and rounding down
+preserves the window bounds and the zero-or-one steps.
+
+Step (A), the identity of these counts with the coefficients of the actual
+polytope's Ehrhart numerator, remains a written proof. Neither that identity
+nor the optional real-root and binomial formulas are formalized here.
