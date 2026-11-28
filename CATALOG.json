@@ -430,6 +430,32 @@
       "proof_file": "results/tuza-five-vertex-bipartizer/PROOF.md",
       "source_file": "results/tuza-five-vertex-bipartizer/SOURCE.tex",
       "verify_script": "results/tuza-five-vertex-bipartizer/verify.py"
+    },
+    {
+      "slug": "yibo-gao-weyl-convex-balance",
+      "title": "Gaetz–Gao Coxeter balance constants: full classification of 1/3 fully commutative equality heaps and uniform 1/8 convex bound",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Christian Gaetz and Yibo Gao",
+        "paper": "Balance constants for Coxeter groups",
+        "journal": "Transactions of the American Mathematical Society 376 (2023), 8973-9000",
+        "doi": "10.1090/tran/9040",
+        "arxiv_id": "2005.09719v2",
+        "url": "https://arxiv.org/abs/2005.09719v2",
+        "target": "Question 3.10 and Theorem 1.4 / Table 1 (uniform balance lower bounds)"
+      },
+      "summary": "Completely classifies all fully commutative intervals achieving the sharp 1/3 balance constant across every finite Coxeter group of every rank (settling Gaetz-Gao Question 3.10, Trans. AMS 2023): up to componentwise order duality (which is necessary, as reversing the Figure 2 word in D_4 shows), the connected equality heaps are precisely P_2, P_4, and P_7, proved via a log-concave four-column path obstruction reducing every classical rank to B_5/D_5 plus exact zero-float enumeration of all fully commutative elements in B_5, D_5, E_6, E_7, E_8, F_4, G_2, H_3, H_4 (with the local four-column counting core formalized in Lean 4). For arbitrary nonsingleton geodesically convex sets in finite Coxeter groups, proves the uniform lower bound b(C) >= 1/8 (improving Gaetz-Gao's 1/(2e^{12})), including b(C) >= 1/3 in every rank-3 non-triangle Coxeter system (such as H_3) and b(C) >= 1/(2e^{7/6}) in all types D_r (improving 1/(2e^4)). The general 1/3-2/3 balance conjecture for arbitrary convex sets (Conjecture 1.2) remains open.",
+      "proof_file": "results/yibo-gao-weyl-convex-balance/PROOF.md",
+      "source_file": "results/yibo-gao-weyl-convex-balance/SOURCE.tex",
+      "verify_script": "results/yibo-gao-weyl-convex-balance/verify.py",
+      "lean_partial_file": "lean/Conjectures/YiboGaoWeylConvexBalance.lean",
+      "lean_partial_theorems": [
+        "YiboGaoWeylConvexBalance.secondLayerForced",
+        "YiboGaoWeylConvexBalance.fourColumnBalanced",
+        "YiboGaoWeylConvexBalance.smallPeak"
+      ]
     }
   ]
 }
