@@ -635,6 +635,24 @@
       "lean_partial_theorems": [
         "WillemsBrauerCharacterSquares.tensor_quotient_degree"
       ]
+    },
+    {
+      "slug": "solus-circulant-symmetric-polytope-unimodality",
+      "title": "Solus's unimodality conjecture for r-stable second hypersimplices: every h*-polynomial is log-concave with no internal zeros",
+      "verdict": "proved",
+      "status": "⬜",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Liam Solus; Benjamin Braun, Liam Solus",
+        "paper": "Polyhedral Problems in Combinatorial Convex Geometry (Ph.D. thesis, University of Kentucky, 2015), Conjecture 3.4.5; r-Stable hypersimplices (J. Combin. Theory Ser. A 157 (2018), 349-388; arXiv:1408.4713v3, Conjecture 4.16)",
+        "arxiv_id": "1408.4713v3",
+        "url": "https://arxiv.org/abs/1408.4713v3",
+        "target": "Conjecture 4.16 (arXiv:1408.4713v3) / Solus thesis Conjecture 3.4.5: the h*-polynomials of the r-stable second hypersimplices are unimodal"
+      },
+      "summary": "Proves for every n >= 3 and 1 <= r <= floor(n/2) that the h*-polynomial of the r-stable second hypersimplex (convex hull of e_a + e_b over pairs at circular distance at least r on an n-cycle) is log-concave with no internal zeros, hence unimodal, with no computational cutoff. A transfer-matrix count of lattice points and a tridiagonal-inverse extraction show that h_k equals the number of 2k-subsets of the cycle meeting every window of r+1 consecutive sites in at most k points; in prefix-sum coordinates these sets are closed under rounded midpoints, so the Halikias–Klartag–Slomka discrete Brunn–Minkowski inequality (Theorem 1.2 at lambda = 1/2) gives h_{k-1} h_{k+1} <= h_k^2. verify.py cross-checks the subset formula against vertex sums (n <= 10) and direct enumeration (n <= 16), rejects a corrupted coefficient vector, and checks log-concavity for all 25,599 pairs with n <= 320. A supplementary real-rootedness remark for n = 2r + 4 is a sketch, checked exactly for m <= 40.",
+      "proof_file": "results/solus-circulant-symmetric-polytope-unimodality/PROOF.md",
+      "source_file": "results/solus-circulant-symmetric-polytope-unimodality/SOURCE.tex",
+      "verify_script": "results/solus-circulant-symmetric-polytope-unimodality/verify.py"
     }
   ]
 }
