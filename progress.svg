@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 340" width="920" height="340" role="img" aria-label="Solved open conjectures over time: 28 total, 8 Lean 4 verified">
+  <defs>
+    <linearGradient id="totalFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.00"/>
+    </linearGradient>
+    <linearGradient id="leanFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#22C55E" stop-opacity="0.00"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="920" height="340" rx="10" fill="#000000"/>
+  <rect x="0.5" y="0.5" width="919" height="339" rx="10" fill="none" stroke="#1E1E1E" stroke-width="1"/>
+
+  <text x="56" y="28" fill="#737373" font-size="10.5" letter-spacing="1.6" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">SOLVED OPEN CONJECTURES</text>
+  <text x="56" y="58" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif">
+    <tspan fill="#FFFFFF" font-size="27" font-weight="700">28</tspan>
+    <tspan fill="#737373" font-size="13" dx="6">published</tspan>
+    <tspan fill="#333333" font-size="14" dx="10">/</tspan>
+    <tspan fill="#22C55E" font-size="20" font-weight="600" dx="10">8</tspan>
+    <tspan fill="#737373" font-size="13" dx="5">Lean 4 verified</tspan>
+  </text>
+
+  <text x="892" y="28" text-anchor="end" fill="#666666" font-size="10.5" letter-spacing="1.0" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">DAY 1 · 3h</text>
+  <g transform="translate(714, 48)">
+    <line x1="0" y1="0" x2="14" y2="0" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/>
+    <text x="20" y="4" fill="#A3A3A3" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">Total</text>
+    <line x1="78" y1="0" x2="92" y2="0" stroke="#22C55E" stroke-width="2" stroke-linecap="round"/>
+    <text x="98" y="4" fill="#A3A3A3" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">Lean 4</text>
+  </g>
+
+  <line x1="56" y1="296.00" x2="892" y2="296.00" stroke="#2A2A2A" stroke-width="1"/><text x="44" y="300.00" text-anchor="end" fill="#666666" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">0</text><line x1="56" y1="241.50" x2="892" y2="241.50" stroke="#171717" stroke-width="1" stroke-dasharray="3,4"/><text x="44" y="245.50" text-anchor="end" fill="#666666" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">10</text><line x1="56" y1="187.00" x2="892" y2="187.00" stroke="#171717" stroke-width="1" stroke-dasharray="3,4"/><text x="44" y="191.00" text-anchor="end" fill="#666666" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">20</text><line x1="56" y1="132.50" x2="892" y2="132.50" stroke="#171717" stroke-width="1" stroke-dasharray="3,4"/><text x="44" y="136.50" text-anchor="end" fill="#666666" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">30</text><line x1="56" y1="78.00" x2="892" y2="78.00" stroke="#171717" stroke-width="1" stroke-dasharray="3,4"/><text x="44" y="82.00" text-anchor="end" fill="#666666" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">40</text>
+  <line x1="56.00" y1="296" x2="56.00" y2="301" stroke="#333333" stroke-width="1"/><text x="56.00" y="318" text-anchor="middle" fill="#8A8A8A" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">Day 0</text><line x1="474.00" y1="78" x2="474.00" y2="296" stroke="#141414" stroke-width="1"/><line x1="474.00" y1="296" x2="474.00" y2="301" stroke="#333333" stroke-width="1"/><text x="474.00" y="318" text-anchor="middle" fill="#8A8A8A" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">Day 1</text><line x1="892.00" y1="78" x2="892.00" y2="296" stroke="#141414" stroke-width="1"/><line x1="892.00" y1="296" x2="892.00" y2="301" stroke="#333333" stroke-width="1"/><text x="892.00" y="318" text-anchor="middle" fill="#8A8A8A" font-size="11" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">Day 2</text>
+
+  <path d="M56.00,296.00 L78.69,290.55 L91.21,285.10 L98.74,279.65 L104.33,274.20 L110.66,268.75 L118.54,263.30 L154.54,257.85 L157.87,257.85 L163.49,252.40 L167.00,246.95 L170.28,241.50 L175.21,236.05 L230.46,219.70 L258.69,214.25 L283.97,214.25 L294.44,208.80 L322.75,203.35 L338.26,197.90 L381.00,192.45 L386.34,187.00 L466.98,181.55 L467.44,176.10 L467.81,170.65 L468.13,165.20 L474.54,159.75 L475.32,159.75 L513.07,154.30 L514.88,148.85 L518.60,143.40 L540.77,143.40 L540.77,296.00 L56.00,296.00 Z" fill="url(#totalFill)"/>
+  <path d="M56.00,296.00 L78.69,290.55 L91.21,290.55 L98.74,290.55 L104.33,290.55 L110.66,290.55 L118.54,290.55 L154.54,285.10 L157.87,279.65 L163.49,279.65 L167.00,279.65 L170.28,279.65 L175.21,279.65 L230.46,279.65 L258.69,274.20 L283.97,268.75 L294.44,268.75 L322.75,263.30 L338.26,263.30 L381.00,263.30 L386.34,263.30 L466.98,263.30 L467.44,263.30 L467.81,263.30 L468.13,263.30 L474.54,257.85 L475.32,252.40 L513.07,252.40 L514.88,252.40 L518.60,252.40 L540.77,252.40 L540.77,296.00 L56.00,296.00 Z" fill="url(#leanFill)"/>
+
+  <path d="M56.00,296.00 L78.69,290.55 L91.21,290.55 L98.74,290.55 L104.33,290.55 L110.66,290.55 L118.54,290.55 L154.54,285.10 L157.87,279.65 L163.49,279.65 L167.00,279.65 L170.28,279.65 L175.21,279.65 L230.46,279.65 L258.69,274.20 L283.97,268.75 L294.44,268.75 L322.75,263.30 L338.26,263.30 L381.00,263.30 L386.34,263.30 L466.98,263.30 L467.44,263.30 L467.81,263.30 L468.13,263.30 L474.54,257.85 L475.32,252.40 L513.07,252.40 L514.88,252.40 L518.60,252.40 L540.77,252.40" fill="none" stroke="#22C55E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M56.00,296.00 L78.69,290.55 L91.21,285.10 L98.74,279.65 L104.33,274.20 L110.66,268.75 L118.54,263.30 L154.54,257.85 L157.87,257.85 L163.49,252.40 L167.00,246.95 L170.28,241.50 L175.21,236.05 L230.46,219.70 L258.69,214.25 L283.97,214.25 L294.44,208.80 L322.75,203.35 L338.26,197.90 L381.00,192.45 L386.34,187.00 L466.98,181.55 L467.44,176.10 L467.81,170.65 L468.13,165.20 L474.54,159.75 L475.32,159.75 L513.07,154.30 L514.88,148.85 L518.60,143.40 L540.77,143.40" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="78.69" cy="290.55" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="91.21" cy="285.10" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="98.74" cy="279.65" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="104.33" cy="274.20" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="110.66" cy="268.75" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="118.54" cy="263.30" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="154.54" cy="257.85" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="157.87" cy="257.85" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="163.49" cy="252.40" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="167.00" cy="246.95" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="170.28" cy="241.50" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="175.21" cy="236.05" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="230.46" cy="219.70" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="258.69" cy="214.25" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="283.97" cy="214.25" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="294.44" cy="208.80" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="322.75" cy="203.35" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="338.26" cy="197.90" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="381.00" cy="192.45" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="386.34" cy="187.00" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="466.98" cy="181.55" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="467.44" cy="176.10" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="467.81" cy="170.65" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="468.13" cy="165.20" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="474.54" cy="159.75" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="475.32" cy="159.75" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="513.07" cy="154.30" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="514.88" cy="148.85" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/><circle cx="518.60" cy="143.40" r="2.6" fill="#FFFFFF" stroke="#000000" stroke-width="1"/>
+  <circle cx="540.77" cy="252.40" r="3.2" fill="#22C55E"/>
+  <circle cx="540.77" cy="143.40" r="9" fill="#FFFFFF" opacity="0.18"/>
+  <circle cx="540.77" cy="143.40" r="4.2" fill="#FFFFFF"/>
+</svg>
