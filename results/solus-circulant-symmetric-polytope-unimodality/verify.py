@@ -1,17 +1,24 @@
 #!/usr/bin/env python3
 """Exact checks for the stable second hypersimplices. Standard library only."""
-from functools import lru_cache
-from itertools import product
+import argparse
+from concurrent.futures import ProcessPoolExecutor
 from math import comb
 
 
-@lru_cache(maxsize=None)
+_rows = [[1]]
+
+
 def C(n, k):
-    return comb(n, k) if 0 <= k <= n else 0
+    if not 0 <= k <= n:
+        return 0
+    while len(_rows) <= n:
+        row = _rows[-1]
+        _rows.append([1] + [a+b for a,b in zip(row, row[1:])] + [1])
+    return _rows[n][k]
 
 
 def numerator(n, r):
-    """Formula (2), including the lower-dimensional even endpoint."""
+    """Binomial image formula in the appendix, including the lower-dimensional even endpoint."""
     assert n >= 3 and 1 <= r <= n // 2
     d = n - 2 * r
     if d == 0:
@@ -31,63 +38,11 @@ def numerator(n, r):
     return h
 
 
-def one_image(n, r, i):
-    """Equation (3), regarded as an integer-valued polynomial at fixed i."""
-    return C(n, 2*i) - n*(C(r, i)*C(n-r-2, i-1) - C(r, i+1)*C(n-r-2, i-2))
-
-
-def turan(n, r, i):
-    return one_image(n, r, i)**2 - one_image(n, r, i-1)*one_image(n, r, i+1)
-
-
-def nd(n, r, k):
-    c = n-2*r-2
-    num = 2*(k+1)*(2*k+1)*(r-k)*(n-r-k)*(n+(k+1)*c)
-    den = k*(k+2)*(n-2*k)*(n-2*k-1)*(n+k*c)
-    return num, den
-
-
-def tail(z, v, u):
-    i = 10+z
-    r = i+1+v
-    n = 3*r-2+u
-    a, b = nd(n, r, i)
-    c, d = nd(n, r, i+1)
-    return b*d-2*a*d+a*c
-
-
-def orthant(f, deg, dims):
-    """Every coefficient in the product Newton (binomial) basis must be >=0."""
-    axis = range(deg+1)
-    table = {p: f(*p) for p in product(axis, repeat=dims)}
-    for h in range(dims):
-        for fixed in product(axis, repeat=dims-1):
-            line = [fixed[:h] + (k,) + fixed[h:] for k in axis]
-            values = [table[p] for p in line]
-            for p in line:
-                table[p] = values[0]
-                values = [y-x for x, y in zip(values, values[1:])]
-    assert min(table.values()) >= 0, min(table.items(), key=lambda p: p[1])
-
-
-def cone_certificate():
-    # Each one_image at index k has degree <= 2k; the Turan difference <= 4i.
-    # When tops are nonnegative, out-of-range binomials at k>=0 agree with
-    # their falling-factorial polynomial; a fixed negative lower index means 0.
-    for i in range(1, 11):
-        orthant(lambda v,u: turan(3*(11+v)-2+u, 11+v, i), 4*i, 2)
-        for r in range(1, 11):
-            base = max(3*r-2, 2*r+1, 2*i+2)
-            orthant(lambda u: turan(base+u, r, i), 4*i, 1)
-    # Each numerator or denominator in nd has degree <= 6.
-    orthant(tail, 12, 3)
-
-
 def from_vertices(n, r):
     """Independent Ehrhart counts by all distinct sums of t allowed vertices.
 
     Pairing opposite tokens proves degree-by-degree equality with lattice
-    points (PROOF, Sec. 1). In full dimension, Ehrhart reciprocity and the
+    points (proof of the coefficient identity). In full dimension, Ehrhart reciprocity and the
     need for n positive coordinates at an interior point give deg(h*)<=n//2.
     Check one extra coefficient whenever it lies within the dimension.
     """
@@ -128,7 +83,7 @@ def independent_checks():
     else:
         raise AssertionError("changed coefficient accepted")
 
-    # Sec. 7 via power sums of the two roots. Degree <= m, so m+1
+    # Width-five formula via power sums of the two roots. Degree <= m, so m+1
     # integer evaluations compare the polynomials identically at each m.
     for m in range(3, 41):
         h = numerator(2*m, m-2)
@@ -150,9 +105,57 @@ def sweep(top):
     return total
 
 
+def subset_layers(n, r):
+    """The new coefficient identity, checked directly with labeled windows."""
+    mask = (1 << n) - 1
+    first = (1 << (r+1)) - 1
+    windows = [((first << j) | (first >> (n-j))) & mask for j in range(n)]
+    h = [0]*(n//2+1)
+    for s in range(1 << n):
+        size = s.bit_count()
+        if size % 2 == 0 and all((w & s).bit_count() <= size//2 for w in windows):
+            h[size//2] += 1
+    while len(h) > 1 and h[-1] == 0:
+        h.pop()
+    return h
+
+
+def band_row(n):
+    """Use log(n) <= 7 for n <= 1024; a slight superset, with exact endpoints."""
+    assert 3 <= n <= 1024
+    total = 0
+    for r in range(1, n//2+1):
+        d = n-2*r
+        if d > 2 and (d-2)**2 > 448*n:
+            continue
+        h = numerator(n, r)
+        assert h[0] == 1 and min(h) > 0, (n,r)
+        assert all(b*b >= a*c for a,b,c in zip(h, h[1:], h[2:])), (n,r)
+        total += 1
+    return total
+
+
 if __name__ == "__main__":
-    cone_certificate()
-    print("Nonnegative Newton certificates: 110 prefix orthants/rays and one tail orthant.")
-    independent_checks()
-    print("Vertex sums through n=10, mutation rejection, and width-five recurrence agree.")
-    print(f"Log-concavity holds for all {sweep(320)} admissible pairs through n=320.")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--band", type=int, nargs=2, metavar=("FIRST", "LAST"),
+                        help="extended boundary check, 3 <= FIRST <= LAST <= 1024")
+    parser.add_argument("--jobs", type=int, default=1)
+    args = parser.parse_args()
+    if args.band:
+        start, stop = args.band
+        if not (3 <= start <= stop <= 1024 and args.jobs >= 1):
+            parser.error("invalid band range or job count")
+        if args.jobs == 1:
+            total = sum(map(band_row, range(start, stop+1)))
+        else:
+            with ProcessPoolExecutor(max_workers=args.jobs) as pool:
+                total = sum(pool.map(band_row, range(start, stop+1)))
+        print(f"PASS: {total} band pairs, n={start}..{stop}, d<=2+8*sqrt(7*n)")
+    else:
+        independent_checks()
+        for n in range(3,17):
+            for r in range(1,n//2+1):
+                check_vector(subset_layers(n,r), numerator(n,r))
+        print("Vertex sums through n=10, direct window subsets through n=16,")
+        print("mutation rejection, and width-five recurrence agree.")
+        print(f"Exact log-concavity for all {sweep(320)} pairs through n=320.")

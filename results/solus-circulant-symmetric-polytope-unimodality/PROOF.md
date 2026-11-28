@@ -1,42 +1,80 @@
-# Unimodality away from the boundary of the stable second hypersimplices
+# Log-concavity of the stable second hypersimplices
 
-Let $P_{n,r}$ be the convex hull of the vectors $e_i+e_j$ for pairs at circular distance at least $r$ in the $n$-gon, and write $h(x)=h^*(P_{n,r};x)=\sum_i h_i x^i$. Put $d=n-2r$ (separation from the extremal parameter, **not** the dimension). [Solus's Conjecture 3.4.5](https://uknowledge.uky.edu/math_etds/32/), also [Braun–Solus, Conjecture 4.22](https://doi.org/10.1016/j.jcta.2018.03.002), asks for unimodality for every admissible pair. This is the ordinary edge polytope, not the symmetric edge polytope.
+**Theorem (Solus's unimodality conjecture, strengthened).** Let $n\ge3$ and $1\le r\le\lfloor n/2\rfloor$. Label the sites of an $n$-cycle and let $P_{n,r}$ be the convex hull of all $e_a+e_b$ for which $a,b$ have circular distance at least $r$. Then the coefficients of $h^*(P_{n,r};x)$ are log-concave and have no internal zeros. In particular they are unimodal.
 
-**Theorem.**
+This settles [Solus, Conjecture 3.4.5, p. 73](https://uknowledge.uky.edu/math_etds/32/), also [Braun–Solus, Conjecture 4.22](https://doi.org/10.1016/j.jcta.2018.03.002). The vertices are **sums**, not signed differences. The proof uses no numerical cutoff.
 
-1. If $n\ge 3r-2$, then $h(x)$ has log-concave coefficients, hence is unimodal.
-2. If $n\ge24$ and $d\ge 2+8\sqrt{n\log n}$, then $h(x)$ is unimodal. In particular, for **every** $\epsilon>0$ the conjecture holds for all sufficiently large $n$, uniformly over $r\le(1/2-\epsilon)n$.
-3. On the line $n=2r+4$, the polynomial has $n/2$ distinct negative real roots.
+## A subset formula, and why it gives log-concavity
 
-We give a finite binomial formula valid for **all** the polynomials. It does not prove unimodality for all parameters. In particular the estimates do not control the middle degrees uniformly when $d$ is of order $\sqrt n$ or smaller. Braun and Solus had already given a formula by a shelling, and proved special cases including the outermost nontrivial level $r=\lfloor n/2\rfloor-1$; part 3 concerns the **next** even level.
-
-## 1. Count opposite semicircles
-
-Write $L(t)=|tP_{n,r}\cap\mathbb Z^n|$. An integer vector of nonnegative gaps $g_1,\ldots,g_n$ of sum $2t$ is counted iff every $r$ cyclically consecutive gaps have sum at most $t$. Necessity holds at each vertex and hence throughout the dilate. For sufficiency list $2t$ tokens in circular order, $g_i$ at site $i$. Pair token $j$ with token $j+t$ for $1\le j\le t$. If a directed arc between paired tokens traverses fewer than $r$ site-edges, an $r$-window contains at least $t+1$ tokens, including both endpoints. This also rules out a coincident pair. The pairs thus give $t$ allowed vertices summing to the vector. By rational dilation and closure the same inequalities describe the polytope over the reals, as in [Hibi–Solus, Theorem 2.1](https://arxiv.org/abs/1408.5932) in its facet range. For $d>0$, the vector with every coordinate $2/n$ is strict in all the inequalities, so the dimension is $n-1$. When $d=0$, only the antipodal pairs occur. Their disjoint supports identify the polytope, with its affine lattice, with a standard unimodular simplex; $h(x)=1$. Henceforth $d>0$.
-
-For $t>0$ place $n$ beads at integer positions on a circle of circumference $2t$, the successive gaps being $g_1,\ldots,g_n$ (ties allowed). The window condition is equivalent to **every** semicircle of bins $(a,a+t]$ containing at least $r$ beads, hence between $r$ and $n-r$ by complementation. Indeed, starting at the last occurrence of a bead at $a$, its $r$-th successor must lie at or before $a+t$; at an empty bin use the last bead preceding it. Conversely this condition at occupied bins suffices, including for earlier occurrences tied in the same bin.
-
-Let $A(t)$ count the occupancy vectors of the $2t$ **labeled** bins satisfying this condition. Then $2tL(t)=nA(t)$. To see the factors even with ties or rotational symmetry, choose the initial bin for the labeled gap sequence; conversely choose the starting bead occurrence of an occupancy vector, ordering occurrences in each bin from arrival to departure. The positive circumference specifies the first occurrence of each occupied bin in the cyclic gap list, even if all beads share a bin.
-
-Track the semicircle count for $t$ slides by one bin. It ends at the reflection of its starting value, since the last semicircle is complementary to the first. If a slide drops $a$ beads and adds $b$, the generating function at fixed displacement $k=b-a$ is $z^{|k|}/(1-z^2)$ by total $a+b$. On the states $r,\ldots,n-r$, let $J$ reverse their order, and set
+Let $h_k$ denote the coefficient of $x^k$. On the same labeled cycle define
 
 $$
-M_{ij}(z)=\frac{z^{|i-j|}}{1-z^2}.
+\mathcal S_k=\{S\subseteq[n]:\ |S|=2k,\quad |S\cap I|\le k\text{ for every cyclic interval }I\text{ of }r+1\text{ sites}\}.
 $$
 
-Then $A(t)=[z^n]\operatorname{tr}(J M(z)^t)$. Indeed all antipodal bin pairs are filled by the slides. Conversely, for a path starting at $h$ and ending at $n-h$, selecting total degree $n$ forces the total removed to equal $h$ and the total added to equal $n-h$. Thus the path's initial count is the actual one, not an extra choice. The constraints for the remaining $t$ slides follow by complementation.
+**Coefficient identity:** $h_k=|\mathcal S_k|$ for every $k\ge0$. Note the shift from $r$ to $r+1$. Equivalently $h_k$ counts the $2k$-vertex subsets admitting a perfect matching with edges of circular distance at least $r+1$, counting a subset just once. Indeed, if the interval condition holds, pair opposite sites in the cyclic list of the $2k$ marked sites. If an arc between paired sites had length at most $r$, some interval of $r+1$ sites would contain both endpoints and at least $k+1$ marks. Conversely each allowed matching edge contributes at most one mark to such an interval.
 
-## 2. Fold the transfer matrix
-
-The inverse $Q=M^{-1}$ has end diagonals $1$, inner diagonals $1+z^2$, and both off-diagonals $-z$, as direct multiplication shows. All these matrices commute with $J$. Subscripts $+$ and $-$ on determinants refer to restriction to the symmetric and antisymmetric spaces of $J$. The formal identity $-\log\det(I-xM)=\sum_{t\ge1}x^t\operatorname{tr}(M^t)/t$, applied on the two spaces and subtracted, sums the Ehrhart series.
-
-Here are details of the normalization. Substitute $z=(1-x)w$ and let $D_\pm(w,x)$ be the two determinants of $(Q((1-x)w)-xI)/(1-x)$. This tridiagonal matrix has end diagonals $1$, inner diagonals $p=1+(1-x)w^2$, and off-diagonals $-w$. Put $F=\log(D_-/D_+)$. Since $\det(I-xM)=\det(Q-xI)/\det Q$, multiplication of the Ehrhart series by $(1-x)^n$ gives
+We first deduce the theorem from the identity. Represent $S$ by its prefix counts $u_0,\ldots,u_n$, with $u_0=0$, $u_n=2k$, and successive differences in $\{0,1\}$. Extend by $u_{a+n}=u_a+2k$. The remaining conditions are exactly
 
 $$
-h(x)=(1-x)^n+\frac n2[w^n]\big(F(w,x)-F((1-x)w,0)\big).
+u_{a+r+1}-u_a\le k \qquad (0\le a<n).
 $$
 
-Constant factors in $w$ do not affect the extraction. To evaluate $F$, define the end continuants $f_0=f_1=1$ and $f_{k+1}=p f_k-w^2 f_{k-1}$ for $k\ge1$. Expansion along the last row gives these determinants. Folding the path of $d+1$ sites gives
+Take two prefix vectors, one from $\mathcal S_{k-1}$ and one from $\mathcal S_{k+1}$. Their midpoint has successive differences between 0 and 1, interval differences at most $k$, and endpoints $0,2k$. Its extension increases by $2k$ per period. **Rounding every coordinate down, or rounding every coordinate up, preserves all these bounds.** Indeed $b\le a+c$ with $c$ integral implies $\lfloor b\rfloor\le\lfloor a\rfloor+c$, and likewise for ceilings. Rounding commutes with the integral period increment, so this includes intervals crossing the label cut.
+
+Apply the discrete midpoint inequality of [Halikias, Klartag and Slomka, Theorem 1.2](https://arxiv.org/pdf/1911.04392). At $\lambda=1/2$, for finite integer-vector sets $U,V$, it bounds $|U||V|$ by the product of the cardinalities of the coordinatewise floor and ceiling sets of $(U+V)/2$ (apply the theorem to indicators). Both midpoint sets here lie in the prefix representation of $\mathcal S_k$. Consequently $h_{k-1}h_{k+1}\le h_k^2$. The matching interpretation rules out internal zeros: deleting a matched pair preserves matchability. This proves unimodality once the identity is established.
+
+## Proof of the coefficient identity
+
+**1. A transfer count for a circle.** Put $2t$ labeled bins on a circle, $t>0$, and distribute $n$ beads with at least $\delta$ beads per bin, where $\delta=0$ or $1$. Require every $t$ consecutive bins to contain between $\alpha$ and $n-\alpha$ beads. On the state set $\{\alpha,\ldots,n-\alpha\}$ let $J$ reverse the order ($h\mapsto n-h$), and set
+
+$$
+M(z)_{hh'}=\frac{z^{|h-h'|}}{1-z^2}.
+$$
+
+The number of occupancy vectors is $[z^n]\operatorname{tr}(J(z^{2\delta}M(z))^t)$. To see this, slide a semicircle one bin at a time for $t$ steps. It ends at the complement of the starting semicircle. If $a$ beads leave and $b$ enter in a step, then $b-a=h'-h$. The generating function of all such pairs $a,b\ge\delta$ by degree $a+b$ is $z^{2\delta}M_{hh'}$. The trace with $J$ specifies an end state $n-h$ given a start $h$. Conversely the steps fill all antipodal bin pairs; selecting degree $n$ forces $\sum(a+b)=n$ and the end condition forces $\sum(b-a)=n-2h$. Thus the actual initial semicircle contains $\sum a=h$; there is no multiplicity from a free starting height. The last $t$ slides satisfy the bounds by complementation. On an empty state set the count is zero.
+
+**2. Apply the count to lattice points.** Write $L(t)=|tP_{n,r}\cap\mathbb Z^n|$. The integer vectors counted are exactly the nonnegative $g_1,\ldots,g_n$ of sum $2t$ with each $r$ consecutive coordinates summing to at most $t$. Necessity holds at the vertices after scaling. For sufficiency, list the $2t$ tokens given by multiplicities $g_i$ cyclically and pair token $j$ with token $j+t$. An arc of fewer than $r$ site-edges between paired tokens would give an $r$-window with at least $t+1$ tokens; ties at a site are included in this argument. Thus the vector is a sum of $t$ allowed vertices. By clearing denominators this also gives the real polytope description (rational points are dense in the rational constraint polytope). If $n>2r$, the constant coordinates $2/n$ satisfy the inequalities strictly in the sum hyperplane, giving dimension $n-1$. If $n=2r$, the vertices have disjoint antipodal supports: projection onto the first $n/2$ coordinates identifies the polytope and its affine lattice with the standard simplex. Then $h^*=1$, and $\mathcal S_k$ is empty for $k>0$ since no matching edge can have distance $r+1$. Hence assume $n>2r$.
+
+Use the $g_i$ as the consecutive **gaps** of $n$ beads on a circle of circumference $2t$. Zero gaps are allowed. The $r$-gap bound says every semicircle of integer bins $(p,p+t]$ contains at least $r$ beads: use the $r$-th successor of the last occurrence at $p$, or of the last bead before $p$ if that bin is empty. Conversely the bound at occupied bins gives the gap condition starting at every bead, including earlier occurrences at the same position. Complementation gives the upper bound $n-r$. Writing $A(t)$ for the count in step 1 with $\alpha=r$ and $\delta=0$, we have $2tL(t)=nA(t)$. On one side choose an initial bin for the labeled gap sequence; on the other choose a starting bead occurrence in the occupancy vector. Occurrences at each bin are ordered from arrival to departure, so the correspondence also holds with zero gaps. These are labeled objects, not rotation classes. Thus, for the $M,J$ on the states $r,\ldots,n-r$,
+
+$$
+L(t)=\frac n{2t}[z^n]\operatorname{tr}(J M(z)^t).
+$$
+
+**3. Extract a coefficient of the numerator.** The inverse matrix $Q(z)=M(z)^{-1}$ has end diagonals $1$, inner diagonals $1+z^2$ and both off-diagonals $-z$, with all other entries zero (multiply the matrices). Its size is at least 2. Let $E$ be the diagonal projector onto the inner sites. The key simplification is
+
+$$
+\frac{Q((1-x)w)-xI}{1-x}=Q(w)-xw^2 E=:K(w,x).
+$$
+
+Define $F(w,x)=\log(\det K_-/\det K_+)$, where subscripts restrict to the $-1,+1$ eigenspaces of $J$. All matrices in this identity commute with $J$. The formal trace–log identity $-\log\det(I-xM)=\sum_{t\ge1}x^t\operatorname{tr}(M^t)/t$, subtracted between the two spaces, sums the preceding formula for $L(t)$. More explicitly, use $\det(I-xM)=\det(Q-xI)/\det Q$ in each space, and absorb the Ehrhart multiplier $(1-x)^n$ by substituting $z=(1-x)w$ before taking $[w^n]$. Including $L(0)=1$ gives
+
+$$
+h^*(P_{n,r};x)=(1-x)^n+\frac n2[w^n]\big(F(w,x)-F((1-x)w,0)\big).
+$$
+
+Scalar determinant factors from $1-x$ are constant in $w$ and disappear. Now expand $F$ in **$x$**. Since $K=Q(w)(I-x w^2 M(w)E)$,
+
+$$
+F(w,x)=F(w,0)+\sum_{k\ge1}\frac{x^k}{k}\operatorname{tr}\big(J(w^2 M(w)E)^k\big).
+$$
+
+Write $c=(n/2)[w^n]F(w,0)$. The first identity becomes $(1-c)(1-x)^n+(n/2)[w^n]F(w,x)$. The latter summand has degree at most $\lfloor n/2\rfloor$ by the second identity, while the Ehrhart numerator of an $(n-1)$-dimensional lattice polytope has degree at most $n-1$. Comparing $x^n$ gives $c=1$. In particular
+
+$$
+h(x)=\frac n2[w^n]F(w,x),\qquad
+h_k=\frac n{2k}[w^n]\operatorname{tr}\big(J_\circ(w^2 M_\circ(w))^k\big)\quad(k\ge1),
+\tag{1}
+$$
+
+where $\circ$ denotes the principal submatrix on $r+1,\ldots,n-r-1$. Indeed the projector forces every visited index in the twisted trace into the inner sites, which are closed under $J$.
+
+**4. Apply the same count to marked subsets.** This last trace is step 1 again, now with $2k$ bins, $\alpha=r+1$ and **$\delta=1$**. It counts ordered positive gaps summing to $n$ for which every $k$ consecutive gaps sum to at least $r+1$ (the upper bound is equivalent by complementation). Place these gaps between $2k$ distinct marked sites of the labeled $n$-cycle. The condition says precisely that no $k+1$ successive marks fit in $r+1$ consecutive sites, equivalently $S\in\mathcal S_k$. The number of these subsets is $n/(2k)$ times the gap count: specify one starting site, then divide by the $2k$ choices of starting mark. This is exactly the prefactor in (1). Finally $h_0=1=|\mathcal S_0|$. This completes the coefficient identity and the proof for every $n,r$.
+
+## Appendix: closed binomial evaluation and the line of real roots
+
+Neither this computation nor the finite checks below are needed for log-concavity. They give an efficient evaluation of the subset counts and a stronger conclusion on one line of parameters. Set $d=n-2r>0$, $p=1+(1-x)w^2$, and $D_\pm=\det K_\pm$. Define the end continuants $f_0=f_1=1$ and $f_{k+1}=p f_k-w^2 f_{k-1}$ for $k\ge1$. Expansion along the last row gives these determinants. Folding the path of $d+1$ sites gives
 
 $$
 \frac{D_-}{D_+}=
@@ -46,14 +84,7 @@ f_s/(f_{s+1}-w^2f_{s-1}) & d=2s,\\[2pt]
 \end{cases}
 $$
 
-In the first case the antisymmetric center vanishes; in the symmetric case its two neighbors give twice the usual $-w^2 f_{s-1}$ term in the last continuant step. In the second case reflection at the middle edge adds $+w$ or $-w$ to the last diagonal. At $x=0$ all $f_k=1$, so $F(w,0)$ is respectively $-\log(1-w^2)$ or $\log((1+w)/(1-w))$. Since $n$ and $d$ have the same parity, $(n/2)[w^n]F(w,0)=1$ in both cases. Thus
-
-$$
-h(x)=\frac n2[w^n]F(w,x).
-\tag{1}
-$$
-
-## 3. A binomial formula
+In the first case the antisymmetric center vanishes; in the symmetric case its two neighbors give twice the usual $-w^2 f_{s-1}$ term in the last continuant step. In the second case reflection at the middle edge adds $+w$ or $-w$ to the last diagonal.
 
 Adopt $\binom ab=0$ for $b<0$ or $b>a$ with $a\ge0$. For $0\le i\le\lfloor n/2\rfloor$ put $B_i=\binom n{2i}$. For each **positive odd** $j$ with $j(d+2)\le n$, put $a=(n-j(d+2))/2$, $A=a+2j-1$, $B=a+jd-1$. Then
 
@@ -83,83 +114,13 @@ $$
 
 Indeed substitute $y=b/((1+b)(1+xb))$ in the coefficient residue; the logarithmic Jacobian is $(1-xb^2)/((1+b)(1+xb))$. Extracting $x^{i-j}$ gives (2). Each correction has degree at most $a+j=(n-jd)/2\le r$; thus $h_i=B_i$ for $i>r$.
 
-## 4. Log-concavity for $n\ge 3r-2$
-
-Here $3(d+2)>n$, so only $j=1$ occurs. Define $H_i$ by the resulting expression
-
-$$
-H_i=B_i-n\left(\binom ri\binom{n-r-2}{i-1}
-              -\binom r{i+1}\binom{n-r-2}{i-2}\right),
-\qquad R_i=1-H_i/B_i .
-\tag{3}
-$$
-
-We prove $H_i^2\ge H_{i-1}H_{i+1}$. The following two *finite polynomial sign checks* are part of the proof; the routine `cone_certificate` in [verify.py](verify.py) carries them out over the integers. We specify the degrees, translations and test so that the checks do not depend on any symbolic inequality solver.
-
-For $1\le i\le10$, the Turán difference $H_i^2-H_{i-1}H_{i+1}$ has total degree at most $4i$ in $n,r$ (the lower indices in (3) are fixed). Check it on the orthant $r=11+v$, $n=3r-2+u$. For each $1\le r\le10$, check it on the ray $n=\max(3r-2,2r+1,2i+2)+u$. These are all the relevant parameters: $i+1$ must lie in the coefficient range and $d>0$. In each check all mixed forward differences at the origin through degree $4i$ in each variable are nonnegative.
-
-For the tail, we show $R_i-2R_{i+1}+R_{i+2}\ge0$ whenever $i\ge10$ and $i+2\le\lfloor n/2\rfloor$. For $r\le i$ it follows from $R_i\ge0$ and the vanishing beyond $r$. Otherwise (3) simplifies by canceling factorials to $R_{k+1}/R_k=N_k/E_k$ at $k=i,i+1$, where
-
-$$
-\begin{aligned}
- N_k&=2(k+1)(2k+1)(r-k)(n-r-k)\big(n+(k+1)(d-2)\big),\\
- E_k&=k(k+2)(n-2k)(n-2k-1)\big(n+k(d-2)\big).
-\end{aligned}
-$$
-
-The denominators and $R_i,R_{i+1}$ are positive here (the deficit before division by $B_k$ equals $n\binom rk\binom{n-r-1}{k-1}(n+k(d-2))/((k+1)(n-r-1))$ for $1\le k\le r$). Substitute $i=10+z$, $r=i+1+v$, $n=3r-2+u$ in
-
-$$
-E_i E_{i+1}-2 N_i E_{i+1}+N_i N_{i+1}.
-$$
-
-This polynomial has degree at most $12$. All mixed forward differences at the origin through degree 12 in each variable are nonnegative. This is the second sign certificate. In both checks the justification is the Newton expansion: a polynomial of degree at most $b$ in each variable on a nonnegative integer orthant is the sum of its mixed differences at zero times the corresponding products of binomial coefficients. The values on $\{0,\ldots,b\}$ in each coordinate suffice. This proves inequalities for unbounded parameters, not just at the grid points.
-
-Thus $1-R_i$ is concave on the tail starting at 10. It is nonnegative (it is $h_i/B_i$), hence log-concave there by the arithmetic-geometric mean inequality. The sequence $B_i$ is log-concave by its consecutive-term ratios; multiplying preserves log-concavity. This covers every central index $i\ge11$, and the first certificate covers $1\le i\le10$. There are no internal zeros: this also follows directly from the monomer and flat-step constructions below (the case $d=1$ gives $h=1$ by (1)). This proves part 1.
-
-## 5. A uniform increasing prefix
-
-We need a lower bound on successive coefficients independent of the band width. Let $D_b(y)$ enumerate Dyck paths of height at most $b$ by semilength ($y$) and number of peaks ($x$). Paths use up and down steps and start and end at height zero without going below it. $D_0=1$. Decomposition into first-return pieces gives $D_b=1/(1-y(x+D_{b-1}-1))$: an empty path inside a piece produces one peak. At $y=w^2$, the continuant recurrence gives $D_b=f_b/f_{b+1}$.
-
-**Odd $n$, $d=2s+1\ge3$.** By (1) the polynomial is $n[w^n]\sum_{k\ {\rm odd}}(wD_s)^k/k$. This counts circular walks with $n$ labeled step positions, flat steps allowed only at ground level, and Dyck paths of height at most $s$ between successive flats, weighted by number of peaks. Indeed $k$ flats cut out $k$ ordered paths after a choice of starting flat; there are $n$ possible positions for that start and $k$ choices per walk. The parity of $n$ forces $k$ odd. In particular $(UD)^i$ followed by $n-2i$ flats is allowed for every $0\le i\le\lfloor n/2\rfloor$.
-
-Regard each matched up/down pair in a Dyck path as a node of an ordered forest; its children are the immediately enclosed pairs. Leaves are peaks. In a forest with $i$ leaves there are at most $i$ nodes with at least two children (sum the numbers of children). A node with exactly one child, encoded $U\,C\,D$ for a single subtree $C$, can be changed to $UD\,C$. It becomes a leaf, its former child becomes its next sibling, and the height bound is preserved. Alternatively, two consecutive flats can be turned into $UD$. Both moves add one peak at fixed length. With $k$ flats there are at least $(n-k)/2-2i$ unary nodes and at least $k-i$ ordered starts of consecutive flats: each flat followed by a nonflat starts a nonempty forest containing a leaf. The two lower bounds remain valid if negative. Given a result with a distinguished new leaf, reversing the unary move has at most one choice (absorb the next sibling); reversing the flat move also has at most one. These statements concern labeled cyclic positions, not rotation classes. Double counting gives
-
-$$
-2(i+1)h_{i+1}\ \ge\ (n/2-3i)h_i .
-$$
-
-**Even $n=2m$, $d=2s\ge2$.** The even folded denominator divided by $f_s$ is $1-y(1+x+2(D_{s-1}-1))$. Thus (1) counts circular tilings of $m$ labeled positions, again by the marked-start argument for the logarithm. A tile is an unmarked monomer, a marked monomer (weight $x$), or a tile of length $1+k$ carrying a nonempty Dyck path of semilength $k$, height at most $s-1$, and one of two colors. The statistic is marks plus leaves. The monomers alone give every degree from 0 to $m$.
-
-Marking an unmarked monomer or converting a unary node as above increases the statistic by one. If there are $t$ tiles, $l$ leaves and $b$ marks, there are at least $t-l-b$ unmarked monomers and $m-t-2l$ unary nodes. The new mark or new leaf determines its inverse, if it exists. Hence $(i+1)h_{i+1}\ge(m-3i)h_i$, where $i=b+l$.
-
-In both parities, if $n\ge24$ and $i<n/12$, these inequalities give $h_{i+1}\ge h_i$. The excluded width $d=1$ is the constant-polynomial case.
-
-## 6. Outside the boundary strip
-
-Assume $n\ge24$, $d\ge 2+8\sqrt{n\log n}$, and $i\ge n/12$. The subtracted terms in (2) are nonnegative by their series derivation. For each $j$ bound the difference of products above by the first product. Since $A+B=n-2$, this product divided by $\binom{n-2}{2i-1}$ is a hypergeometric point probability. In a sample of $\ell=2i-1$ without replacement from $n-2$ objects, $A$ of them special, the number of specials is required to be $i+j-1$. The population fraction is $1/2-j(d-2)/(2(n-2))$. Thus the required fraction exceeds the population fraction by at least $j(d-2)/(2(n-2))$. An out-of-range requirement has probability zero.
-
-For clarity, the probability that the sample fraction exceeds its mean $p_0$ by $v$ is at most $\exp(-2\ell v^2)$. For $\theta>0$ its count has exponential moment at most $(1-p_0+p_0e^\theta)^\ell$: the average of products of $\ell$ distinct population values (each $1$ or $e^\theta$) is at most their arithmetic mean raised to the power $\ell$ by Maclaurin's inequality. The second derivative of $\log(1-p_0+p_0e^\theta)$ is at most $1/4$, and its first derivative at zero is $p_0$. Exponential Markov with $\theta=4v$ gives the bound.
-
-Now $\ell\ge n/8$, so the point probability is at most $\exp(-j^2(d-2)^2/(16n))\le n^{-4}$. Also $n\binom{n-2}{2i-1}/B_i=2i(n-2i)/(n-1)\le n$. There are at most $n$ terms; consequently
-
-$$
-(1-n^{-2})B_i\le h_i\le B_i \qquad (i\ge n/12).
-$$
-
-For adjacent *unequal* $B_i,B_{i+1}$ their difference divided by the larger is greater than $1/n$: the ratio is $(n-2i)(n-2i-1)/((2i+2)(2i+1))$, and the difference of its numerator and denominator is $(n+1)(n-4i-2)$. Thus the direction of every strict comparison between adjacent binomials in this range is unchanged. The binomials increase and then decrease, with at most one equal pair at the maximum. Either comparison within that pair is compatible with unimodality. Joining this range to the increasing prefix proves part 2.
-
-## 7. A real-rooted boundary family
-
-For $n=2m$ and $r=m-2$ the even folded numerator is $f_2=1-xy$, and its denominator is $f_3-y f_1=1-(1+2x)y-x(1-x)y^2$, with $y=w^2$. By (1),
+**Real-rooted boundary family.** For $n=2m$ and $r=m-2$ the even folded numerator is $f_2=1-xy$, and its denominator is $f_3-y f_1=1-(1+2x)y-x(1-x)y^2$, with $y=w^2$. By (1),
 
 $$
 h(x)=a^m+b^m-x^m,\qquad
 a,b=\frac{1+2x\pm\sqrt{1+8x}}2 .
 $$
 
-This polynomial has degree $m$ with leading coefficient 1 (also immediate from (2) since $m>r$). For $x<-1/8$, take $a=\rho e^{\mathrm i\theta}$ in the upper half plane, $b=\overline a$. Then $\rho^2=x(x-1)>x^2$. As $x$ runs from $-1/8$ to $-\infty$, the argument varies continuously from $0$ to $\pi$ in the limit. At each $\theta=k\pi/m$ for $0\le k<m$, the term $2\rho^m\cos(m\theta)$ strictly dominates $x^m$ in absolute value and has sign $(-1)^k$. The initial sign also holds at $-1/8$. Use the points in first-hitting order and finally use the leading sign $(-1)^m$ at a sufficiently negative argument. The $m$ intervening intervals each contain a distinct zero, exhausting the degree. Newton's inequalities give log-concavity. This proves part 3.
+This polynomial has degree $m$ with leading coefficient 1 (also immediate from (2) since $m>r$). For $x<-1/8$, take $a=\rho e^{\mathrm i\theta}$ in the upper half plane, $b=\overline a$. Then $\rho^2=x(x-1)>x^2$. As $x$ runs from $-1/8$ to $-\infty$, the argument varies continuously from $0$ to $\pi$ in the limit. At each $\theta=k\pi/m$ for $0\le k<m$, the term $2\rho^m\cos(m\theta)$ strictly dominates $x^m$ in absolute value and has sign $(-1)^k$. The initial sign also holds at $-1/8$. Use the points in first-hitting order and finally use the leading sign $(-1)^m$ at a sufficiently negative argument. The $m$ intervening intervals each contain a distinct zero, exhausting the degree. Newton's inequalities give log-concavity.
 
-## Exact checks and scope
-
-Run `python3 -I verify.py` in this directory. Besides the integer polynomial certificates in Section 4, the verifier reconstructs Ehrhart numerators independently from sets of sums of the actual vertices for $3\le n\le10$. It compares the boundary recurrence with (2), rejects a changed coefficient, and checks log-concavity for every admissible pair through $n=320$. One useful cross-check is $(n,r)=(9,3)$: $h_2=27$, agreeing with the cycle independence polynomial in Braun–Solus, Theorem 4.14, but not the displayed $r=3$ coefficient in their Corollary 4.21 (which gives 43 here). This is a coefficient discrepancy, not a failure of unimodality. The finite sweep excludes counterexamples in that range only; parts 1–3 are infinite-family results.
+**Independent checks.** Run `python3 -I verify.py` in this directory: the binomial formula is checked against all distinct sums of vertices through $n=10$ and, independently, against direct enumeration of the window-constrained subsets through $n=16$. The verifier also rejects a corrupted coefficient vector and checks log-concavity for all 25,599 admissible pairs through $n=320$. The optional command `python3 -I verify.py --band 321 1024 --jobs 22` checks all 189,625 pairs in that range with $d\le 2+8\sqrt{7n}$. The theorem covers the parameters outside these computations as well.
