@@ -1,0 +1,39 @@
+% Primary source: R. Chatterjee and P. Zhang, "On Ramsey indexes of graphs",
+% J. Combin. Math. Combin. Comput. 129 (2026), 3--16, pp. 4--6.
+% https://doi.org/10.61091/jcmcc129-01
+% https://combinatorialpress.com/article/jcmcc/Volume%20129/on-ramsey-indexes-of-graphs.pdf
+% Their [5] is G. Chartrand and P. Zhang, "The Ascending Ramsey Index of a
+% Graph", Symmetry 15 (2023), 523, sec. 4; doi:10.3390/sym15020523.
+% Open Problems Catalog: Q3768, "Full-length Ramsey chains in complete graphs".
+
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\paragraph{Conjecture 2.6 (verbatim).}
+For every integer $n \ge 3$, $AR(K_n) = n-1$.
+
+\paragraph{Definitions from pp.\ 4--5, in notation.}
+Let $G$ be a graph without isolated vertices, and let
+$c:E(G)\to\{\mathrm{red},\mathrm{blue}\}$ be an edge colouring.
+A Ramsey chain of length $\ell$ for $(G,c)$ consists of subgraphs
+$G_1,\ldots,G_\ell$ satisfying
+\begin{align*}
+  |E(G_i)| &= i \quad (1\le i\le\ell),\\
+  E(G_i)\cap E(G_j) &= \varnothing \quad (i\ne j),\\
+  |c(E(G_i))| &= 1 \quad (1\le i\le\ell),\\
+  G_i &\cong H_i\text{ for some subgraph }H_i\subseteq G_{i+1}
+       \quad (1\le i<\ell).
+\end{align*}
+Here $H_i$ need not be induced, and the common colour within one link
+need not be the common colour within another. The indexes are
+\[
+ AR_c(G)=\max\{\ell:(G,c)\text{ has a Ramsey chain of length }\ell\},
+ \qquad AR(G)=\min_c AR_c(G).
+\]
+
+\paragraph{Counting consequence.}
+For $G=K_n$ one has $\sum_{i=1}^{n-1}i=\binom n2$. Hence a chain of the
+conjectured length partitions the edges.
+
+\end{document}
