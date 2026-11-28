@@ -1,0 +1,23 @@
+% Verbatim definition and conjecture from Michelle Delcourt and Luke Postle,
+% Finding an almost perfect matching in a hypergraph avoiding forbidden
+% submatchings, arXiv:2204.08981v4 (24 Aug 2026), Sections 2.4--2.5.
+% Published as Conjecture 2.12, DOI 10.1112/jlms.70660.
+% The supplied proof establishes a vertex-surplus theorem, not this whole conjecture.
+\documentclass{article}
+\usepackage{amsthm}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{conj}[thm]{Conjecture}
+\begin{document}
+\setcounter{section}{2}
+\setcounter{thm}{11}
+Recall that a matching $M$ of a (not necessarily properly) edge colored hypergraph $G$ is \emph{rainbow} if every edge of $M$ is colored differently and a rainbow matching is \emph{full} if every color of the coloring appears on some edge of $M$.
+
+\begin{conj}[Alspach~\cite{A88}]\label{conj:Alspach}
+If $G$ is a simple $2d$-regular graph that is edge colored such that each color class is a $2$-factor, then $G$ has a full rainbow matching.
+\end{conj}
+
+% Standard terminology used in the source: a 2-factor is a spanning 2-regular subgraph.
+\begin{thebibliography}{1}
+\bibitem{A88} Brian Alspach, Problem 89, Discrete Mathematics 69 (1988), 106.
+\end{thebibliography}
+\end{document}
