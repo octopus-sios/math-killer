@@ -1,0 +1,37 @@
+% Liam Solus, Polyhedral Problems in Combinatorial Convex Geometry,
+% University of Kentucky (2015), DOI 10.13023/ETD.2016.014.
+% https://uknowledge.uky.edu/math_etds/32/
+% Definition 2.1.1, p. 23; verbatim conjecture on printed p. 73.
+% Also Braun and Solus, r-Stable hypersimplices, JCTA 157 (2018),
+% 349--388, Definitions 1.1--1.2 and Conjecture 4.22,
+% https://doi.org/10.1016/j.jcta.2018.03.002 .
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\newcommand{\rstablentwo}{\Delta_{n,2}^{stab(r)}}
+\begin{document}
+Label the regular $n$-gon cyclically by $[n]=\{1,\ldots,n\}$ and put
+$\operatorname{cd}(i,j)=\min(|i-j|,n-|i-j|)$.
+For $0<k<n$ and $1\le r\le\lfloor n/k\rfloor$, an $r$-stable $k$-subset
+$I\subseteq[n]$ satisfies $\operatorname{cd}(i,j)\ge r$ for all distinct
+$i,j\in I$. Its characteristic vector is $\epsilon_I=\sum_{i\in I} e_i$
+in the standard basis of $\mathbb Z^n$.
+
+\noindent\textbf{Definition 2.1.1 (in formulas).}
+\[
+\Delta_{n,k}^{stab(r)}=\operatorname{conv}
+ \{\,\epsilon_I:\ |I|=k,\ I\text{ is }r\text{-stable}\,\}.
+\]
+In particular $k=2$ means $e_i+e_j$, not $\pm(e_i-e_j)$.
+
+\noindent\textbf{Conjecture 3.4.5.}
+The $h^*$-polynomials of the $r$-stable second hypersimplices
+$\rstablentwo$ are unimodal.
+
+For a lattice polytope $P$ of affine dimension $D$ the normalization is
+\[
+\sum_{t\ge0}|tP\cap\mathbb Z^n|x^t =
+\frac{h^*(P;x)}{(1-x)^{D+1}}.
+\]
+Unimodality means that for some index $j$, the coefficients are weakly
+increasing up to $j$ and weakly decreasing thereafter.
+\end{document}
