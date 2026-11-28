@@ -562,6 +562,26 @@
       "proof_file": "results/alspach-delcourt-postle-two-factor-rainbow/PROOF.md",
       "source_file": "results/alspach-delcourt-postle-two-factor-rainbow/SOURCE.tex",
       "verify_script": "results/alspach-delcourt-postle-two-factor-rainbow/verify.py"
+    },
+    {
+      "slug": "reiner-stanton-generalized-qbinomial-unimodality",
+      "title": "Stanley–Zanello Conjecture 1.1(iv): generalized Reiner–Stanton q-binomial differences are eventually nonnegative and unimodal for every k >= 5, with exactly one exceptional b",
+      "verdict": "proved",
+      "status": "✅",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Richard P. Stanley, Fabrizio Zanello",
+        "paper": "A generalization of a 1998 unimodality conjecture of Reiner and Stanton (J. Combin. 11 (2020), 111-126)",
+        "arxiv_id": "1711.10033v2",
+        "url": "https://arxiv.org/abs/1711.10033v2",
+        "target": "Conjecture 1.1(iv)"
+      },
+      "summary": "For every fixed k >= 5 there is a threshold M(k) such that for all m >= M and every admissible b (k-2 <= b <= (km-4k+4)/(k-2), k(m-b) even), f(k,m,b) = [m choose k]_q - q^(k(m-b)/2+b-2k+2) [b choose k-2]_q is nonnegative and unimodal if and only if b != (km-4k+2)/(k-2). Previously known only for k = 5 (Stanley–Zanello) and k = 6, 7 (Koutschan–Uncu–Wong, arXiv:2302.04067). The proof bounds the first difference of the subtracted Gaussian polynomial by 2^h (1+n)^(h-2) uniformly in b and the shift, compares against the growth of the first difference of [m choose k]_q on the half-range (using symmetry), and shows the shift-one exception is never unimodal. Formalized end-to-end in Lean 4 as ReinerStanton.stanley_zanello_iv (both directions, uniform in b; zero sorry, kernel-replayed in CI); verify.py checks the classification exactly for k = 3..10 against q-Pascal coefficient arrays with mutation controls. Sporadic failures for small m are not classified.",
+      "proof_file": "results/reiner-stanton-generalized-qbinomial-unimodality/PROOF.md",
+      "source_file": "results/reiner-stanton-generalized-qbinomial-unimodality/SOURCE.tex",
+      "verify_script": "results/reiner-stanton-generalized-qbinomial-unimodality/verify.py",
+      "lean_file": "lean/Conjectures/ReinerStantonQBinomialUnimodality.lean",
+      "lean_theorem": "ReinerStanton.stanley_zanello_iv"
     }
   ]
 }
