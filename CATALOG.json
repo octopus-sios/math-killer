@@ -25,7 +25,7 @@
       "slug": "nabergall-chordal-diagrams",
       "title": "Connected chordal chord diagrams (Nabergall's Conjecture 8.5)",
       "verdict": "proved",
-      "status": "⬜",
+      "status": "✅",
       "date": "2026-11-27",
       "source": {
         "authors": "Lukas Nabergall",
@@ -36,12 +36,17 @@
         "url": "https://escholarship.org/uc/item/1qg5647z",
         "target": "Conjecture 8.5"
       },
-      "summary": "For every n >= 1, the number of rooted chord diagrams of size n whose crossing graph is connected and chordal equals C_{n-1}^2 = ((1/n) binom(2n-2, n-1))^2, proved via clique-boundary sector triangulation, earliest-cut irreducible factorization, and Clebsch–Gordan generating-function extraction.",
+      "summary": "For every n >= 1, the number of rooted chord diagrams of size n whose crossing graph is connected and chordal equals C_{n-1}^2 = ((1/n) binom(2n-2, n-1))^2, proved end-to-end in Lean 4 across 14 warning-free modules (NabergallChordalDiagrams.connectedChordalDiagram_card) via clique-boundary sector triangulation, earliest-cut irreducible factorization, and Clebsch–Gordan generating-function extraction.",
       "proof_file": "results/nabergall-chordal-diagrams/PROOF.md",
       "source_file": "results/nabergall-chordal-diagrams/SOURCE.tex",
       "verify_script": "results/nabergall-chordal-diagrams/verify.py",
-      "lean_partial_file": "lean/Conjectures/NabergallChordalDiagrams.lean",
-      "lean_partial_theorem": "NabergallChordalDiagrams.walk_coefficient"
+      "lean_file": "lean/Conjectures/NabergallChordalDiagrams/Enumeration.lean",
+      "lean_theorem": "NabergallChordalDiagrams.connectedChordalDiagram_card",
+      "lean_supporting_theorems": [
+        "NabergallChordalDiagrams.connectedChordalDiagram_card_succ",
+        "NabergallChordalDiagrams.fragment_recurrences",
+        "NabergallChordalDiagrams.walk_coefficient"
+      ]
     },
     {
       "slug": "petr-temperate-intersecting",
