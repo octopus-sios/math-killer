@@ -1,4 +1,3 @@
-import Mathlib
 import Conjectures.ManickamMiklosSinghi.Foundation
 
 namespace ManickamMiklosSinghi

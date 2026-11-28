@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 /-! Exact real interval certification of the four rows and seven quartic cells.
 No endpoint maximum assumption: after writing h as b X + a Y, X+Y=1, the

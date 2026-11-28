@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
 
 namespace ManickamMiklosSinghi.SevenK
 

@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LinearCombination
 
 /-! Slice moments via conditional recursion. Incidence of t in a sampled k-set
 is counted by taking the complement of that set, including when t.card > k. -/

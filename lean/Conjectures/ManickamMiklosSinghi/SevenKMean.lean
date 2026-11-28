@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Field
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.LinearCombination
 
 namespace ManickamMiklosSinghi.SevenK
 open Finset

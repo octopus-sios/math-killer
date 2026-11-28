@@ -1,4 +1,12 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Field
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Data.Fin.Tuple.Sort
+import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Data.Rat.BigOperators
+import Mathlib.GroupTheory.Perm.Basic
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Positivity
 
 /-!
 # Manickam–Miklós–Singhi: finite counting and certificate foundations

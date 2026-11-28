@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Tactic.Linarith
 
 /-! Purely finite double-counting primitives for the disjoint coupling. -/
 namespace ManickamMiklosSinghi.SevenK
