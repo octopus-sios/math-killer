@@ -456,6 +456,32 @@
         "YiboGaoWeylConvexBalance.fourColumnBalanced",
         "YiboGaoWeylConvexBalance.smallPeak"
       ]
+    },
+    {
+      "slug": "marcus-de-oliveira",
+      "title": "Marcus–de Oliveira 1973 determinantal conjecture: universal U(4) to SO(4) reduction, all-order one-outlier & rank-excess-2 theorems, and exact compound-polytope obstructions",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Marvin Marcus (1973); Graciano N. de Oliveira (1982); Kijti Rodtes (2020)",
+        "paper": "Derivations, Plücker relations, and the numerical range (Indiana Univ. Math. J. 22, 1972/73); Normal matrices (Linear Multilinear Algebra 12, 1982); A class of normal dilation matrices affirming the Marcus-de Oliveira conjecture (Rodtes, 2020)",
+        "target": "Marcus–de Oliveira Determinantal Conjecture: det(A + B) in conv{prod_i (a_i + b_{sigma(i)})}"
+      },
+      "summary": "Six-pillar structural advance on the 1973 Marcus–de Oliveira Determinantal Conjecture (MOC): (A) proves MOC for all n when sigma(A) lies on a generalized circle and sigma(B) has at most one outlier off a second generalized circle — settling n = 4 whenever either spectrum is concyclic (including Hermitian A + arbitrary normal B) and extending Shitov (2025) to Hermitian A + at most 4 nonreal eigenvalues of B for all n; (B) proves all-n rank-excess-2 (rank(A - cI) + rank(B + cI) <= n + 2, closing rank (4,4) at n = 6) and all n = 4 cross-spectral collisions; (C) proves the universal U(4) -> SO(4) simultaneous 70-minor real-chord reduction conv Delta_{U(4)}(a,b) = conv Delta_{SO(4)}(a,b) without constraining either spectrum; (D) certifies a continuous disjoint doubly-nonconcyclic n = 4 two-tetrahedron family over all U(4) via a 151-SOS rational atlas alongside 48-vertex Shor/P(delta) obstructions and escaped KKT saddles; (E) classifies collision-free singular boundaries with inward transverse Hessian for all n; and (F) computes the exact 82-facet Pi_4 polytope, sharp O(4) = U(4) Orbit-2 breach gamma approx -0.1348845 via 23-square Q(rho) SOS, Klein-four V_4 protection for all 4x4 complex Hadamard matrices, and Tao's 6x6 Hadamard 45-zero Pi_6 escape (exact l_inf distance 1/40) with positive spectral slices. Accompanied by a 13-module, 454-theorem Lean 4 helper/structural suite (including end-to-end Lean proofs of n = 4 collision, all-n PGL_2(C) invariance, V_4 Hadamard protection, Pi_4 facet witness, Tao 6x6 obstruction, and n = 4 arrowhead eigenbasis law) and exact zero-float verify.py across all 7 sections. The unrestricted conjecture remains open for n >= 4.",
+      "proof_file": "results/marcus-de-oliveira/PROOF.md",
+      "source_file": "results/marcus-de-oliveira/SOURCE.tex",
+      "verify_script": "results/marcus-de-oliveira/verify.py",
+      "lean_partial_file": "lean/Conjectures/MarcusDeOliveira.lean",
+      "lean_partial_theorems": [
+        "MOCCollision.collision",
+        "MOCArrowheadBasis.eigenbasis_law",
+        "MOCArrowheadBasis.eigenbasis_moc",
+        "MOCProjective.mobius",
+        "MOCKlein.hadamard",
+        "MOCFacet.facet_breach",
+        "TaoForbidden.every_permutation"
+      ]
     }
   ]
 }
