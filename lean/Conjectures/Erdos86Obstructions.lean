@@ -1,4 +1,16 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Algebra.Ring.Parity
+import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Data.Fintype.Pi
+import Mathlib.Data.Fintype.Prod
+import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib.Order.Lattice.Nat
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 /-!
 # Square defects and structural obstructions in the hypercube
