@@ -611,6 +611,28 @@
         "ManickamMiklosSinghi.threshold_eight_ge",
         "ManickamMiklosSinghi.mms_add_k"
       ]
+    },
+    {
+      "slug": "willems-brauer-character-squares-kourovka-21-91",
+      "title": "Willems's conjecture (Kourovka Notebook 21.91) at p = 3: the squared degrees of the irreducible 3-Brauer characters of every finite group sum to at least |G|_{3'}",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "W. Willems (communicated by G. Malle; eds. E. I. Khukhro and V. D. Mazurov)",
+        "paper": "The Kourovka Notebook: Unsolved Problems in Group Theory (21st Edition), Problem 21.91; G. Malle, On Willems' conjecture on Brauer character degrees (Adv. Math. 380 (2021), 107609)",
+        "arxiv_id": "1401.0300v50",
+        "url": "https://arxiv.org/abs/1401.0300v50",
+        "target": "Problem 21.91"
+      },
+      "summary": "Proves Willems's conjecture at the prime 3: for every finite group G, the sum of the squares of the degrees of the irreducible 3-modular Brauer characters is at least the 3'-part of |G| (previously known only at p = 2, by Malle 2021). Via Tong-Viet's reduction to quasisimple groups with a prescribed faithful central character, the proof (i) completes the defining-characteristic Lie-type cases at every prime by tensoring the Steinberg module with a small fundamental module and bounding a simple quotient's degree; (ii) settles the ordinary and spin sectors of alternating groups at p = 3 using two staircase partitions of 3-defect zero with an effective infinite tail, a degree-sum transfer inequality between ranks, and cyclic-defect block bounds for the remaining finite ranks; and (iii) checks A7, 2.A8, 2.A9 from the GAP character table library. As a by-product the projective inequality holds for all covers of finite simple groups of Lie type at all primes. verify.py replays all finite interval and degree certificates in exact integer arithmetic with negative controls; Lean 4 formalizes only the tensor-quotient degree lemma. The conjecture for p >= 5 remains open.",
+      "proof_file": "results/willems-brauer-character-squares-kourovka-21-91/PROOF.md",
+      "source_file": "results/willems-brauer-character-squares-kourovka-21-91/SOURCE.tex",
+      "verify_script": "results/willems-brauer-character-squares-kourovka-21-91/verify.py",
+      "lean_partial_file": "lean/Conjectures/WillemsBrauerCharacterSquares.lean",
+      "lean_partial_theorems": [
+        "WillemsBrauerCharacterSquares.tensor_quotient_degree"
+      ]
     }
   ]
 }
