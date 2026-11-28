@@ -1,0 +1,28 @@
+% Source: Zhen Liu and Qinghou Zeng, arXiv:2610.15539v1, Section 1.
+% Definitions, Tuza conjecture and baseline edge-count theorem below are verbatim source excerpts.
+\documentclass{article}
+\usepackage{amssymb,amsmath,amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{conjecture}[theorem]{Conjecture}
+\begin{document}
+All graphs considered in this paper are finite, simple, and undirected. A \emph{triangle} is a cycle of length three. A \emph{triangle packing} is a family of pairwise edge-disjoint triangles, while a \emph{triangle cover} is a set of edges meeting every triangle. We denote by $\nu(G)$ the maximum size of a triangle packing in $G$, and by $\tau(G)$ the minimum size of a triangle cover. The union of the edges of a maximum triangle packing is a triangle cover, and hence
+$
+\nu(G)\le \tau(G)\le 3\nu(G).
+$
+\begin{conjecture}[Tuza]\label{conj:tuza}
+Every graph $G$ satisfies
+$
+\tau(G)\le 2\nu(G).
+$
+\end{conjecture}
+\begin{theorem}\label{thm:main}
+For every fixed real number $c<2$, every sufficiently large $n$-vertex graph $G$ with
+$
+e(G)\ge \frac{n^2}{4}-cn
+$
+satisfies
+$
+\tau(G)\le2\nu(G).
+$
+\end{theorem}
+\end{document}
