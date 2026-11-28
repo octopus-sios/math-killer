@@ -1,0 +1,65 @@
+% Source excerpts: Gessel and Zhuang, arXiv:2306.15785v3 (2024).
+% Operator macros and Conjecture 7.1 are reproduced from the source TeX.
+\DeclareMathOperator{\pk}{pk}
+\DeclareMathOperator{\ipk}{ipk}
+\DeclareMathOperator{\lpk}{lpk}
+\DeclareMathOperator{\ilpk}{ilpk}
+\DeclareMathOperator{\br}{br}
+\DeclareMathOperator{\ibr}{ibr}
+\DeclareMathOperator{\udr}{udr}
+\DeclareMathOperator{\iudr}{iudr}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\ist}{ist}
+
+Given a permutation statistic $\st$, let us define its \textit{inverse
+statistic} $\ist$ by $\ist(\pi)\coloneqq\st(\pi^{-1})$.
+
+\begin{itemize}
+\item The \textit{peak number} $\pk$. We call $i$ (where $2\leq i\leq n-1$)
+a \textit{peak} of $\pi\in\mathfrak{S}_{n}$ if $\pi(i-1)<\pi(i)>\pi(i+1)$.
+Then $\pk(\pi)$ is the number of peaks of $\pi$.
+\item The \textit{left peak number} $\lpk$. We call $i\in[n-1]$ a \textit{left
+peak} of $\pi\in\mathfrak{S}_{n}$ if either $i$ is a peak of $\pi$,
+or if $i=1$ and $\pi(1)>\pi(2)$. Then $\lpk(\pi)$ is the number
+of left peaks of $\pi$.
+\item The \textit{number of biruns} $\br$. A \textit{birun} of a permutation
+$\pi$ is a maximal monotone consecutive subsequence. Then $\br(\pi)$
+is the number of biruns of $\pi$.
+\item The \textit{number of up-down runs} $\udr$. An \textit{up-down run}
+of $\pi$ is either a birun of $\pi$, or $\pi(1)$ if $\pi(1)>\pi(2)$.
+Then $\udr(\pi)$ is the number of up-down runs of $\pi$.\footnote{Equivalently, $\udr(\pi)$ is equal to the length of the longest alternating
+subsequence of $\pi$, which was studied in depth by Stanley \cite{Stanley2008}.}
+\end{itemize}
+\begin{conjecture}
+\label{c-rr}The following polynomials are real-rooted for all $n\geq1$:
+\begin{enumerate}
+\item [\normalfont{(a)}] ${\displaystyle [s^{k+1}]\,P_{n}^{(\pk,\ipk)}(s,t)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\pk(\pi)=k
+}
+}}t^{\ipk(\pi)+1}$ for  $0\leq k\leq\left\lfloor (n-1)/2\right\rfloor $,
+\item [\normalfont{(b)}] ${\displaystyle [s^{k}]\,P_{n}^{(\lpk,\ilpk)}(s,t)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\lpk(\pi)=k
+}
+}}t^{\ilpk(\pi)}$ for  $0\leq k\leq\left\lfloor n/2\right\rfloor $,
+\item [\normalfont{(c)}] ${\displaystyle [s^{k}]\,P_{n}^{(\pk,\ilpk)}(t,s)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\lpk(\pi)=k
+}
+}}t^{\ipk(\pi)+1}$ for  $0\leq k\leq\left\lfloor n/2\right\rfloor $,
+\item [\normalfont{(d)}] ${\displaystyle [s^{k+1}]\,P_{n}^{(\pk,\ilpk)}(s,t)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\pk(\pi)=k
+}
+}}t^{\ilpk(\pi)}$ for  $0\leq k\leq\left\lfloor (n-1)/2\right\rfloor $,
+\item [\normalfont{(e)}] ${\displaystyle [s^{k}]\,P_{n}^{(\udr,\ipk)}(s,t)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\udr(\pi)=k
+}
+}}t^{\ipk(\pi)+1}$ for  $1\leq k\leq n$,
+\item [\normalfont{(f)}] ${\displaystyle [s^{k}]\,P_{n}^{(\udr,\ilpk)}(s,t)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\udr(\pi)=k
+}
+}}t^{\ilpk(\pi)}$ for  $1\leq k\leq n$, and
+\item [\normalfont{(g)}] ${\displaystyle [s^{k}]\,P_{n}^{(\br,\ipk)}(s,t)=\sum_{\substack{\pi\in\mathfrak{S}_{n}\\
+\br(\pi)=k
+}
+}}t^{\ipk(\pi)+1}$ for  $1\leq k\leq n$.
+\end{enumerate}
+\end{conjecture}
