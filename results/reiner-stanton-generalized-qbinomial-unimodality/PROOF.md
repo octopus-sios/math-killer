@@ -10,9 +10,23 @@ is nonnegative and unimodal for **every** integer $b$ with $k-2\le b\le(km-4k+4)
 
 Parts (i)–(iii) ($k=2,3,4$) and the case $k=5$ of (iv) were proved by [Stanley and Zanello](https://arxiv.org/abs/1711.10033v2). [Koutschan, Uncu and Wong](https://arxiv.org/abs/2302.04067v2), Theorems 12–13 and Corollary 14, proved (iv) for $k=6,7$. We prove (iv) for every fixed $k\ge5$; we do **not** give a classification of the sporadic failures for small $m$. Nor does the asymptotic quantifier imply the original Reiner–Stanton assertion at every finite parameter.
 
+**Lean 4.** The full statement is proved as `ReinerStanton.stanley_zanello_iv` in [ReinerStantonQBinomialUnimodality.lean](../../lean/Conjectures/ReinerStantonQBinomialUnimodality.lean). The formal proof uses the product formula over integer power series and a discrete comparison with a power of a finite geometric series in place of the density estimates below. It proves both directions, with one threshold in $m$ for each $k$, uniform in the admissible $b$.
+
 ## 1. Where a uniform bound is needed
 
-Write $G_{k,L}=\binom{L+k}{k}_q$, $L=m-k$, $h=k-2$, $A=b-h$ and $s=(kL-hA)/2$. The hypotheses say that $A$ and $s$ are nonnegative integers. The two terms of $F=G_{k,L}-q^sG_{h,A}$ are symmetric about $kL/2$, counting zeros outside their support. Write $\Delta P(n)=[q^n](1-q)P$, with coefficients zero in negative degrees, and $\Delta^2 P(n)=[q^n](1-q)^2P$. It suffices to prove $\Delta F(n)\ge0$ for $0\le n\le\lfloor kL/2\rfloor$, including $n=0$.
+Write $L=m-k$, $h=k-2$, $A=b-h$ and $s=(kL-hA)/2$. The hypotheses say that $A$ and $s$ are nonnegative integers. Set
+
+$$
+G_{k,L}=\binom{L+k}{k}_q,\qquad F=G_{k,L}-q^sG_{h,A}.
+$$
+
+Both terms of $F$ are symmetric about $kL/2$, counting zeros outside their support. Write
+
+```math
+\Delta P(n)=[q^n](1-q)P,\qquad \Delta^2 P(n)=[q^n](1-q)^2P,
+```
+
+with coefficients zero in negative degrees. It suffices to prove $\Delta F(n)\ge0$ for $0\le n\le\lfloor kL/2\rfloor$, including $n=0$.
 
 On this half-interval the smaller term satisfies
 
@@ -89,4 +103,4 @@ Finally, $s=1$ is exactly $(k-2)b=km-4k+2$. For $L\ge2$ the larger polynomial st
 
 ### Exact finite checks
 
-The companion `verify.py` compares product-formula arrays with the $q$-Pascal identity, checks the published small-height classifications on their stated ranges, and separately counts the small-$m$ deviations from the eventual rule. These checks and the corruption controls do not replace the asymptotic argument. For background on fixed-height coefficient asymptotics see [Stanley–Zanello](https://arxiv.org/abs/1503.06367); for related central concavity arguments see [Zbarsky](https://arxiv.org/abs/1408.3895).
+The companion `verify.py` compares product-formula arrays with the $q$-Pascal identity, checks the published small-height classifications on their stated ranges, and separately counts deviations from the eventual rule at small values of $m$. These checks and the corruption controls do not replace the asymptotic argument. For background on fixed-height coefficient asymptotics see [Stanley–Zanello](https://arxiv.org/abs/1503.06367); for related central concavity arguments see [Zbarsky](https://arxiv.org/abs/1408.3895).
