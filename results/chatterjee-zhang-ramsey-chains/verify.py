@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Construct and check full Ramsey chains with one prescribed linear-forest link.
 
-No dependencies. With no arguments test each linear-forest type on 3..22
-vertices. With arguments n l1 ... lc print the chain for paths of the given
+With no arguments: test all linear forests through order 22, then run the
+unrestricted census through order 10 (requires a C++20 compiler). With arguments n l1 ... lc print the chain for paths of the given
 edge lengths laid out consecutively on vertices 0,...,n-1.
 """
 
@@ -187,10 +187,67 @@ def test():
     print("PASS: the checker rejected the colour-breaking edge swap.")
 
 
+def orbit_count(n):
+    """Burnside cross-check for n-vertex graphs with at most half the edges."""
+    from collections import Counter
+    from math import factorial
+
+    edges = list(combinations(range(n), 2))
+    total = 0
+    for cycle_type in partitions(n):
+        perm = []
+        for a in cycle_type:
+            u = len(perm)
+            perm.extend([*range(u+1, u+a), u])
+        den = 1
+        for a, count in Counter(cycle_type).items():
+            den *= a**count * factorial(count)
+        unseen = set(edges)
+        # A fixed red set is a union of full edge-orbits of this permutation.
+        counts = [1] + [0] * (len(edges)//2)
+        while unseen:
+            u, v = next(iter(unseen))
+            d = 0
+            while (u, v) in unseen:
+                unseen.remove((u, v))
+                d += 1
+                u, v = edge(perm[u], perm[v])
+            for j in range(len(counts)-1, d-1, -1):
+                counts[j] += counts[j-d]
+        total += factorial(n)//den * sum(counts)
+    assert total % factorial(n) == 0
+    return total//factorial(n)
+
+
+def finite_census(upto=10):
+    """Rebuild the self-contained C++20 checker; verify its orbit counts separately."""
+    import subprocess
+    from pathlib import Path
+    from tempfile import TemporaryDirectory
+
+    if not 3 <= upto <= 10:
+        raise ValueError("finite census supports 3..10")
+    with TemporaryDirectory() as d:
+        exe = Path(d) / "census"
+        subprocess.run(["c++", "-std=c++20", "-O3", "-pthread",
+                        str(Path(__file__).with_name("finite.cpp")), "-o", str(exe)],
+                       check=True)
+        run = subprocess.run([str(exe), str(upto)], check=True, text=True, stdout=subprocess.PIPE)
+    observed = [tuple(map(int, row.split())) for row in run.stdout.splitlines()]
+    expected = [(n, orbit_count(n)) for n in range(3, upto+1)]
+    if expected != observed:
+        raise ValueError(f"wrong orbit census: {observed}, expected {expected}")
+    for n, count in observed:
+        print(f"PASS: K_{n}, {count} red-graph orbits up to half the edges.")
+
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv) == 1:
         test()
+        finite_census()
+    elif sys.argv[1] == "--through":
+        finite_census(int(sys.argv[2]))
     else:
         n, *lengths = map(int, sys.argv[1:])
         red = labelled_forest(n, lengths)
