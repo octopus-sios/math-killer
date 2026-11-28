@@ -6,6 +6,11 @@ import Conjectures.GuanTransversalAchievement
 import Conjectures.HerzogSchonheimNonSolvable
 import Conjectures.KashimaOzekiKtreeOddColoring
 import Conjectures.Kourovka1846SquareOvergroup
+import Conjectures.Kourovka1846SquareOvergroup.Chart
+import Conjectures.Kourovka1846SquareOvergroup.Cosets
+import Conjectures.Kourovka1846SquareOvergroup.Reduction
+import Conjectures.Kourovka1846SquareOvergroup.Table
+import Conjectures.Kourovka1846SquareOvergroup.Upper
 import Conjectures.NabergallChordalDiagrams
 import Conjectures.NabergallChordalDiagrams.Assembly
 import Conjectures.NabergallChordalDiagrams.Clique
