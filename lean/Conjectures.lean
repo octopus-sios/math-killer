@@ -25,6 +25,7 @@ import Conjectures.PetrTemperateIntersecting
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.TuzaConjecture
 import Conjectures.YiboGaoCoxeterGeodesicHull
+import Conjectures.YiboGaoWeylConvexBalance
 import Conjectures.YuanParriloPermanentSphere
 
 /-! Root module importing every verified conjecture module under `Conjectures/`.
