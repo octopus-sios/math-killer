@@ -482,6 +482,33 @@
         "MOCFacet.facet_breach",
         "TaoForbidden.every_permutation"
       ]
+    },
+    {
+      "slug": "erdos-86",
+      "title": "Erdős Problem #86 ($100): hypercube C4-free edge density pi_e(C4) <= 0.59145, breaking Baber's 2012 bound 0.60318, with sharp finite bounds ex(Q8,C4) <= 684 and ex(Q9,C4) <= 1536",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Paul Erdős (1984, 1990, 1991); Rahil Baber (2012)",
+        "paper": "Erdős Problem #86 (erdosproblems.com/86); Baber, Turán densities of hypercubes (arXiv:1201.3587)",
+        "url": "https://www.erdosproblems.com/86",
+        "target": "Is every C4-free subgraph of Q_n of size at most (1/2 + o(1)) n 2^(n-1)? Equivalently pi_e(C4) = 1/2."
+      },
+      "summary": "Proves the new asymptotic bound pi_e(C4) <= 253730158483485323/429000000000000000 = 0.591445... < 0.59145, improving Baber's 2012 flag-algebra record 0.603173 that stood for 14 years, via a coupled full-Q4 + rooted-B5 + finite-lattice-cut + edge-book inventory dual certificate replayed in exact rationals. The same framework gives six new finite bounds ex(Q8,C4) <= 684 (lower bound 682), ex(Q9,C4) <= 1536 (lower bound 1532), ex(Q10,C4) <= 3369, ex(Q11,C4) <= 7379, ex(Q12,C4) <= 16072, ex(Q16,C4) <= 337372, all strictly below iterated facet averaging from ex(Q7,C4) = 304. Exact primal SDP floors show pure full-Q4 flag algebra cannot go below 692 on Q8, so the higher couplings are necessary; three structural obstructions (odd-dimension 3-edge-defect, 3x3-block Hamilton-fibre obstruction on Q9, exact period <= 16 translation-invariant extrema 296/672/1472/3200 on Q7..Q10) restrict non-odd-square escapes. Flag-algebra soundness and the obstruction theorems are formalized in two Lean 4 modules (80 kernel-checked theorems); exact zero-float verify.py replays all certificates with corrupted-certificate mutation rejection. The conjecture pi_e(C4) = 1/2 remains open.",
+      "proof_file": "results/erdos-86/PROOF.md",
+      "source_file": "results/erdos-86/SOURCE.tex",
+      "verify_script": "results/erdos-86/verify.py",
+      "lean_partial_file": "lean/Conjectures/Erdos86FlagAlgebra.lean",
+      "lean_partial_theorems": [
+        "Erdos86FlagAlgebra.subcube_averaging",
+        "Erdos86FlagAlgebra.exC4_facets",
+        "Erdos86FlagAlgebra.density_limit",
+        "Erdos86FlagAlgebra.split_extension_lattice_cut",
+        "Erdos86Obstructions.squareDefectIdentity",
+        "Erdos86Obstructions.hamiltonFibreObstruction",
+        "Erdos86Obstructions.threeEdgeDefect"
+      ]
     }
   ]
 }
