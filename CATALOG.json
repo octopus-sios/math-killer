@@ -584,6 +584,33 @@
       "verify_script": "results/reiner-stanton-generalized-qbinomial-unimodality/verify.py",
       "lean_file": "lean/Conjectures/ReinerStantonQBinomialUnimodality.lean",
       "lean_theorem": "ReinerStanton.stanley_zanello_iv"
+    },
+    {
+      "slug": "manickam-miklos-singhi",
+      "title": "Manickam–Miklós–Singhi conjecture proved for all n >= 7k (Lean 4), Milojević–Sudakov Conjectures 1 and 3 resolved on [0, 1/3], and exact k = 8 certificates including g(33,8) = C(32,7)",
+      "verdict": "partially_proved",
+      "status": "🟢",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "N. Manickam, D. Miklós, N. M. Singhi (1988); A. Chowdhury, G. Sarkis, S. Shahriari; A. Milojević, B. Sudakov",
+        "paper": "A New Quadratic Bound for the Manickam-Miklós-Singhi Conjecture (arXiv:1403.1844v4); On the Probability a Weighted Bernoulli Sum Exceeds Its Mean (arXiv:2606.30287v1)",
+        "arxiv_id": "1403.1844v4",
+        "url": "https://arxiv.org/abs/1403.1844v4",
+        "target": "MMS Conjecture (conj:MMS, n >= 4k); Milojević–Sudakov Conjecture 1 (conj:prob) and Conjecture 3 (q:MMS_variant)"
+      },
+      "summary": "Pillar I (Lean 4, end-to-end): for every n >= 7k and every real n-vector with nonnegative sum, at least C(n-1,k-1) of its k-subsets have nonnegative sum (ManickamMiklosSinghi.mms_seven_k), improving the best linear bound n > 10^46 k (Pokrovskiy 2015) and the quadratic bound n >= 8k^2 (Chowdhury–Sarkis–Shahriari); the full conjectured range n >= 4k remains open. Pillar II: resolves Milojević–Sudakov (June 2026) Conjecture 1 — P(sum w_i v_i >= p) >= p for positive weights summing to one, i.i.d. Bernoulli(p), all p in [0, 1/3] (sharp at 1/3 by their Proposition) — and Conjecture 3 (bounded-support restricted MMS for n >= (3+eps)k), with [0, 1/7] and unit fractions (after Alon–Emek–Feldman–Tennenholtz 2013) formalized in Lean 4 and [1/7, 1/3) certified by exact zero-float integer/int128 replay plus compactness transfer; compared against Barritz's bounded-support surplus preprint (Zenodo, Oct 2026). Pillar III: exact k = 8 frontier — f(8) >= 26 via an explicit witness (Lean), Farkas certificates for g(18,8), g(28,8), g(30,8), g(32,8), and a new spectral certificate for g(33,8) = C(32,7) = 3,365,856; residue classes n = 2, 3, 5, 7 mod 8 below 56 remain open. 32-module Lean 4 suite kernel-replayed in CI; verify.py replays all certificates with mutation rejection.",
+      "proof_file": "results/manickam-miklos-singhi/PROOF.md",
+      "source_file": "results/manickam-miklos-singhi/SOURCE.tex",
+      "verify_script": "results/manickam-miklos-singhi/verify.py",
+      "lean_file": "lean/Conjectures/ManickamMiklosSinghi.lean",
+      "lean_theorem": "ManickamMiklosSinghi.mms_seven_k",
+      "lean_supporting_theorems": [
+        "ManickamMiklosSinghi.bernoulli_exceedance_one_seventh",
+        "ManickamMiklosSinghi.bernoulli_strict_exceedance_one_seventh",
+        "ManickamMiklosSinghi.not_mms_25_8",
+        "ManickamMiklosSinghi.threshold_eight_ge",
+        "ManickamMiklosSinghi.mms_add_k"
+      ]
     }
   ]
 }
