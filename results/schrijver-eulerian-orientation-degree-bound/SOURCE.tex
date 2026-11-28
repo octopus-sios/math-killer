@@ -1,0 +1,29 @@
+% A. Schrijver, Bounds on the number of Eulerian orientations,
+% Combinatorica 3 (1983), 375--380, p. 379, Eq. (22).
+% https://ir.cwi.nl/pub/10053/10053D.pdf
+% The following is a transcription of the hypothesis and displayed conjecture.
+% epsilon counts edge orientations with equal indegree and outdegree at every
+% vertex; K_t is the complete undirected graph on t vertices.
+if $G$ is a simple undirected graph with
+degree sequence $2k_1,\ldots,2k_n$, then
+\[
+  \varepsilon(G)\leq
+  \prod_{i=1}^n \varepsilon(K_{2k_i+1})^{1/(2k_i+1)}.
+  \tag{22}
+\]
+
+% Srinjoy Srimani, Jacques Verstraëte and Jason Yang,
+% Counting Eulerian Orientations in Regular Graphs, arXiv:2611.29726v1,
+% section 1.2, Conjecture B (verbatim TeX), and section 7 (degree-six question).
+% https://arxiv.org/abs/2611.29726v1
+\begin{conjecture} {\bf (Schrijver~\cite{Sch83})} \label{conj:schrijver-degrees}
+Let $G$ be an $n$-vertex graph with even degrees $d_1,d_2,\dots,d_n$, with no loops or multiple edges. Then
+\[
+\varepsilon(G)\le \prod_{i=1}^n \varepsilon(K_{d_i+1})^{1/(d_i+1)}.
+\]
+\end{conjecture}
+
+For $d=6$ the
+question is whether $\varepsilon(G)\le\varepsilon(K_7)^{n/7}$ for every
+simple $6$-regular graph. Disjoint copies of $K_7$ attain this bound when
+$7$ divides $n$.
