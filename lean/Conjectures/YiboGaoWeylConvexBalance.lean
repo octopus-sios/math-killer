@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Tactic.NormNum
 
 /-! # The four-column obstruction in the FC equality classification
 
