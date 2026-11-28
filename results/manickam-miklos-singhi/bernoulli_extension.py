@@ -78,5 +78,6 @@ def main():
         while p<args.hi:
             h=min(args.hi,F(floorf(p*args.mesh)+1,args.mesh))
             check(p,h,args.subdivide);p=h
-        print('PASS covered',args.lo,args.hi)
+        right = ')' if args.hi == F(1,3) else ']'
+        print(f'PASS covered [{args.lo}, {args.hi}{right}')
 if __name__=='__main__':main()

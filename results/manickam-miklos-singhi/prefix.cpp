@@ -54,8 +54,10 @@ int bound(int h,int l,int u,I sl,I sh,int next=-1) {
  }
  if(!noTie && h>=3){
     // At p<1/3: for a partition of the prefix into three distinct patterns
-    // the sum of their standardized thresholds is negative. Consume each
-    // mask's lower-bound credit at most once, in a deterministic greedy order.
+    // the sum of their standardized thresholds is negative. This credit is
+    // valid pointwise for p<1/3, but certifies nothing at p=1/3 itself
+    // (handled separately in PROOF.md, Lemma II.3). Consume each mask's
+    // lower-bound credit at most once, in a deterministic greedy order.
     bool used[M]={};int top=nm-1;
     for(int i=1;i<nm;i++)if(!used[i]){int rem=top^i;
       for(int j=(rem-1)&rem;j>i;j=(j-1)&rem){int k=rem^j;

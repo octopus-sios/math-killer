@@ -12,7 +12,7 @@ Verifies all three computational pillars with exact integer / rational arithmeti
      - Analytic proof on [0, 1/7] and exact unit-fraction coloring at p = 1/q (incl. p = 1/3)
        are Lean 4 kernel-verified (Conjectures.ManickamMiklosSinghi.BernoulliOneSeventh).
      - Exact integer replay of [1/7, 3/10] (bernoulli_constants.py) + mutation test.
-     - Exact integer + int128 C++ replay of [29/100, 8/25] and [8/25, 1/3]
+     - Exact integer + int128 C++ replay of [29/100, 8/25] and [8/25, 1/3)
        (bernoulli_extension.py + prefix.cpp) + mutation test.
 
   3. Exact k = 8 rational Farkas & SPEC1 spectral certificates:
@@ -118,7 +118,7 @@ def main() -> int:
         ],
     )
     run_step(
-        "Bernoulli [8/25, 1/3] exact int128 replay",
+        "Bernoulli [8/25, 1/3) exact int128 replay",
         [
             py,
             str(HERE / "bernoulli_extension.py"),
