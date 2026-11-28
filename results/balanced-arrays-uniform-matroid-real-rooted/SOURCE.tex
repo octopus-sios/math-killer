@@ -1,0 +1,25 @@
+% Per Alexandersson, SymCat, "Open problems on real-rootedness",
+% Graphs, matroids and arrays. Exact TeX source (statement and definition):
+% https://github.com/PerAlexandersson/symmetricfunctions.com/blob/0561796d967ec01ab739a53449a759a18103a3f9/tex-source/realRootedOpenProblems.tex#L450-L465
+% https://www.symmetricfunctions.com/realRootedOpenProblems.htm#conjBalancedArrays
+% Author's companion statement and stronger consecutive-row question:
+% https://github.com/PerAlexandersson/RealRooted/issues/2005
+% Local typesetting alias: the source's elementaryE denotes e.
+\providecommand{\elementaryE}{e}
+
+\begin{conjecture}[Balanced arrays of uniform matroids]
+\label{conjBalancedArrays}
+For $1\leq r\leq d$ and $n\geq0$, let $a^{(r,d)}_{n,k}$ count the
+$n\times d$ zero-one matrices in which every column sum is $k$ and every row
+sum is at most $r$.  Then
+\[
+  P^{(r,d)}_n(q)\coloneqq\sum_{k\geq0}a^{(r,d)}_{n,k}q^k
+  =\sum_{k\geq0}q^k\,[x_1^k\dotsm x_d^k]\,
+  \bigl(1+\elementaryE_1+\dotsb+\elementaryE_r\bigr)^n
+\]
+is real-rooted for all $n$, $r$ and $d$.
+\end{conjecture}
+
+Here $\elementaryE_j$ is the elementary symmetric polynomial in
+$x_1,\dotsc,x_d$; the possible rows are the independent sets of the uniform
+matroid $U_{r,d}$.
