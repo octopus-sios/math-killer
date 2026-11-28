@@ -37,6 +37,7 @@ import Conjectures.NabergallChordalDiagrams.Split
 import Conjectures.NabergallChordalDiagrams.Triangulation
 import Conjectures.PattanayakTwoDegenerateLinearArboricity
 import Conjectures.PetrTemperateIntersecting
+import Conjectures.ReinerStantonQBinomialUnimodality
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.TuzaConjecture
 import Conjectures.YiboGaoCoxeterGeodesicHull
