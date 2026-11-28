@@ -82,7 +82,7 @@ Now $e+b_s+s-r<b$: in the peak column $b_s=b=-1$, and in the left peak column $b
 
 ### Bounded samples: the zeros nearest the origin
 
-Suppose $nv\to y>0$. Since $S_n(0)=0$, subtract the constant term from **each** kernel in (1). By the strict exponent inequality just proved, every centered lower term is $o(n^b)$. In (2) for $s=r$, the points $n\omega$ tend to the $r$ solutions of $\xi^r=-y^r$, and $R(\omega)^{n-1+h}\to e^{2\xi}$. Filter the exponential series: the powers that survive in the average of $\xi^{-b}e^{2\xi}$ have indices $b+r\ell\ge0$. If $b\ge0$, the $\ell=0$ term is canceled by $n^{-b}K_r(0)\to 2^a/b!$, as follows by extracting $[x^n](1+x)^a/(1-x)^{b+1}$. If $b=-1$, there is no such term. It follows that
+Suppose $nv\to y>0$. Since $S_n(0)=0$, subtract the constant term from **each** kernel in (1). By the strict exponent inequality just proved, every centered lower term is $o(n^b)$. In (2) for $s=r$, the points $n\omega$ tend to the $r$ solutions of $\xi^r=-y^r$, and $R(\omega)^{n-1+h}\to e^{2\xi}$. Filter the exponential series: the powers that survive in the average of $\xi^{-b}e^{2\xi}$ have indices $b+r\ell\ge0$. If $b\ge0$, the $\ell=0$ term is canceled by $n^{-b}K_r(0)\to 2^a/b!$, as follows by extracting $[x^n]\,(1+x)^a/(1-x)^{b+1}$. If $b=-1$, there is no such term. It follows that
 ```math
  n^{-b} S_n(-v^r)\longrightarrow
  -2^{1-h+b+r} y^r E_{r,\mu}(-(2y)^r),\qquad
@@ -98,7 +98,7 @@ We use the zero localization theorem of [Popov and Sedletskii, *Distribution of 
 ```
 Indeed the simple negative roots lie one per successive interval ending at these sample points, starting from $E_{r,\mu}(0)>0$. The source's parameter $\rho$ is $1/r$. Our $\mu$ is $r$ in the peak column and $r+1+\lfloor(r-1)/2\rfloor\le2r-1$ in the left peak column.
 
-For fixed $j\ge2$, the phase equation gives $nv_j\to y_j=(j\pi+b\theta)/(2\sin\theta)$: $v_j\to0$, $\phi/v\to2\sin\theta$, and $\delta\to0$. Since $2y_j=\xi_{j-1}$, the minus sign in (3) gives precisely $(-1)^j$. These fixed-$j$ signs and the large-sample estimate exhaust the grid: if there were failures at unbounded sizes, pass to a sequence with $nv_j\to\infty$ or with $nv_j$ bounded. In the latter case $j$ is bounded by the phase formula, so pass to a constant index. Both alternatives contradict the established signs.
+For fixed $j\ge2$, the phase equation gives $nv_j\to y_j=(j\pi+b\theta)/(2\sin\theta)$: $v_j\to0$, $\phi/v\to2\sin\theta$, and $\delta\to0$. Since $2y_j=\xi_{j-1}$, the minus sign in (3) gives precisely $(-1)^j$. These signs for fixed $j$ and the large-sample estimate exhaust the grid: if there were failures at unbounded sizes, pass to a sequence with $nv_j\to\infty$ or with $nv_j$ bounded. In the latter case $j$ is bounded by the phase formula, so pass to a constant index. Both alternatives contradict the established signs.
 
 Finally choose a fixed $0<y<y_2$ sufficiently small that (3) is negative. The ordered grid starts with a negative sign at $v=y/n$, then has alternating signs at $v_2,\ldots,v_d$. If the last sample is $v=1$, (2) is continuous there and its nonzero sign persists just inside. As $v$ increases, $T(-v^r)$ runs strictly from $0$ to $-\infty$. The intermediate value theorem gives $d-1$ distinct negative roots, in addition to the root at zero. The degree bound $d$ proves both completeness and simplicity.
 

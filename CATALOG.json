@@ -366,6 +366,25 @@
         "YiboGaoCoxeterGeodesicHull.AffPerm4.cayleyGraph_dist_eq_l1Dist",
         "YiboGaoCoxeterGeodesicHull.AffPerm4.convexHull_pair_eq_phiBox"
       ]
+    },
+    {
+      "slug": "gessel-zhuang-inverse-peak-real-rooted",
+      "title": "Gessel–Zhuang Conjecture 7.1 (inverse peak real-rootedness): all 7 families at every fixed count and unconditional first mixed rows",
+      "verdict": "partially_proved",
+      "status": "⬜",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Ira M. Gessel and Yan Zhuang",
+        "paper": "Two-sided permutation statistics via symmetric functions",
+        "journal": "Forum of Mathematics, Sigma 12 (2024), e93",
+        "arxiv_id": "2306.15785v3",
+        "url": "https://arxiv.org/abs/2306.15785v3",
+        "target": "Conjecture 7.1 (c-rr, parts (a)-(g))"
+      },
+      "summary": "Proves eventual real-rootedness (all zeros real, nonpositive, and simple for non-elementary rows) for every part (a)-(g) of Gessel-Zhuang Conjecture 7.1 at every fixed conditioning count k for all sufficiently large n >= N(k) via triangular generating-function extraction and Popov-Sedletskii Mittag-Leffler root localization. Independently proves unconditional real-rootedness at every n >= 1 for all elementary rows (r <= 2) and for the first non-elementary mixed rows ((a)-(d) at k = 1 and (e)-(g) at k = 3) by explicit n >= 40 trigonometric error bounds plus exact zero-float integer Sturm-chain certification through n = 39. Uniform-in-k real-rootedness for all pairs (n, k) remains open.",
+      "proof_file": "results/gessel-zhuang-inverse-peak-real-rooted/PROOF.md",
+      "source_file": "results/gessel-zhuang-inverse-peak-real-rooted/SOURCE.tex",
+      "verify_script": "results/gessel-zhuang-inverse-peak-real-rooted/verify.py"
     }
   ]
 }
