@@ -1,5 +1,9 @@
-import Mathlib.RingTheory.PowerSeries.Catalan
-import Mathlib.Tactic.Ring
+module
+
+public import Mathlib.RingTheory.PowerSeries.Catalan
+public import Mathlib.Tactic.Ring
+
+@[expose] public section
 
 /-!
 # The lattice coefficient in the connected chordal diagram enumeration
