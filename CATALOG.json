@@ -544,6 +544,24 @@
       "proof_file": "results/guralnick-tongviet-tracey-baer-suzuki/PROOF.md",
       "source_file": "results/guralnick-tongviet-tracey-baer-suzuki/SOURCE.tex",
       "verify_script": "results/guralnick-tongviet-tracey-baer-suzuki/verify.py"
+    },
+    {
+      "slug": "alspach-delcourt-postle-two-factor-rainbow",
+      "title": "Alspach's 1988 orthogonal matching problem: a full rainbow matching exists once N >= 2d + C log d / log log d (sublogarithmic vertex surplus)",
+      "verdict": "partially_proved",
+      "status": "⬜",
+      "date": "2026-11-28",
+      "source": {
+        "authors": "Brian Alspach (1988); Michelle Delcourt, Luke Postle",
+        "paper": "Finding an almost perfect matching in a hypergraph avoiding forbidden submatchings (J. London Math. Soc., DOI 10.1112/jlms.70660), Conjecture 2.12; Alspach, Problem 89, Discrete Math. 69 (1988)",
+        "arxiv_id": "2204.08981v4",
+        "url": "https://arxiv.org/abs/2204.08981v4",
+        "target": "Conjecture 2.12 (Alspach): a simple 2d-regular graph edge-coloured so that each colour class is a 2-factor has a full rainbow matching"
+      },
+      "summary": "Proves that for absolute constants C, d0 and every d >= d0, any simple graph on N >= 2d + C log d / log log d vertices that is the edge-disjoint union of d spanning 2-factors has a matching using exactly one edge from every factor, improving the surplus d^{3/4+o(1)} (Munhá Correia–Pokrovskiy–Sudakov, Theorem 1.5) and the remarked d^{1/2+o(1)}. The proof randomly orients every factor cycle, takes a random cut with exactly d tails, and exchanges the roles of factors and arc heads so that factors and tails form two classes of size d while the surplus vertices become surplus colours; a one-sided-codegree version of Keevash–Pokrovskiy–Sudakov–Yepremyan Theorem 4.1 (justified step by step, since lower codegrees can genuinely fail, as a twin-clone example shows) then gives a perfect rainbow matching. verify.py exactly checks the role exchange, shadow moments and negative controls on small instances. Alspach's conjecture without any surplus (N >= 2d + 1) remains open.",
+      "proof_file": "results/alspach-delcourt-postle-two-factor-rainbow/PROOF.md",
+      "source_file": "results/alspach-delcourt-postle-two-factor-rainbow/SOURCE.tex",
+      "verify_script": "results/alspach-delcourt-postle-two-factor-rainbow/verify.py"
     }
   ]
 }
