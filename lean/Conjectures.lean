@@ -1,3 +1,13 @@
+import Conjectures.Barranca.Basic
+import Conjectures.Barranca.Cancellation
+import Conjectures.Barranca.Classification
+import Conjectures.Barranca.Connected
+import Conjectures.Barranca.Positive
+import Conjectures.Barranca.Seeds
+import Conjectures.Barranca.Small
+import Conjectures.Barranca.Spectrum
+import Conjectures.Barranca.Trade
+import Conjectures.BarrancaInducedSubgraphSpectral
 import Conjectures.CardosoSubsetSynchronization
 import Conjectures.ConwayThrackleBound
 import Conjectures.EggertNilpotentAlgebraKourovka1752
