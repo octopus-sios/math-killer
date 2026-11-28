@@ -178,6 +178,20 @@ def addweights(a, b, h=1):
         a[j] += h*b[j]
 
 
+def predicted_zero(q, n, pi, r, k=None):
+    """None for a descended special row; a twist index k for a full-unitary row."""
+    M = q+1
+    a = pi_part(M, pi)
+    special_row = k is None
+    if (r % gcd(n, a) if special_row else (r+n*k) % a):
+        return True
+    if r:
+        return False
+    odd_complete = n % 2 and all(primes(q**d+1) <= pi for d in range(1, n+1, 2))
+    small = (n, q) == (3, 2) and 2 in pi and 3 not in pi
+    return bool(small or (odd_complete and (gcd(n, M) == 1 if special_row else k % M == 0)))
+
+
 def check(q, n, short=False):
     C = Classes(q, n)
     M = q+1
@@ -197,6 +211,7 @@ def check(q, n, short=False):
         for r, k in product(range(M), repeat=2):
             val = weil_sum(q,n,counts,r,k)
             assert val == U(q,n,pi,r,k) and val >= 0, (q,n,pi,r,k,val)
+            assert (val == 0) == predicted_zero(q,n,pi,r,k), (q,n,pi,r,k,val)
             GU_cases += 1
         for D in divisors(gcd(n, M)):
             a = pi_part(D, pi)
@@ -214,6 +229,7 @@ def check(q, n, short=False):
             for r in range(0, M, D):
                 val = weil_sum(q,n,{0:sums},r,0)
                 assert val == special(q,n,pi,r,D) and val >= 0, (q,n,pi,r,D,val)
+                assert (val == 0) == predicted_zero(q,n,pi,r), (q,n,pi,r,D,val)
                 SQ_cases += 1
                 if r == 0 and n % 2 and gcd(n,M) == 1:
                     zero = all(primes(q**d+1) <= pi for d in range(1,n+1,2))
@@ -263,7 +279,7 @@ def finite_tail():
         M = q+1
         ps = sorted(primes(q).union(*(primes(q**i-(-1)**i) for i in range(1,n+1))))
         cases = 0
-        smallest = None
+        smallest = central_min = None
         for j in range(len(ps)+1):
             for u in combinations(ps,j):
                 pi = frozenset(u)
@@ -272,10 +288,15 @@ def finite_tail():
                         val = special(q,n,pi,r,D)
                         assert val >= 0, (q,n,pi,r,D,val)
                         smallest = val if smallest is None else min(val,smallest)
+                        compatible = r % gcd(n,pi_part(M,pi)) == 0
+                        assert (val > 0) == compatible
+                        if compatible:
+                            central_min = val if central_min is None else min(val,central_min)
                         cases += 1
+        assert central_min == {(3,4):13, (3,6):115, (5,6):2004, (3,10):9602}[q,n]
         assert cases == {(3,4):112, (3,6):384, (5,6):1536, (3,10):12288}[q,n]
         assert smallest == 0
-        print(f"  q={q}, n={n}: {2**len(ps)} prime sets, {cases} quotient/row sums, min={smallest}")
+        print(f"  q={q}, n={n}: {2**len(ps)} prime sets, {cases} quotient/row sums, min={smallest}, central-compatible min={central_min}")
 
 
 def matrix_check():
@@ -374,6 +395,8 @@ def rank_one_checks():
                                           + sign*((P if r % P == 0 else 0)+correction)
                                           if r % z == 0 else 0)
                             assert val == prediction and val >= 0
+                            if c == d:
+                                assert val > 0  # full support on simple PSL2
                             if 2*r == t:
                                 assert val % 2 == 0  # the two exceptional rows
                             cases += 1
@@ -485,7 +508,7 @@ s := Sum(wr,p->CheckTable(CharacterTableWreathSymmetric(CharacterTable(p[1]),p[2
 if s<>[7,1742,23336] then Error("wreath coverage"); fi;
 Print("Wreath products: ",s,"\n");
 CycleCheck:=function(H,l)
- local t,w,wr,rows,pr,pi,sel,obs,pred,a,b,r,j,u,tt,rotate,h,allowed;
+ local t,w,wr,rows,pr,pi,sel,obs,pred,a,b,r,j,tt,h,allowed;
  t:=CharacterTable(H);
  w:=WreathProduct(H,Group(CycleFromList([1..l])));
  wr:=CharacterTable(w);

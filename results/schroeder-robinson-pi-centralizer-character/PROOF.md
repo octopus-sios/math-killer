@@ -11,12 +11,12 @@ Here $g_K$ runs once over the classes of elements whose orders have all their pr
 ```
 For instance the degree-ten row of $\mathrm{PSU}_5(2)$ has sum zero already for $\pi=\{3,11\}$, whereas its sum is four for $\pi=\{2\}$.
 
-This eliminates the entire set of simple-group **pairs** singled out before [Schroeder's Theorem 3.6](https://arxiv.org/html/2609.26464v1#S3). That theorem proves nonnegativity in dimension three. A full row sum of zero does not control the sign after columns have been removed. Nor does our theorem assert positivity for *other* characters of a group merely because one of its rows is missing from the conjugation representation.
+This eliminates the entire set of simple-group **pairs** singled out before [Schroeder's Theorem 3.6](https://arxiv.org/html/2609.26464v1#S3). That theorem proves nonnegativity in dimension three. A full row sum of zero does not control the sign after columns have been removed. The abelian simple case is elementary: a nontrivial row of a cyclic group of prime order has sum zero or one according as the prime belongs to the set or not. Nor does our theorem assert positivity for *other* characters of a group merely because one of its rows is missing from the conjugation representation.
 
 **Further conclusions.**
-- For all field sizes and dimensions, every Weil component and determinant twist on the full unitary group has nonnegative local sum (§§1–2). The same holds for every Weil row of $\mathrm{SU}_n(q)$, $n\ge3$, on that group and on any central quotient to which the row descends (§§4–5).
+- For all field sizes and dimensions, every Weil component and determinant twist on the full unitary group has nonnegative local sum (§§1–2). The same holds for every Weil row of $\mathrm{SU}_n(q)$, $n\ge3$, on that group and on any central quotient to which the row descends (§§4–5). For dimensions at least three we determine **all** the zeros on these rows. In particular every Weil row of a nonabelian simple projective unitary group with positive full row sum remains strictly positive for every prime set.
 - The **whole** local centralizer function is a character on $\mathrm{SL}_2(q)$ and $\mathrm{PSL}_2(q)$ for every $\pi$ (§6), and on $A_n$ whenever $2\in\pi$ (an application of Sundaram, §7).
-- For fixed $\pi$, the all-row assertion passes from $H$ to the regular wreath product $H\wr C_\ell$ for **every prime** $\ell$ (§8).
+- For fixed $\pi$, the all-row assertion for $H$ is equivalent to that for the regular wreath product $H\wr C_\ell$ for **every prime** $\ell$ (§8).
 - On all 26 sporadic simple groups, even a sum over **any set of element orders containing order one** is strictly positive on every irreducible row (exact character-table computation, §9).
 
 The connection with [Conjecture 3.5](https://arxiv.org/abs/2609.26464) is that $S_\pi$ is the multiplicity of $\chi$ in $\Pi_{\pi,G}$: the class size cancels the centralizer in the inner product, and inversion permutes the selected classes. Integrality is Schroeder's Theorem 3.2. His Theorem 3.3 and [Robinson, §§5 and 8](https://arxiv.org/abs/2505.03976) cover the prime-complement and the $\pi$-separable cases. The unrestricted conjecture, including for simple groups in general, does not follow.
@@ -90,16 +90,23 @@ Their normalized logarithm coefficients are $h_m=1+2[2\mid m]$ and $u_m=2[m\text
 
 Finally $[t^n]Q\ge 2^{n\bmod2}[t^n]H$. Here $[t^n]H=1+\lfloor n/2\rfloor$. The first six coefficients of $Q$ are $1,2,2,4,6,6$; for $n\ge6$ its coefficient exceeds that at $n-3$ by at least three (expand $(1-t^3)Q$). Thus $[t^n]Q\ge n+1$ for $n\ge3$. Multiplication preserves the even/odd comparison, since two odd factors give a factor four, not less than one. This establishes (2) in the last case.
 
-## 3. Exactly which columns can be omitted at zero multiplicity?
+## 3. The exact support in the full unitary group
 
-In the first theorem $`\mathrm{GU}_n(q)=\mathrm{SU}_n(q)\times Z`$, since $z\mapsto z^n$ is an automorphism of $Z$. The special group equals its projective quotient and $`w_{0,n}`$ is trivial on $Z$. Its local sum on the special group is $1/a$ times its local sum on the full group. Use (1) with $k=r=0$; in odd dimension this gives
-```math
- S_\pi(G,\chi)=\frac{B_n-(b-1)A_n}{M}.
-```
+Now let $n\ge3$ and write $W(n,r,k)$ for the sum in (1), including the scalar obstruction. Use two conditions:
+- (O): the dimension is odd and $q^d+1$ is a $\pi$-number for every positive odd $d\le n$.
+- (X): $(n,q)=(3,2)$, with $2\in\pi$ and $3\notin\pi$.
 
-If $b=1$, the odd log coefficients of $B$ are sums of the nonnegative numbers $j(q^d+1-N_d)$ for $jd=m$, $j\in J$. They vanish through odd degree $n$ exactly when $N_d=q^d+1$ for every odd $d\le n$ (use $j=1$). Moreover $\beta_2>0$: this follows from $\alpha_2>0$ and the bound on $D_2$, including the case $q=2$ handled above. All log coefficients are nonnegative here. Any strictly positive odd log term of degree $d\le n$ can thus be padded by copies of degree two to give $B_n>0$. This proves the claimed equivalence for $b=1$.
+**Zero criterion.** Apart from the forced zero when $a\nmid r+nk$, the sum vanishes exactly when $r=0$ and either (O) holds with $k=0\bmod M$, or (X) holds.
 
-If $b\ge2$ we show that (2) is strict at the odd degree in question. For $J=\{1\}$ or $q>3$, use $D_2>0$ and the term with one index $2$ and $n-2$ indices $1$ in the exponential comparison ($\alpha_1=a>0$). When $q=3$ and $b>1$, one has $b=4$, so the $n$ indices $1$ alone give strictness because $(b-1)^n>b-1$. In the remaining case $q=2$, $p\in\pi$, $a=1$, coprimality excludes $n=3$. In the above comparison after extraction, $D_4=9>u_4-h_4=-3$, giving strict inequality at degree four for $B/Q$ against $A/H$. The coefficient of $Q$ at $n-4$ is positive for odd $n\ge5$; this makes the product comparison strict. Since the prime-divisor condition already fails at $d=1$ when $b>1$, the first theorem follows.
+First suppose $n$ is odd. If $L>1$, the $j=1$ term in the logarithm gives the strict surplus $\beta_n-(b-1)\alpha_n\ge q^n+1$: the other terms of the difference are nonnegative by §2. For $b\ge2$ this makes the exponential comparison strict by its single-index term of degree $n$; for $b=1$ it makes $B_n>0$. In the case $q=2$, unrestricted $J$ and $L=3$, the odd log coefficient after extracting $(1+t)^3$ is still strictly positive since $2^n+1>3$. Thus no compatible row with $L>1$ vanishes. If $L=1$, compatibility implies $a\mid r$; for nonzero $r$ the parenthesis in (1) is $B_n+A_n>0$ since $\alpha_1=a>0$.
+
+For $r=0$, $L=1$ and $b=1$ we necessarily have $k=0$. The odd log coefficients of $B$ are sums of the nonnegative numbers $j(q^d+1-N_d)$ for $jd=m$, $j\in J$. They vanish through odd degree $n$ exactly under (O) (take $j=1$). All log coefficients here are nonnegative, with $\beta_2>0$ by §2. Any strictly positive odd term of degree at most $n$ can be padded with copies of degree two, so $B_n=0$ exactly under (O).
+
+For $r=0$, $L=1$ and $b\ge2$, the comparison (2) is strict for $J=\{1\}$ or $q>3$: use $D_2>0$ and the monomial with one index $2$ and $n-2$ indices $1$. For $q=3$ we have $b=4$, and the $n$ indices $1$ alone give strictness since $(b-1)^n>b-1$. For $q=2$, unrestricted $J$ and $a=1$, the degree-four comparison after extraction is strict since $D_4=9>u_4-h_4=-3$; the positive coefficient of $Q$ at $n-4$ then gives strictness for odd $n\ge5$. The remaining case is (X), where the log recurrence gives $A_3=3$, $B_3=6$ and $b=3$, hence zero.
+
+Now let $n$ be even, so $n\ge4$. For $J=\{1\}$ or $q\ge3$ one has $D_n>0$: in the paired-divisor proof of §2 use $d=n$ if $4\mid n$ and the pair starting at $n/2\ge3$ otherwise (for unrestricted $J$). Thus $B_n>0$; when $c_r=-1$ we have $b\ge2$ and retaining the index $n$ in the exponential comparison gives $B_n-A_n\ge D_n/n>0$. In the case $q=2$ and unrestricted $J$, if $a=3$ then $b=1$ and either $\beta_n=\alpha_n+D_n>0$ for $L=1$, or $\beta_n+3>0$ in the logarithm after extraction for $L=3$. If $a=1$, the even-index inequality after removing $Q,H$ is strict at index $n$: we have $D_n>u_n-h_n$ since $D_n\ge0$ and in fact $D_n\ge6n$ for $6\mid n$. The constant terms of both extracted factors are one, so $B_n>A_n$. This proves the criterion.
+
+To deduce the headline theorem, let $n$ be odd and $\gcd(n,M)=1$. Then $U_n=\mathrm{SU}_n(q)\times Z$, since $z\mapsto z^n$ is an automorphism of $Z$. The special group equals its projective quotient and the Weil component with $r=0$ is trivial on $Z$. Its local sum on the special group is $W(n,0,0)/a$, since the direct factor $Z$ contributes exactly $a$ local classes. The small case (X) does not satisfy coprimality, so the criterion gives exactly (O).
 
 ## 4. Passing to special and projective groups without coprimality
 
@@ -166,6 +173,14 @@ This holds for $n\ge32$, $q\ge3$, and for $n\ge6$, $q\ge101$: check $(n,q)=(32,3
 ```
 For each such pair, enumerate all subsets of the prime divisors of $q\prod_{i=1}^n(q^i-(-1)^i)$, all $|D|\mid g$, and all $r\bmod M$ divisible by $|D|$. These are all effective prime sets, central quotients and descended Weil rows. Evaluate (3) using (1); the coefficients of $\exp(\sum l_i t^i/i)$ are computed by $c_0=1$, $h c_h=\sum_{i=1}^h l_i c_{h-i}$. Every result is nonnegative. The complete integer loops for this bounded part of the proof are in the companion verifier (function `finite_tail`); no external character data or numerical approximations are inputs. This finishes the even-dimensional case.
 
+**Exact support on special groups and scalar quotients.** For all $n\ge3$, put $g=\gcd(n,M)$ and $u=\gcd(n,a)$. On any quotient to which the row descends, its sum is zero exactly in the following cases:
+1. $u\nmid r$ (the central character is nontrivial on the special group's $\pi$-scalar center);
+2. $r=0$ and either $g=1$ with (O), or (X) holds, in the notation of §3.
+
+The scalar permutation argument for case 1 works in both characteristics and both parities. Assume $u\mid r$. If $n$ is odd or $q$ is even, every summand of (3) is nonnegative. There is at least one compatible twist in its $e=v=1$ term, since the congruence $nk\equiv-r\bmod a$ is solvable. For $r\ne0$ this already gives strict positivity by §3. For $r=0$ take $k=0$: a zero requires (O) or (X). Under (O) one has $a=M$, so if $g>1$ the *nonzero* compatible twist $k=M/g$ gives a positive term. If $g=1$, the direct-product argument of §3 applies. Under (X) we have $a=1$, hence $e=1$; the $v=1$ terms vanish by §3 and the only additional term has $v=3$, $m=1$ and the zero component $w_{0,1}$. This proves the criterion in this parity range.
+
+In the remaining range ($n$ even, $q$ odd), the main-term comparison above is **strict** outside the four residual pairs. For those pairs the same exact loop, limited to $u\mid r$, has minima $13,115,2004,9602$ for $(q,n)=(3,4),(3,6),(5,6),(3,10)$ respectively. Hence there are no further zeros. In particular, on any nonabelian simple $\mathrm{PSU}_n(q)$ with $n\ge3$, descent gives $g\mid r$ and (X) is excluded. **Every descended Weil row with positive full sum has strictly positive sum for every prime set.**
+
 **Independent checks.** In addition to the bounded proof step, the Python verifier compares the formulas with explicit partition-labeled eigenvalue orbits, determinant weights, splitting and scalar fusion, and with matrix-group conjugacy in dimension three over $\mathbb F_4$. These sample checks are not used to extrapolate to other dimensions.
 
 ## 6. In dimension two every row works
@@ -186,7 +201,7 @@ Put $i=[p\in\pi]$. The principal sum is at least $z(q+id)-1>0$. The cuspidal sum
 ```math
  z(q-id)-\frac{q+1}{2c}-[c=2],
 ```
-since $\theta$ is nontrivial on the whole torus, so if it is trivial on $P$ then $|P|$ is at most half the torus order. For $c=1$ this is nonnegative for $q\ge5$ by $d\le2$, and for $q=4$ by $d=1$. For $c=2$ one has $q\ge5$ odd and $q-2-(q+1)/4-1\ge0$. Finally the Steinberg row has degree $q$, value zero on nontrivial unipotent parts, and values $+1,-1$ on noncentral split and nonsplit semisimple classes. There are at most $(q+1)/(2c)$ noncentral nonsplit classes, by counting inversion pairs with at most one noncentral involution and deleting at least the identity. Hence this row too has positive sum. This covers every row of the two stated groups.
+since $\theta$ is nontrivial on the whole torus, so if it is trivial on $P$ then $|P|$ is at most half the torus order. For $c=1$ this is nonnegative for $q\ge5$ by $d\le2$, and for $q=4$ by $d=1$. For $c=2$ one has $q\ge5$ odd and $q-2-(q+1)/4-1\ge0$. Finally the Steinberg row has degree $q$, value zero on nontrivial unipotent parts, and values $+1,-1$ on noncentral split and nonsplit semisimple classes. There are at most $(q+1)/(2c)$ noncentral nonsplit classes, by counting inversion pairs with at most one noncentral involution and deleting at least the identity. Hence this row too has positive sum. This covers every row of the two stated groups. In fact for $c=d$ and $q\ge4$ even the cuspidal lower bound is strictly positive: it is at least $(q-3)/2$ for even $q$ and $(3q-13)/4$ for odd $q$. Thus every simple projective group in this dimension has full support for every prime set.
 
 ## 7. Alternating groups when two is allowed
 
@@ -217,7 +232,7 @@ By Clifford theory the irreducibles are of two kinds. A nonconstant tuple of irr
 ```
 For a constant tuple $\alpha^{\boxtimes\ell}$ the tensor representation extends by cyclically permuting its tensor factors. Twisting this extension by the $\ell$ top characters gives all irreducibles above the tuple. Put $a=s(\alpha)$ and $b=s(\alpha^\ell)$, with $\alpha^\ell$ the **tensor power**, not an Adams operation. In the base, weighted orbit counting gives $(a^\ell+(\ell-1)b)/\ell$: the fixed tuples for a nonidentity rotation are constant. In a nonidentity coset the trace on the tensor power is $\alpha$ of the cycle product, times the top character. Hence the additional contribution, if $\ell\in\pi$, is $(\ell-1)a$ for the untwisted extension and $-a$ for each other one.
 
-It remains to check $a^\ell+(\ell-1)b\ge\ell a$. This holds for $a=0$, and for $a\ge2$ since $2^{\ell-1}\ge\ell$. If $a=1$, then $b\equiv a^\ell\bmod\ell$: expand the $\ell$-th power of the sum of the algebraic integers $\alpha(g_K)$ modulo $\ell$ in the ring of cyclotomic integers, then use that $a,b$ are rational integers. Thus $b\ge1$. This proves the closure assertion; it can be iterated, for example starting with $\mathrm{PSL}_2(q)$. It is not a reduction of arbitrary extensions to their composition factors. As a check, the verifier compares these formulas with the row-sum multisets computed directly from the permutation groups $A_5\wr C_2$ and $S_3\wr C_3$.
+It remains to check $a^\ell+(\ell-1)b\ge\ell a$. This holds for $a=0$, and for $a\ge2$ since $2^{\ell-1}\ge\ell$. If $a=1$, then $b\equiv a^\ell\bmod\ell$: expand the $\ell$-th power of the sum of the algebraic integers $\alpha(g_K)$ modulo $\ell$ in the ring of cyclotomic integers, then use that $a,b$ are rational integers. Thus $b\ge1$. This proves the closure assertion; it can be iterated, for example starting with $\mathrm{PSL}_2(q)$. Conversely, for a nontrivial irreducible $\alpha$ of $H$ apply the nonconstant-tuple formula to $(\alpha,1,\ldots,1)$. Without any sign assumption, the resulting sum is $(s(1)^{\ell-1}+\ell-1)s(\alpha)$, with strictly positive prefactor. Thus passage to this wreath product is an equivalence, not a reduction of arbitrary extensions to their composition factors. As a check, the verifier compares these formulas with the row-sum multisets computed directly from the permutation groups $A_5\wr C_2$ and $S_3\wr C_3$.
 
 ## 9. Exact character tables: sporadic groups and a counterexample search
 
