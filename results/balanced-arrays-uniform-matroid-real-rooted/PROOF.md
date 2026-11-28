@@ -1,6 +1,8 @@
-# Interlacing across two heights of a balanced array
+# Strict interlacing for every four-column balanced array
 
 Fix a column count $d\ge2$ and a row cap $1\le r\le d$. Let $a_{h,k}$ count labeled binary arrays with $h$ rows, $d$ columns, exactly $k$ ones per column and at most $r$ ones per row. Put $P_h(q)=\sum_k a_{h,k}q^k$, $D_h=\lfloor hr/d\rfloor$ and $N=n+1$.
+
+**Main theorem (full four-column slice).** For every $2\le d\le4$, every $1\le r\le d$ and every $n\ge0$, the simple negative zeros of the consecutive rows $P_n$ and $P_N$ strictly alternate. In increasing modulus the new row starts. The previously open case of this assertion is $U_{2,4}$. Its single-row real-rootedness was already known. The [four-column proof](#full-interlacing-in-four-columns) compares the two rows at the original unit weights; it does not claim a result for all five-column arrays.
 
 **Theorem (first two roots, all heights and caps).** In each of $P_n,P_N$, the two zeros of smallest modulus are simple and negative, using all available zeros if the degree is below two. Every other zero has strictly larger modulus. Writing $\alpha_j$ and $\beta_j$ for the moduli from the old and new rows respectively, these initial lists strictly alternate:
 
@@ -25,7 +27,7 @@ $$
 
 For each $h=n,N$, the $\min(m,D_h)$ zeros of $P_h$ nearest the origin are simple and negative, and every other complex zero has strictly greater modulus. These two initial lists strictly alternate in the same order as above. There is **no** restriction on the height or cap. For instance, this gives interlacing of the first two available roots for all $d\ge13$ and all heights. More generally $d\ge(m+1)\log(64(m+1))$ suffices. In particular the number controlled, up to the degree, grows at least on the order of $d/\log d$.
 
-These are partial results on [Alexandersson's conjecture](https://www.symmetricfunctions.com/realRootedOpenProblems.htm#conjBalancedArrays) and its [consecutive-row question](https://github.com/PerAlexandersson/RealRooted/issues/2005), not a proof of unrestricted real-rootedness. What distinguishes the assertions from single-row real-rootedness is the ordering of the two sets of roots. [ProgramComputer's prior results](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/README.md) include all-height real-rootedness for $(r,d)=(2,4)$, all-height interlacing at corank one, interlacing of the nearest root at all caps, eventual interlacing for fixed proper rank and dimension, and an ineffective uniform eventual real-rootedness theorem. We do not settle all-height interlacing for $(2,4)$. At rank one the stronger window of $d+1$ interlacing rows is already [Ding's Theorem 1.3](https://doi.org/10.1016/j.disc.2025.114522); at full rank real-rootedness of the binomial powers follows by Schur–Szegő composition.
+These are partial results on [Alexandersson's conjecture](https://www.symmetricfunctions.com/realRootedOpenProblems.htm#conjBalancedArrays) and its [consecutive-row question](https://github.com/PerAlexandersson/RealRooted/issues/2005), not a proof of unrestricted real-rootedness. What distinguishes the assertions from single-row real-rootedness is the ordering of the two sets of roots. [ProgramComputer's prior results](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/README.md) include all-height real-rootedness for $(r,d)=(2,4)$, all-height interlacing at corank one, interlacing of the nearest root at all caps, eventual interlacing for fixed proper rank and dimension, and an ineffective uniform eventual real-rootedness theorem. The final section proves that stronger four-column conclusion. At rank one the stronger window of $d+1$ interlacing rows is already [Ding's Theorem 1.3](https://doi.org/10.1016/j.disc.2025.114522); at full rank real-rootedness of the binomial powers follows by Schur–Szegő composition.
 
 ## 1. A sharp two-height coefficient comparison
 
@@ -184,3 +186,102 @@ In particular $P_N(-\alpha_2)>P_n(-\alpha_2)=0$. Just past its simple first root
 For completeness, $d=2,3$ use previously known families. At full rank, the weak interlacing of $(1+q)^n$ and $(1+q)^N$ passes to their $d$-fold coefficientwise powers by [Garloff–Wagner, Theorem 4](https://www-home.htwg-konstanz.de/~garloff/Garloff_Wagner_Hadamard_Products.pdf). Parts (a) and (c) give simple, coprime negative roots for $d\ge2$: unequal degrees and nonzero constants exclude the proportional and shifted-proportional exceptions. At corank one use the [all-height strict interlacing proof](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/no-full-row.md). At rank one the coefficients are $h!/((h-dk)!(k!)^d)$, interpreted as zero for $dk>h$. Thus $P_n=P_N-(d/N)qP_N'$; simplicity of the negative roots from the [rank-one Jacobi multiplier argument](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/finite-linear-reduction.md) excludes common roots in Ding's interlacing, and the displayed derivative identity puts the new rightmost root first.
 
 **Verification.** Run the accompanying checker with Python 3 in isolated mode. It proves the finite difference inequalities used in (4) from the labeled-array counts, checks (1) at and away from equality, and checks strict alternation directly on example rows by signed Euclidean chains. The unbounded-height step is the Newton expansion; the width and prefix theorems in Sections 1–4 are analytic.
+
+## Full interlacing in four columns
+
+For every $n\ge0$ the zeros of $P_n^{(2,4)}$ and $P_{n+1}^{(2,4)}$ are simple, negative and strictly alternate, starting with the new row in order of increasing modulus. In particular **strict consecutive interlacing holds for every cap in every dimension $2\le d\le4$**, by the endpoint and corank-one results above. At $d=1$ there is weak interlacing with repetitions. It is interlacing, **not** the single-row real-root count for $U_{2,4}$, that is established here. The latter count was proved in [ProgramComputer's four-column paper](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/proof.md). We use its explicit saddle estimates.
+
+Write $P=P_n^{(2,4)}$, $B=P_{n+1}^{(2,4)}$, $D=B-P$, $m=\lfloor n/2\rfloor$. In the variable $q=-t^4$, $t>0$, it suffices to locate $m$ simple roots of $P$ in order and show that $B$ has sign $(-1)^j$ at root number $j$. Indeed $B(0)=1$, and the leading sign of $B$ accounts for one more root after the last old root if its degree increases.
+
+### Finite prefix and low-root certificates
+
+For $0\le n<533$ the exact verifier constructs disjoint brackets of the old roots in the variable $-q$, evaluating both polynomials at dyadics. For each old root $j$, the old brackets have endpoint signs $(-1)^{j-1},(-1)^j$ and both endpoints have new sign $(-1)^j$ (an exact singleton old root also suffices). The complementary gaps, including the first and, for a degree increase, the last, exhaust the new degree. This proves strict alternation and supplies the brackets to refine for the following pair. The prefix accounts for 70,756 old roots. There is no assumption about the accuracy of numerical roots. The sign routine rounds a scaled Horner recurrence with argument of modulus at most one, reversing first if necessary. The error is at most one integer unit per step; a value inside that error bound triggers an exact denominator-clearing evaluation.
+
+For $n\ge533$, the verifier gives forty disjoint brackets $(l_j,u_j)$ in the $t$ variable, each endpoint of the form $y/(16n-s)$. The right endpoints are the earlier paper's [lower-edge grid](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/certificates/lower.jsonl). It establishes the following four signs on each bracket; in this table the argument is $-t^4$.
+
+| Function | $t=l_j$ | $t=u_j$ |
+|---|---|---|
+| $P$ | $(-1)^{j-1}$ | $(-1)^j$ |
+| $D$ | $(-1)^j$ | $(-1)^j$ |
+
+Here and below a pair of equal signs alone does **not** exclude internal roots. We will exhaust the degree of $D$ *outside* the brackets.
+
+For the certificate calculation, label the $k$ occurrences in each column. A row with two entries pairs labels from different columns. Write $M_{k,p}$ for the number of matchings of size $p$ on the four parts of $k$ labels each. The binomial-basis coefficient of $a_{n,k}$ at index $h=4k-p$ is $M_{k,p}h!/(k!)^4$: inject the matched pairs and singletons into $h$ selected row labels. To compute the matchings, when appending a part of size $k$ to $c$ old parts, a matching of size $p$ has $\binom{ck-2p}{i}(k)_i$ extensions with $i$ new edges. Here $0\le c\le3$. The verifier uses these integer coefficients for both the finite prefix and the all-height test.
+
+For a desired sign $\epsilon$, truncate the alternating sum at an $M$ with $(-1)^M=-\epsilon$. At each endpoint the absolute terms decrease beyond $M$. For $P$ this follows by deleting an entry in each column of an array of quota $k+1$. For $D$ the last row must remain nonempty: keep its bit in one specified occupied column (choose the first such column in the starting array), and delete one of the other $k$ bits of that column. The other columns each have $k+1$ choices. The resulting array and the tuple of deleted row labels recover the original. Thus for either sequence $b_k$ of coefficients,
+
+$$
+k(k+1)^3 b_{k+1}\le(n+1)^4 b_k.
+$$
+
+The test $M(M+1)^3(16n-s)^4>((n+1)y)^4$ at $n=533$ suffices since $s\ge-16$. The signed tail after $M$ is therefore nonnegative after multiplication by $\epsilon$. Clearing $(16n-s)^{4M}$ in the signed partial sum gives a polynomial in $n$ of degree at most $4M$ for $P$ and $4M-1$ for $D$, since $[q^k]D=\Delta a_{n,k}$. In all 160 tests every Newton coefficient about $n=533$ through the stated degree is strictly positive (50,320 integer comparisons). The binomial expansion proves the signs for every integer $n\ge533$. Positivity of the denominators and ordering of the nodes are linear tests after cross multiplication.
+
+### Comparing both rows in the saddle range
+
+Set $\zeta=e^{i\pi/4}$, $S=1+4\zeta t+6it^2$, $\Lambda=(2\zeta t+4it^2)/S$, $\phi=\arg S$, and $\Psi=n\phi-\tfrac32\arg\Lambda$. Arguments are principal. The phase $\Psi$ increases strictly: $\tan\phi=(2\sqrt2t+6t^2)/(1+2\sqrt2t)$ increases, and
+
+$$
+\tan(\arg\Lambda)=\frac{\sqrt2+4t+2\sqrt2t^2}{\sqrt2+8t+14\sqrt2t^2+24t^3}
+$$
+
+decreases, by pairing terms in the derivative (the coefficient ratios decrease strictly). The earlier [phase join](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/proof.md#the-transition-to-node-41) gives $u_{40}=718/(16n-507)<1/5$, $nu_{40}>40$ and $\Psi(u_{40})<41\pi$.
+
+We need the sign of $B$ at roots where the principal **cosine vanishes up to an error**. Simply bounding the two unweighted cosines separately loses the phase difference near zero. Instead use the amplitude $(R-\Re S)/\Im S$ in the same integral. In the [three-angle coordinates](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/central.md), let $p\in[-\pi/2,\pi/2]^3$, $Q=\sum p_i^2$, $U=\sum\cos^2p_i$, $C=\prod\cos p_i$, $H_s=\prod\sin p_i$, and $\Omega=\{U\ge3/2\}$ within this cube. On the two lifts
+
+$$
+R_\pm=1\pm4\zeta t(C-iH_s)+4it^2(U-3/2).
+$$
+
+The real part of the integral of $(R_+^n+R_-^n)/\pi^3$ on $\Omega$ is $P(-t^4)$, by the torus coefficient extraction. Inserting $W_\pm=(R_\pm-\Re S)/\Im S$ therefore gives $(B(-t^4)-\Re S\,P(-t^4))/\Im S$. At the principal saddle $W_+=i$, changing the leading normalized real term from $\cos\Psi$ to $-\sin\Psi$.
+
+Here are explicit errors for this replacement. Write $H=|\Lambda|$; normalize integrals of $(R_\pm/S)^n$ by the magnitude $(\pi/(nH))^{3/2}$ of the principal Gaussian integral. The phase of $S^n$ is restored before taking the real part. Everywhere $|W_\pm|\le K=1+\sqrt2$ by $C^2+H_s^2\le1$ and $\Im S=2\sqrt2t+6t^2$. Also
+
+$$
+|W_+-i|\le 6Q/5 .
+$$
+
+Indeed $1-C\le Q/2$, $|H_s|\le(3-U)/3\le Q/3$ and $|R_+-S|\le4t(1-C+|H_s|)+4t^2(3-U)$. Where $|R_+/S|\le e^{-aQ}$, the extra error for replacing $W_+$ by $i$ on that region is at most $(9/5)(H/a)^{3/2}/(na)$, by integrating $Qe^{-naQ}$ over all three-space.
+
+* For $t\le1/5$, $T=nt\ge40$, the [small-parameter estimates](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/small.md#integrated-error) bound the total unweighted error by $2/5$ **as a sum of absolute bounds** on the local symmetrized difference and the tails. On $Q\le1/2$ use the same local integral multiplied by $i$, plus the extra error with $a=3t/4$, $H\le2t$. In the actual plus tail and minus integral one only needs to multiply their old bounds by $K$. Those two tails together cost less than $1/20$ before multiplication: in the cited formulas their bounds decrease with $T$ and at $40$ are at most
+
+$$
+11\cdot7/2500+23\cdot9/20000+5000/20000^2<1/20.
+$$
+
+Here we used the given Gaussian tail bound $G_1(x)\le(x^{-1/2}+2\sqrt{x})e^{-x}$ at $x=25/3,10$, and the minus bound $(2\pi T)^{3/2}e^{-T/2}$. Thus the weighted error is less than $2/5+(K-1)/20+(9/5)(8/3)^{3/2}/30<3/4$.
+* For $1/5\le t\le38/7$, the [compact error bound (5)](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/proof.md#the-compact-interval) on the sum of the four unweighted errors is $E=33827/100000$. Use the original complex Gaussian comparison multiplied by $i$ on $Q\le1/4$. There $a=(37/50)\Re\Lambda\ge(37/75)t/(1+t)$ and $H/a<2$. Bound the absolute weighted tails by $K$ times the corresponding old bounds. The total weighted error is less than
+
+$$
+K E+\frac{9}{5}\frac{2^{3/2}}{533(37/75)/6}<0.935.
+$$
+
+In both estimates the local error used from the earlier proof bounds the complex difference after averaging $p$ and $-p$, not only its real part. The new $W_+-i$ error is bounded before averaging, so it needs no odd-term cancellation.
+
+At any old root in these ranges, the unweighted bound gives $|\cos\Psi|<0.4$ in the first case and $|\cos\Psi|\le E$ in the second. The weighted errors are respectively less than $\sqrt{1-0.4^2}$ and $\sqrt{1-E^2}$. Thus $B$ at that root has sign $-\operatorname{sgn}(\sin\Psi)$.
+
+### The upper end and the root count
+
+For $t\ge38/7$ let $\alpha=\pi/2-\phi$ and $v=1/t$. We use the earlier [upper estimate (2)](https://github.com/ProgramComputer/open-math-research/blob/e6724cb96ff30e8469b7bbc54208666623ce74f6/topics/balanced-arrays/four-columns/upper.md#comparison-with-the-central-phase), which retains the modulus of the secondary saddle. At height $h\ge200$, after a positive normalization the difference from $\cos(h\phi)$ is bounded by $z+(1+z)5\eta/2$, where $z\le e^{-3hv/4}$, $\eta<3/32$. Also $0<\alpha<v/2$ and $0<\tfrac32\arg\Lambda<21/152$.
+
+Stop at $t_{\rm end}$ defined by $n\alpha=1$ for even $n$ and $n\alpha=2$ for odd $n$. It exists above $38/7$: there $\alpha=\arctan((cv+v^2/6)/(1+cv))$ with $c=\sqrt2/3$, so at $v=7/38$ one has $n\alpha>2$; then $\alpha$ decreases to zero. For $38/7\le t\le t_{\rm end}$, $n\alpha\ge1$, whence $z<e^{-3/2}<9/40$ for **both** heights. Both errors are less than $0.52$. At a zero of $P$ this gives $|\sin(n\phi)|>0.85$. Since $\cos\phi<0.1$ and $\sin\phi>0.99$, the main term $\cos((n+1)\phi)$ has sign $-\operatorname{sgn}(\sin(n\phi))$ and modulus at least $0.99\cdot0.85-0.1\cdot0.52>0.52$. The shift from $n\phi$ to $\Psi$ is less than $0.14$, so it does not change the sine sign there. This proves the same sign rule for $B$ through $t_{\rm end}$. At $t_{\rm end}$ itself the old main cosine is $(-1)^m\cos 1$ or $(-1)^m\sin 2$, so $P$ has sign $(-1)^m$ and $(m-1)\pi<\Psi(t_{\rm end})<m\pi$.
+
+Use $u_{40}$ if $\Psi(u_{40})\ge40\pi$, otherwise the later point with phase $40\pi$, as the start of the remaining sign nodes. Its old sign is positive. At phase $j\pi$ for $41\le j<m$, the old sign is $(-1)^j$: this follows from the unweighted bounds in the first two ranges and the upper bound with $|n\phi-\Psi|<0.14$ in the last. With $t_{\rm end}$ for the final sign, these nodes supply one root of $P$ in each remaining phase strip $((j-1)\pi,j\pi)$, $41\le j\le m$. Together with the forty brackets this exhausts the degree. Thus at each such root $B$, and hence $D$, has sign $(-1)^j$.
+
+Finally $D(0)=0$. In increasing $t$, consecutive low brackets force 39 distinct roots of $D$ in their gaps. From the last low bracket to old root 41 there is another, and all consecutive high old roots force one between them. This is $m-1$ nonzero roots outside the low brackets. For odd $n$, $D$ has the positive leading coefficient of $B$ at degree $m+1$, so there is also a root beyond old root $m$. Counting the zero at the origin exhausts $\deg D\le\deg B$ in either parity (the map $t\mapsto-t^4$ is injective on $t>0$). No low bracket can contain any zero of $D$. Its certified endpoint signs therefore give $B(-t^4)=D(-t^4)$ with sign $(-1)^j$ at **every** low old root as well. This is the required full alternation.
+
+### Why the direct stability lift to five columns fails
+
+Mark the fifth bit by a variable $u$. Before requiring its margin to agree with the first four, the first-four balanced enumerator is the equal-exponent diagonal in those four variables of
+
+$$
+\big(F_r(x)+u F_{r-1}(x)\big)^n,\qquad F_j=1+e_1+\cdots+e_j.
+$$
+
+Retain $q^k$ for common margin $k$. One might try to deduce the five-column case by real stability of this bivariate polynomial in $u,q$. This premise already fails at $n=4$ for both open caps. At $u=-5/4$, extracting the factor $(1+u)^4=1/256$ weights each row of size $r$ by $-4$ and every smaller row by $1$. The resulting polynomials, before the factor $1/256$, are
+
+$$
+1+24q+23040q^2\quad(r=2),\qquad
+1+12q+2778q^2+6144q^3\quad(r=3).
+$$
+
+These counts can be obtained by four multiplications by $F_{r-1}-4e_r$, as checked by the verifier. Both violate $p'(0)^2-p(0)p''(0)\ge0$, necessary for a real-rooted polynomial by its logarithmic derivative. A real specialization of a real-stable polynomial is real-rooted or vanishes identically. This excludes that lift, not the five-column diagonal itself.

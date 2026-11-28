@@ -258,7 +258,216 @@ def two_root_certificate():
     print(f"{count} strictly positive Newton coefficients; {systems} independently reconstructed systems")
 
 
+FOUR_START = 533
+S = 1 << 72
+TOP = S << 52
+
+def matches(k):
+    cur = [1]
+    for c in range(4):
+        v = [0]*((c+1)*k//2+1)
+        for p, count in enumerate(cur):
+            if not count:
+                continue
+            free = c*k-2*p
+            # Track count * binom(free,j) * (k)_j directly.
+            h = count
+            for j in range(min(k,free)+1):
+                v[p+j] += h
+                h = h * ((free-j)*(k-j)) // (j+1)
+        cur = v
+    return cur
+
+def four_rows(last, max_low):
+    """All quotas through height 533, low quotas through the last Newton sample."""
+    rows = [[] for _ in range(last+1)]
+    facts = [factorial(i) for i in range(last+1)]
+    for k in range(FOUR_START//2+1):
+        stop = last if k <= max_low else FOUR_START
+        m = matches(k)
+        # Forward differences at zero.  A choice of j nonempty rows has
+        # m[4k-j] ways to pair the labeled occurrences, then j! assignments.
+        diff = [0]*(min(stop,4*k)+1)
+        div = facts[k]**4
+        for j in range(2*k,len(diff)):
+            diff[j], rem = divmod(facts[j]*m[4*k-j],div)
+            if rem: raise ValueError('pair delabeling')
+        for n in range(stop+1):
+            if n>=2*k: rows[n].append(diff[0])
+            diff[:-1] = [a+b for a,b in zip(diff,diff[1:])]
+    return rows
+
+class Evaluator:
+    def __init__(self, row):
+        self.row=row
+        self.asc = [a << 24 for a in row]
+        self.desc = self.asc[::-1]
+        self.cache={}
+    def __call__(self, x):
+        if x not in self.cache:
+            self.cache[x]=self.sign(x)
+        return self.cache[x]
+    def sign(self, x):
+        rev=x>S
+        P=self.asc if rev else self.desc
+        a,b=(S,x) if rev else (x,S)
+        v=P[0]
+        if not rev:
+            for c in P[1:]: v=c-((x*v)>>72)
+        else:
+            for c in P[1:]: v=c-((a*v)//b)
+        if abs(v)<=len(P):
+            # |a/b| <= 1, so all floor errors combined are at most the degree
+            # in the 2^24-scaled value. Exact near-zero fallback.
+            v=P[0]
+            den=1
+            for c in P[1:]:
+                den*=b
+                v=c*den-a*v
+        return ((v>0)-(v<0))*(-1 if rev and len(P)%2==0 else 1)
+
+def finite_four(rows):
+    # Inductively cells are disjoint sign brackets for all old roots.
+    # Refine each old bracket until the new row has the assigned sign at
+    # BOTH ends. The complementary gaps then exhaust the new degree.
+    old = Evaluator(rows[0])
+    cells = []
+    count = 0
+    for n in range(FOUR_START):
+        A, B = old, Evaluator(rows[n+1])
+        gaps = []
+        end = 0
+        check(len(cells) == n//2, "old degree mismatch")
+        for j, (L,U) in enumerate(cells,1):
+            sg = (-1)**j
+            while B(L) != sg or B(U) != sg:
+                mid = (L+U)//2
+                check(L < mid < U, f"unseparated at {(n,j)}")
+                s = A(mid)
+                if not s:
+                    L = U = mid
+                elif s == sg:
+                    U = mid
+                else:
+                    L = mid
+            check(end < L <= U <= TOP, "four-column bracket order")
+            check((A(L) == A(U) == 0) if L == U else (A(L) == -sg and A(U) == sg),
+                  "old bracket signs")
+            gaps.append((end,L))
+            end = U
+            count += 1
+        if len(rows[n+1]) > len(rows[n]):
+            gaps.append((end, TOP))
+        check(B(0) == 1 and B(TOP) == (-1)**((n+1)//2), "outer signs")
+        old, cells = B, gaps
+    check(count == 70756, "four-column prefix incomplete")
+    print(f"four columns: {FOUR_START} consecutive pairs; {count} old roots bracketed")
+
+
+# Integer nodes t=y/(16n-s), listed as (left y,s, right y,s).
+# The right endpoints use ProgramComputer's four-column lower grid.
+FOUR_GRID = (
+    (13,0,24,17),
+    (31,38,42,30),
+    (49,1,60,42),
+    (67,-10,78,55),
+    (84,90,96,68),
+    (102,77,113,80),
+    (120,72,131,93),
+    (138,71,149,105),
+    (156,74,167,118),
+    (173,128,184,130),
+    (191,130,202,143),
+    (209,134,220,156),
+    (227,140,238,168),
+    (244,181,255,181),
+    (262,187,273,193),
+    (280,194,291,206),
+    (298,202,309,218),
+    (315,237,327,231),
+    (333,245,344,243),
+    (351,254,362,256),
+    (369,263,380,269),
+    (387,273,398,281),
+    (404,304,415,294),
+    (422,314,433,306),
+    (440,324,451,319),
+    (458,335,469,331),
+    (475,364,486,344),
+    (493,375,504,357),
+    (511,387,522,369),
+    (529,399,540,382),
+    (546,426,558,394),
+    (564,438,575,407),
+    (582,451,593,419),
+    (600,464,611,432),
+    (618,477,629,445),
+    (635,503,646,457),
+    (653,516,664,470),
+    (671,530,682,482),
+    (689,543,700,495),
+    (706,569,718,507),
+)
+
+
+def low_four(rows):
+    base = FOUR_START
+    signs = entries = 0
+    last_y, last_s = 0, 0
+    for j, (yl,sl,yr,sr) in enumerate(FOUR_GRID, 1):
+        for y, s, desired in ((yl,sl,(-1)**(j-1)), (yr,sr,(-1)**j)):
+            check(s >= -16 and 16*base > s and y > last_y and
+                  y*(16*base-last_s) > last_y*(16*base-s), "unordered nodes")
+            last_y, last_s = y, s
+            for delta, sign in ((0,desired),(1,(-1)**j)):
+                M = 3*y//16 + 10
+                if (-1)**M == sign:
+                    M += 1
+                check(M*(M+1)**3*(16*base-s)**4 > (y*(base+1))**4, "tail ratio")
+                degree = 4*M-delta
+                weights = [(-y**4)**k for k in range(M+1)]
+                values = []
+                for n in range(base, base+degree+1):
+                    den = (16*n-s)**4
+                    v = 0
+                    for k, w in enumerate(weights):
+                        a = rows[n][k]
+                        if delta:
+                            a = rows[n+1][k]-a
+                        v = den*v + w*a
+                    values.append(sign*v)
+                check(positive_differences(values), f"uniform low sign {(j,y,s,delta)}")
+                signs += 1
+                entries += degree + 1
+    check((signs, entries) == (160, 50320), "low sign domain incomplete")
+    print(f"four columns: {entries} positive Newton entries certify all {signs} low signs")
+
+
+def four_certificate():
+    m = 3*max(row[2] for row in FOUR_GRID)//16 + 11
+    rows = four_rows(FOUR_START+4*m+1, m)
+    finite_four(rows)
+    low_four(rows)
+
+
+def five_column_projection_check():
+    for r, target in ((2,[1,24,23040]), (3,[1,12,2778,6144])):
+        t = {(0,0,0,0): 1}
+        for h in range(4):
+            u = defaultdict(int)
+            for v,b in t.items():
+                for s in range(r+1):
+                    for bit in combinations(range(4),s):
+                        w = tuple(v[i]+(i in bit) for i in range(4))
+                        u[w] += b*(-4 if s==r else 1)
+            t=u
+        p = [t.get((k,)*4,0) for k in range(r+1)]
+        check(p==target and p[1]**2 < 2*p[0]*p[2], "marked-column specialization")
+
+
 def main():
+    five_column_projection_check()
+    four_certificate()
     two_root_certificate()
     pairs = mixed = 0
     for d in range(1, 5):
