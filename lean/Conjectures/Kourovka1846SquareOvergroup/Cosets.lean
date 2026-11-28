@@ -1,4 +1,8 @@
-import Conjectures.Kourovka1846SquareOvergroup.Chart
+module
+
+public import Conjectures.Kourovka1846SquareOvergroup.Chart
+
+@[expose] public section
 
 /-!
 # Seven distinct cosets from three square roots

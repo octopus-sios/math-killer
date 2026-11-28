@@ -1,5 +1,9 @@
-import Conjectures.Kourovka1846SquareOvergroup.Table
-import Mathlib.GroupTheory.IndexNormal
+module
+
+public import Conjectures.Kourovka1846SquareOvergroup.Table
+public import Mathlib.GroupTheory.IndexNormal
+
+@[expose] public section
 
 /-!
 # Normal forms for the order-sixteen kernel

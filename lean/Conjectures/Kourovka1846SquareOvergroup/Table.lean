@@ -1,5 +1,7 @@
-import Mathlib.GroupTheory.SpecificGroups.Dihedral
-import Mathlib.Tactic
+module
+
+public import Mathlib.GroupTheory.SpecificGroups.Dihedral
+public import Mathlib.Tactic
 
 /-!
 # Finite test for the marked kernel
@@ -8,6 +10,8 @@ The two fields of a normalized law describe conjugation by the outside generator
 and its square. For each root action triple, the test looks for seven cosets
 separated by their actions on the kernel and, when known, their squares.
 -/
+
+@[expose] public section
 
 namespace Kourovka1846.D8.Marked
 
@@ -136,14 +140,36 @@ end Kourovka1846.D8.Marked
 
 namespace Kourovka1846.D8.Marked
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 16000000 in
-/-- Exhaust the two normalized conjugation actions on the dihedral subgroup
-and every possible square of the outside generator. For each admissible
-chart and each triple of root actions, one of the three lists consists of
-seven pairwise incompatible cosets. -/
-theorem table_check (L : Law) : test L = true := by
+
+-- The only four carries compatible with the normalized conjugation actions.
+private theorem allowed_laws (L : Law) (h : L.allowed = true) :
+    L = ⟨false, .r 0⟩ ∨ L = ⟨false, .r 2⟩ ∨ L = ⟨true, .r 1⟩ ∨ L = ⟨true, .r 3⟩ := by
   obtain ⟨k,a⟩ := L
-  exact (by decide : ∀ (k : Bool) (a : D), test ⟨k,a⟩ = true) k a
+  exact (by decide : ∀ (k : Bool) (a : D), (Law.mk k a).allowed = true →
+    Law.mk k a = ⟨false, .r 0⟩ ∨ Law.mk k a = ⟨false, .r 2⟩ ∨
+    Law.mk k a = ⟨true, .r 1⟩ ∨ Law.mk k a = ⟨true, .r 3⟩) k a h
+
+set_option maxRecDepth 65536
+set_option maxHeartbeats 16000000
+
+private theorem test_false_0 : test ⟨false, .r 0⟩ = true := by decide +kernel
+
+private theorem test_false_2 : test ⟨false, .r 2⟩ = true := by decide +kernel
+
+private theorem test_true_1 : test ⟨true, .r 1⟩ = true := by decide +kernel
+
+private theorem test_true_3 : test ⟨true, .r 3⟩ = true := by decide +kernel
+
+/-- For every allowed marked kernel and triple of root actions, one of
+the tested lists consists of seven pairwise incompatible cosets. -/
+theorem table_check (L : Law) : test L = true := by
+  cases h : L.allowed with
+  | false => simp [test, h]
+  | true =>
+    rcases allowed_laws L h with rfl | rfl | rfl | rfl
+    · exact test_false_0
+    · exact test_false_2
+    · exact test_true_1
+    · exact test_true_3
 
 end Kourovka1846.D8.Marked

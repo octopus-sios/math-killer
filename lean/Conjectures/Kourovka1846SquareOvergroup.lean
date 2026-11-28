@@ -1,7 +1,11 @@
-import Conjectures.Kourovka1846SquareOvergroup.Cosets
-import Conjectures.Kourovka1846SquareOvergroup.Reduction
-import Conjectures.Kourovka1846SquareOvergroup.Upper
-import Mathlib.GroupTheory.Perm.Basic
+module
+
+public import Conjectures.Kourovka1846SquareOvergroup.Cosets
+public import Conjectures.Kourovka1846SquareOvergroup.Reduction
+public import Conjectures.Kourovka1846SquareOvergroup.Upper
+public import Mathlib.GroupTheory.Perm.Basic
+
+@[expose] public section
 
 /-!
 # Sharpness of the square-overgroup bound (Kourovka 18.46)
@@ -36,13 +40,13 @@ theorem not_square_of_unique_pair {X : Type*} (g : Equiv.Perm X) (a b : X)
   · rw [e] at hh
     exact hab (h.injective (e.trans hh.symm))
 
-private def turn : Equiv.Perm (Bool × Bool) where
+def turn : Equiv.Perm (Bool × Bool) where
   toFun p := (p.2, !p.1)
   invFun p := (!p.2, p.1)
   left_inv := by rintro ⟨a, b⟩; cases a <;> cases b <;> rfl
   right_inv := by rintro ⟨a, b⟩; cases a <;> cases b <;> rfl
 
-private def flip : Equiv.Perm Bool where
+def flip : Equiv.Perm Bool where
   toFun := Bool.not
   invFun := Bool.not
   left_inv := by intro a; cases a <;> rfl

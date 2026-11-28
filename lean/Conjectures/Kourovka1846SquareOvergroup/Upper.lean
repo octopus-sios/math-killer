@@ -1,5 +1,9 @@
-import Mathlib.Data.Fintype.Prod
-import Mathlib.Algebra.Group.Hom.Defs
+module
+
+public import Mathlib.Data.Fintype.Prod
+public import Mathlib.Algebra.Group.Hom.Defs
+
+@[expose] public section
 
 /-!
 # Simultaneous square roots in the swap extension
@@ -22,11 +26,11 @@ namespace SwapHost
 
 variable {G : Type u} [Group G]
 
-private def prod : SwapHost G → SwapHost G → SwapHost G
+def prod : SwapHost G → SwapHost G → SwapHost G
   | ⟨false, a, b⟩, ⟨j, c, d⟩ => ⟨j, a * c, b * d⟩
   | ⟨true, a, b⟩, ⟨j, c, d⟩ => ⟨!j, a * d, b * c⟩
 
-private def inv : SwapHost G → SwapHost G
+def inv : SwapHost G → SwapHost G
   | ⟨false, a, b⟩ => ⟨false, a⁻¹, b⁻¹⟩
   | ⟨true, a, b⟩ => ⟨true, b⁻¹, a⁻¹⟩
 
@@ -45,7 +49,7 @@ instance : Group (SwapHost G) where
   mul_one := by change ∀ x, prod x ⟨false, 1, 1⟩ = x; rintro ⟨i, a, b⟩; cases i <;> simp [prod]
   inv_mul_cancel := by change ∀ x, prod (inv x) x = ⟨false, 1, 1⟩; rintro ⟨i, a, b⟩; cases i <;> simp [prod, inv]
 
-private def coords (A : Type u) : SwapHost A ≃ Bool × A × A :=
+def coords (A : Type u) : SwapHost A ≃ Bool × A × A :=
   ⟨fun x => (x.swapped, x.left, x.right), fun x => ⟨x.1, x.2.1, x.2.2⟩,
     fun _ => rfl, fun _ => rfl⟩
 

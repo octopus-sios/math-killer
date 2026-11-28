@@ -1,7 +1,11 @@
-import Mathlib.GroupTheory.Nilpotent
-import Mathlib.GroupTheory.SpecificGroups.Dihedral
-import Mathlib.GroupTheory.Sylow
-import Mathlib.Tactic
+module
+
+public import Mathlib.GroupTheory.Nilpotent
+public import Mathlib.GroupTheory.SpecificGroups.Dihedral
+public import Mathlib.GroupTheory.Sylow
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # Reducing small simultaneous hosts to a normal kernel of order sixteen
