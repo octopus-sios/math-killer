@@ -1,6 +1,8 @@
 import Conjectures.CardosoSubsetSynchronization
 import Conjectures.ConwayThrackleBound
 import Conjectures.EggertNilpotentAlgebraKourovka1752
+import Conjectures.Erdos86FlagAlgebra
+import Conjectures.Erdos86Obstructions
 import Conjectures.FouliSylvesterMatroids
 import Conjectures.GuanTransversalAchievement
 import Conjectures.HerzogSchonheimNonSolvable
