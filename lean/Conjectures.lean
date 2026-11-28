@@ -77,6 +77,7 @@ import Conjectures.PetrTemperateIntersecting
 import Conjectures.ReinerStantonQBinomialUnimodality
 import Conjectures.ThompsonCyclicMatrix
 import Conjectures.TuzaConjecture
+import Conjectures.WillemsBrauerCharacterSquares
 import Conjectures.YiboGaoCoxeterGeodesicHull
 import Conjectures.YiboGaoWeylConvexBalance
 import Conjectures.YuanParriloPermanentSphere
