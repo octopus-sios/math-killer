@@ -1,0 +1,46 @@
+% Sources: Per Alexandersson, SymCat, 2026:
+% https://www.symmetricfunctions.com/realRootedOpenProblems.htm#conjNestedMatroidZ
+% https://www.symmetricfunctions.com/schubertMatroidZ.htm
+% The author's equivalent question is quoted verbatim from the opening of
+% https://github.com/PerAlexandersson/RealRooted/issues/2650
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\begin{document}
+\paragraph{Question (Alexandersson, 2026; verbatim).}
+Are the Z-polynomials (Proudfoot--Xu--Young) of \textbf{nested matroids} real-rooted?
+
+\paragraph{Definitions.}
+On $[n]=\{1,\ldots,n\}$ the nested matroid specified by upper bounds
+$q_1\le\cdots\le q_r\le n$ has family of bases
+\[
+ \bigl\{\{b_1,\ldots,b_r\}:1\le b_1<\cdots<b_r\le n,\quad
+ b_j\le q_j\ \ (1\le j\le r)\bigr\},
+\]
+where the family is assumed nonempty. For a straight shape with positive
+parts $\lambda_1\ge\cdots\ge\lambda_r$, use
+$n=r+\lambda_1$ and $q_j=j+\lambda_{r+1-j}$.
+For the skew shape $\lambda/\mu$ in the extension, impose also
+$b_j\ge j+\mu_{r+1-j}$, with $\mu_r=0$.
+Rows $i,i+1$ have $\lambda_{i+1}-\mu_i$ columns in common when this is
+positive.
+
+Write $\mathcal L(M)$ for the lattice of flats (sets closed under adjoining
+elements without rank increase), $\rho$ for the rank function and $M/F$
+for contraction. The matroid $Z$-polynomial is
+\[
+ Z_M(t)=\sum_{F\in\mathcal L(M)}t^{\rho(F)}P_{M/F}(t)
+\]
+(Proudfoot, Xu and Young, \emph{The $Z$-polynomial of a matroid},
+Electronic J. Combin.\ 25(1), P1.26, doi:10.37236/7105).
+In the loopless setting here, the Kazhdan--Lusztig polynomials $P$ are
+equivalently characterized by $P_M=1$ for rank zero, $\deg P_M<r/2$
+for positive rank $r$, and $t^r Z_M(1/t)=Z_M(t)$ for every $M$.
+Real-rooted means that every complex zero is real.
+
+\paragraph{Scope of the result.}
+The accompanying proof establishes strict real-rootedness and a common
+Legendre interlacer when $r\ge2$ and $\lambda_r\ge30(r-1)$, also for
+skew shapes when each consecutive-row overlap is at least $30(r-1)$.
+It is not a solution for all nested matroids.
+\end{document}
