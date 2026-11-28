@@ -62,7 +62,7 @@ This leaves only $S=A_m$. We have $m\ge n$ from $|S|\ge|A_n|$, and $m<2n$ since 
 
 ## 3. The remaining action has no root
 
-For $m\ge n\ge4096$, $\operatorname{Aut}(A_m)=S_m$. Consider the embedded $G$ acting on these $m$ letters. On a nontrivial orbit a point stabilizer has index at most $m<2n$. Such a proper subgroup must be a natural point stabilizer by Dixon–Mortimer, [*Permutation Groups*](https://doi.org/10.1007/978-1-4612-0731-3), Theorem 5.2A (take parameter $2$; $2n<\binom n2$ and none of the exceptions apply). Thus each nontrivial orbit is equivariantly isomorphic to the natural $n$-letter action. Since the embedding is faithful and $m<2n$, there is exactly one such orbit; all other points are fixed.
+For $m\ge n\ge4096$, $\operatorname{Aut}(A_m)=S_m$. Consider the embedded $G$ acting on these $m$ letters. On a nontrivial orbit a point stabilizer has index at most $m<2n$. Such a proper subgroup must be a natural point stabilizer by Dixon–Mortimer, [*Permutation Groups*](https://doi.org/10.1007/978-1-4612-0731-3), Theorem 5.2A (take parameter $2$; $2n<\binom n2$ and none of the exceptions apply). Thus each nontrivial orbit is isomorphic to the natural $n$-letter action up to an automorphism of $A_n$ (as $\operatorname{Aut}A_n=S_n$, this preserves cycle type). Since the embedding is faithful and $m<2n$, there is exactly one such orbit; all other points are fixed.
 
 In this representation $g$ still has exactly one two-cycle. If $h^2=g$, then $h$ commutes with $g$ and preserves the two points of least $g$-period two. The square of any permutation of that pair fixes both points, whereas $g$ interchanges them. This rules out the last possible smaller host.
 
@@ -98,4 +98,63 @@ Running the adjacent Python verifier produces **16** labelled kernel tables. **N
 
 ## Verification scope
 
-The result for arbitrary $A_n$ with $n\ge4096$ is a written proof using CFSG. Lean proves the unique-two-cycle obstruction for the explicit witness with arbitrary fixed points; it does not formalize CFSG. The Python verifier checks the degree $4096$ instance data and a corrupted square permutation. For the independent $D$ example it exhausts the two finite coset tests in Section 4 from the group law alone, without GAP, floats, or stored catalogues.
+The result for arbitrary $A_n$ with $n\ge4096$ is a written proof using CFSG; Lean formalizes only its final step, the unique-two-cycle obstruction for the explicit witness with arbitrary fixed points. The sharp $D_8$ answer (minimum simultaneous host order exactly $128=2|D_8|^2$) and the general upper bound $2|G|^2$ are fully proved in Lean; see *Lean verification of sharpness* below. The Python verifier checks the degree $4096$ instance data and a corrupted square permutation. For the independent $D$ example it exhausts the two finite coset tests in Section 4 from the group law alone, without GAP, floats, or stored catalogues.
+
+
+### Lean verification of sharpness
+
+The formal lower bound uses the dihedral example. It does not rely on CFSG,
+the Python calculation, or the classification of groups of order 16.
+The two endpoint theorems, in namespaces `Kourovka1846` and
+`Kourovka1846.D8` respectively, have signatures:
+
+```lean
+theorem square_overgroup_upper (G : Type u) [Group G] [Fintype G] :
+    ∃ (H : Type u) (_ : Group H) (_ : Fintype H) (ι : G →* H),
+      Function.Injective ι ∧ (∀ g : G, ∃ h : H, h ^ 2 = ι g) ∧
+      Fintype.card H = 2 * (Fintype.card G) ^ 2
+
+theorem card_ge_128 {H : Type*} [Group H] [Fintype H]
+    (ι : DihedralGroup 4 →* H) (hi : Function.Injective ι)
+    (hsq : ∀ g : DihedralGroup 4, ∃ h : H, h ^ 2 = ι g) :
+    128 ≤ Fintype.card H
+```
+
+Since `DihedralGroup 4` has eight elements, its lower bound equals the order
+of its swap host. The proof is organized as follows; module suffixes are
+relative to `Conjectures.Kourovka1846SquareOvergroup`:
+
+- `Upper` constructs the swap extension and the diagonal embedding.
+- `Reduction` shows that a smaller simultaneous host would have order divisible
+  by 32 and would contain a normal subgroup of order 16 containing the given
+  copy. These are conclusions, not hypotheses on the host.
+- `Chart` puts that subgroup in normal form: adjust the outer representative
+  by an element of the dihedral subgroup so that its conjugation fixes the
+  rotation and sends the marked reflection to one of two possibilities.
+- `Table` checks both normalized actions and every possible carry (the square
+  of the representative) by kernel reduction. For each triple of possible
+  root actions it finds seven words that cannot share a coset pairwise.
+- `Cosets` proves the test is sound for the actual roots of the rotation and
+  two adjacent reflections. Equal quotient images would supply a kernel
+  element matching the two conjugations and, when known, the two squares.
+  Thus the seven words give seven distinct quotient elements.
+- The [entry module](../../lean/Conjectures/Kourovka1846SquareOvergroup.lean)
+  applies these results to the original embedding. The index of the subgroup
+  of order 16 is even by divisibility by 32, and is at least seven, hence at
+  least eight. This contradicts a host order below 128.
+
+The stronger single-root assertion for alternating groups in Sections 1–3
+remains a written proof. For the two formal endpoints, `#print axioms` gives:
+
+```text
+'Kourovka1846.square_overgroup_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Kourovka1846.D8.card_ge_128' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+From the repository root, with the pinned Lean toolchain and Mathlib:
+
+```sh
+(cd lean && lake build Conjectures ProofAudit)
+python3 scripts/replay_lean.py --repo .
+python3 results/kourovka-18-46-baranov-klyachko-square-overgroup/verify.py
+```

@@ -1,10 +1,18 @@
-import Mathlib.GroupTheory.Perm.Basic
+module
+
+public import Conjectures.Kourovka1846SquareOvergroup.Cosets
+public import Conjectures.Kourovka1846SquareOvergroup.Reduction
+public import Conjectures.Kourovka1846SquareOvergroup.Upper
+public import Mathlib.GroupTheory.Perm.Basic
+
+@[expose] public section
 
 /-!
-# The permutation obstruction in Kourovka 18.46
+# Sharpness of the square-overgroup bound (Kourovka 18.46)
 
 One four-cycle and one two-cycle, with arbitrary fixed points, has no square
-root in the full permutation group. The reduction from arbitrary small hosts
+root in the full permutation group. For simultaneous roots, the dihedral group
+of order eight attains the uniform bound from the swap extension. The reduction from arbitrary small hosts
 to such permutation groups uses CFSG and is not formalized here.
 -/
 
@@ -32,13 +40,13 @@ theorem not_square_of_unique_pair {X : Type*} (g : Equiv.Perm X) (a b : X)
   · rw [e] at hh
     exact hab (h.injective (e.trans hh.symm))
 
-private def turn : Equiv.Perm (Bool × Bool) where
+def turn : Equiv.Perm (Bool × Bool) where
   toFun p := (p.2, !p.1)
   invFun p := (!p.2, p.1)
   left_inv := by rintro ⟨a, b⟩; cases a <;> cases b <;> rfl
   right_inv := by rintro ⟨a, b⟩; cases a <;> cases b <;> rfl
 
-private def flip : Equiv.Perm Bool where
+def flip : Equiv.Perm Bool where
   toFun := Bool.not
   invFun := Bool.not
   left_inv := by intro a; cases a <;> rfl
@@ -59,5 +67,34 @@ theorem witness_not_square (X : Type*) :
     · exact fun _ _ => Or.inl rfl
     · exact fun _ _ => Or.inr rfl
   · exact fun _ hm => (hm rfl).elim
+
+namespace D8
+
+/-- A copy of the dihedral group of order eight all of whose elements are
+squares needs a host of order at least 128. -/
+theorem card_ge_128 {H : Type*} [Group H] [Fintype H]
+    (ι : DihedralGroup 4 →* H) (hi : Function.Injective ι)
+    (hsq : ∀ g : DihedralGroup 4, ∃ h : H, h ^ 2 = ι g) :
+    128 ≤ Fintype.card H := by
+  by_contra! hlt
+  have hc : Nat.card H < 128 := by simpa only [Nat.card_eq_fintype_card] using hlt
+  obtain ⟨K, hn, hle, hk⟩ := small_host_kernel ι hi hsq hc
+  let _ : K.Normal := hn
+  let j := ι.codRestrict K (fun x => hle ⟨x, rfl⟩)
+  have hj : Function.Injective j := fun _ _ he => hi (congrArg Subtype.val he)
+  obtain ⟨C⟩ := Marked.chart_exists j hj hk
+  have base (g : DihedralGroup 4) : C.val (g, false) = ι g :=
+    congrArg Subtype.val (C.base g)
+  obtain ⟨a, ha⟩ := hsq (.r 1)
+  obtain ⟨b, hb⟩ := hsq (.sr 0)
+  obtain ⟨c, hcs⟩ := hsq (.sr 1)
+  have hidx := C.seven_cosets (Marked.table_check _)
+    (ha.trans (base _).symm) (hb.trans (base _).symm) (hcs.trans (base _).symm)
+  have he := K.index_mul_card
+  rw [hk] at he
+  have hd := dvd_32_of_card_lt ι hi hsq hc
+  omega
+
+end D8
 
 end Kourovka1846
